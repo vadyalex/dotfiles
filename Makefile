@@ -1,5 +1,5 @@
 
-.PHONY: zsh i3
+.PHONY: zsh X i3
 
 hello:
 		@echo "MAKE YOUR TERMINAL GREAT AGAIN!"
@@ -11,6 +11,9 @@ zsh:
 i3:
 		ln -f -s $$PWD/i3/config $$HOME/.i3/config
 		ln -f -s $$PWD/i3/i3status.conf $$HOME/.i3status.conf
+
+X:
+		ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
 
 %:
 		@:
