@@ -1,0 +1,26 @@
+
+alias ll=ls -l
+alias la=ls -la
+alias lt=ls -lt
+
+alias rngr=ranger
+alias finder=ranger
+
+alias clr=clear
+
+alias gop="cd $HOME/Projects"
+alias goh="cd $HOME"
+alias gohome=goh
+
+alias goupdate="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+
+alias ihaskell="stack ghci"
+
+alias iclojure="docker run -i -t --rm clojure lein repl"
+alias iclj=iclojure
+
+alias tor="docker run -i -t --rm \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v /dev/shm:/dev/shm \
+		-e DISPLAY=unix$DISPLAY \
+		jess\tor-browser"

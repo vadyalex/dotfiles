@@ -1,0 +1,25 @@
+# if env variable EDITOR is set to vi/vim then ZSH uses vi/vim key bindings,
+# i.e. classical ctrl+a to get to the start of the line will not work.
+# following command switches key bindings to default.
+
+bindkey -e
+
+ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="afowler"
+
+plugins=(
+	archlinux sudo 
+	rsync tmux docker	
+	git 
+	lein mvn 
+	)
+
+# User configuration
+source $HOME/.aliases
+
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
+
+source $ZSH/oh-my-zsh.sh
+
+export LANG=en_US.UTF-8
