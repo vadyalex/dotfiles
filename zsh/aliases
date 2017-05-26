@@ -19,8 +19,8 @@ alias ihaskell="stack ghci"
 alias iclojure="docker run -i -t --rm clojure lein repl"
 alias iclj=iclojure
 
-alias tor="docker run -i -t --rm \
+alias tor-browser="docker run -i -t --rm \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v /dev/shm:/dev/shm \
 		-e DISPLAY=unix$DISPLAY \
-		jess\tor-browser"
+		jess/tor-browser"
