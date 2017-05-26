@@ -4,7 +4,7 @@ hello:
 	@printf "MAKE YOUR TERMINAL GREAT AGAIN!"
 
 
-update-zsh-conf:
+sync-zsh-conf:
 	@if [ ! -d "$$HOME/.bin" ]; then \
 		ln -s $$PWD/bin $$HOME/.bin; \
 	fi
@@ -12,7 +12,7 @@ update-zsh-conf:
 	ln -f -s $$PWD/zsh/zshrc $$HOME/.zshrc
 
 
-setup-zsh: 	update-zsh-conf
+setup-zsh: 	sync-zsh-conf
 	sudo apt update && sudo apt install zsh -y
 	chsh -s /bin/zsh
 	@if [ ! -d "$$HOME/.oh-my-zsh" ]; then \
@@ -20,7 +20,7 @@ setup-zsh: 	update-zsh-conf
 	fi
 
 
-setup-tools:
+setup-toolbelt:
 	sudo apt update && sudo apt install -y \
 		vim \
 		htop \
@@ -28,20 +28,20 @@ setup-tools:
 		ranger
 
 
-setup-server: setup-zsh setup-tools
+setup-server-toolbelt: setup-zsh setup-toolbelt
 
 
-update-i3-conf:
+sync-i3-conf:
 	@mkdir -p $$HOME/.i3
 	ln -f -s $$PWD/i3/config $$HOME/.i3/config
 	ln -f -s $$PWD/i3/i3status.conf $$HOME/.i3status.conf
 
 
-update-X-conf:
+sync-X-conf:
 	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
 
 
-setup-desktop: setup-server update-i3-conf update-X-conf
+setup-i3-desktop-from-scratch: setup-server-toolbelt sync-i3-conf sync-X-conf
 	# install X server
 	sudo apt install -y \
 		xserver-xorg xserver-xorg-input-all
