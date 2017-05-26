@@ -1,0 +1,6 @@
+#!/bin/sh
+
+icon="$HOME/.bin/lock-icon.png"
+file="$HOME/.lock.png"
+
+import -window root "$file" && convert -resize 10% "$file" "$file" && convert -resize 1000% "$file" "$file" && composite -gravity Center "$icon" "$file" "$file" && i3lock -i "$file"

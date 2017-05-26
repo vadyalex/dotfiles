@@ -1,0 +1,38 @@
+apt install zsh -y
+apt install vim
+apt install htop -y
+apt install ranger
+
+apt install xserver-xorg xserver-xorg-input-all
+
+apt install lightdm lightdm-gtk-greeter
+apt install lightdm-gtk-greeter-settings
+
+apt install i3
+apt install network-manager
+apt install alsa-base alsa-tools
+apt install pulseaudio pulseaudio-utils
+apt install rxvt-unicode
+apt install rofi
+apt install feh
+apt install blueman
+apt install ibus
+apt install gnome-screenshot
+apt install nautilus
+apt install xbacklight
+apt install arandr
+apt install xclip
+apt install gnome-terminal
+apt install libnotify-bin
+
+apt install paper-icon-theme paper-gtk-theme paper-cursor-theme
+apt install arc-theme
+apt install lxappearance
+apt install gtk-chtheme
+apt install qt4-qtconfig
+
+apt install firefox
+apt install spotify-client
+apt install enpass
+apt install vlc
+
