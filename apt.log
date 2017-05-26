@@ -1,38 +1,43 @@
-apt install zsh -y
-apt install vim
-apt install htop -y
-apt install ranger
-
-apt install xserver-xorg xserver-xorg-input-all
-
-apt install lightdm lightdm-gtk-greeter
-apt install lightdm-gtk-greeter-settings
-
-apt install i3
-apt install network-manager
-apt install alsa-base alsa-tools
-apt install pulseaudio pulseaudio-utils
-apt install rxvt-unicode
-apt install rofi
-apt install feh
-apt install blueman
-apt install ibus
-apt install gnome-screenshot
-apt install nautilus
-apt install xbacklight
-apt install arandr
-apt install xclip
-apt install gnome-terminal
-apt install libnotify-bin
-
-apt install paper-icon-theme paper-gtk-theme paper-cursor-theme
-apt install arc-theme
-apt install lxappearance
-apt install gtk-chtheme
-apt install qt4-qtconfig
-
-apt install firefox
-apt install spotify-client
-apt install enpass
-apt install vlc
-
+Commandline: apt install zsh -y
+Commandline: apt install xserver-xorg xserver-xorg-input-all
+Commandline: apt install lightdm lightdm-gtk-greeter
+Commandline: apt install i3
+Commandline: apt install vim
+Commandline: apt install network-manager
+Commandline: apt install firefox
+Commandline: apt install paper-icon-theme paper-gtk-theme paper-cursor-theme
+Commandline: apt install arc-theme
+Commandline: apt install lxappearance
+Commandline: apt install gtk-chtheme
+Commandline: apt install qt4-qtconfig
+Commandline: apt install lightdm-gtk-greeter-settings
+Commandline: apt install feh
+Commandline: apt install blueman
+Commandline: apt install gnome-screenshot
+Commandline: apt install nautilus
+Commandline: apt install alsa-base alsa-tools
+Commandline: apt install spotify-client
+Commandline: apt install ibus
+Commandline: apt install pulseaudio pulseaudio-utils
+Commandline: apt install htop -y
+Commandline: apt install enpass
+Commandline: apt install nvidia-381
+Commandline: apt install pasystray
+Commandline: apt install pavucontrol
+Commandline: apt install rofi
+Commandline: apt install xbacklight
+Commandline: apt install arandr
+Commandline: apt install firefox
+Commandline: apt install ranger
+Commandline: apt install vlc
+Commandline: apt install gnome-terminal
+Commandline: apt install xclip
+Commandline: apt install libnotify-bin
+Commandline: apt install network-manager-openconnect
+Commandline: apt install network-manager-pptp-gnome
+Commandline: apt install network-manager-openconnect-gnome
+Commandline: apt install network-manager-vpnc network-manager-vpnc-gnome
+Commandline: apt install network-manager-strongswan
+Commandline: apt install network-manager-openvpn network-manager-openvpn-gnome
+Commandline: apt install xautolock
+Commandline: apt install vim-gtk
