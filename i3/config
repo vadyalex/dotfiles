@@ -32,7 +32,10 @@ bindsym $mod+Shift+q kill
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 #bindsym $mod+d exec --no-startup-id synapse --startup
-bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+d exec --no-startup-id rofi -show combi -modi combi -combi-modi drun,ssh
+
+# window switcher
+bindsym $mod+Tab exec --no-startup-id rofi -show window
 
 # change focus
 #bindsym $mod+j focus left
