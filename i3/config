@@ -32,7 +32,7 @@ bindsym $mod+Shift+q kill
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 #bindsym $mod+d exec --no-startup-id synapse --startup
-bindsym $mod+d exec --no-startup-id rofi -show combi -modi combi -combi-modi drun,ssh
+bindsym $mod+d exec --no-startup-id "rofi -show combi -modi combi -combi-modi drun,ssh"
 
 # window switcher
 bindsym $mod+Tab exec --no-startup-id rofi -show window
@@ -176,7 +176,7 @@ bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
-bindsym XF96MonBrightnessDown exec xbacklight -dec 10 
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 
 
 
 #
