@@ -44,7 +44,13 @@ sync-dunst-conf:
 	@mkdir -p $$HOME/.config/dunst
 	ln -f -s $$PWD/dunst/dunstrc $$HOME/.config/dunst/dunstrc
 
-sync-conf: sync-i3-conf sync-X-conf sync-dunst-conf
+sync-XFCE4-terminal-conf:
+	@mkdir -p $$HOME/.config/xfce4/terminal
+	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
+
+sync-conf: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf
+
+
 
 setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 	# install X server
@@ -58,6 +64,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 	sudo apt install -y i3
 	# install desktop tools
 	sudo apt install -y \
+		xfce4-terminal \
 		network-manager \
 		network-manager-pptp network-manager-pptp-gnome \
 		network-manager-openconnect network-manager-openconnect-gnome \
@@ -66,8 +73,6 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		alsa-base alsa-tools \
 		pulseaudio pulseaudio-utils \
 		dunst \
-		rxvt-unicode \
-		gnome-terminal \
 		rofi \
 		feh \
 		xautolock \
