@@ -40,8 +40,13 @@ sync-i3-conf:
 sync-X-conf:
 	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
 
+sync-dunst-conf:
+	@mkdir -p $$HOME/.config/dunst
+	ln -f -s $$PWD/dunst/dunstrc $$HOME/.config/dunst/dunstrc
 
-setup-i3-desktop-from-scratch: setup-server-toolbelt sync-i3-conf sync-X-conf
+sync-conf: sync-i3-conf sync-X-conf sync-dunst-conf
+
+setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 	# install X server
 	sudo apt install -y \
 		xserver-xorg xserver-xorg-input-all
@@ -60,6 +65,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-i3-conf sync-X-conf
 		network-manager-openvpn network-manager-openvpn-gnome \
 		alsa-base alsa-tools \
 		pulseaudio pulseaudio-utils \
+		dunst \
 		rxvt-unicode \
 		gnome-terminal \
 		rofi \
