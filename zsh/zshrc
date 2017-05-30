@@ -15,11 +15,16 @@ plugins=(
 	lein mvn 
 	)
 
-# User configuration
+# source common aliases
 source $HOME/.aliases
 
+# source environment specific aliases
+[ -f $HOME/.environment.aliases ] && source $HOME/.environment.aliases
+
+# add extra executable
 export PATH=$HOME/.bin:$PATH
 
+# start oh-my-zsh routine
 source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
