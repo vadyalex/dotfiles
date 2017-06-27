@@ -1,7 +1,7 @@
 
 alias ll=ls -l
 alias la=ls -la
-alias lt=ls -lt
+alias lt="ls -lt"
 
 alias rngr=ranger
 alias finder=ranger
@@ -9,8 +9,11 @@ alias finder=ranger
 alias clr=clear
 
 alias gop="cd $HOME/Projects"
+
 alias goh="cd $HOME"
 alias gohome=goh
+
+alias god="cd $HOME/Downloads"
 
 alias goupdate="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
 
