@@ -48,7 +48,12 @@ sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
 
-sync-conf: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf
+sync-desktop-applications:
+	@mkdir -p $$HOME/.local/share/applications
+	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
+	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
+
+sync-conf: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-desktop-applications
 
 
 
@@ -84,6 +89,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		nautilus \
 		arandr \
 		libnotify-bin \
+		notify-osd \
 		imagemagick
 	# install Paper GTK theme, correspondend icons and cursors
 	# TODO add correspondend .deb packages for paper-icon-theme,paper-gtk-theme,paper-cursor-theme

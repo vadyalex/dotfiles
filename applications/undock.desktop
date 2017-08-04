@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Undock to go mobile
+Comment=Undock laptop from monitor to go mobile
+Icon=utilities-terminal
+Exec=~/.bin/undock
+Terminal=false
+Type=Application
+Categories=System;
