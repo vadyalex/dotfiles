@@ -129,10 +129,11 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Control+Shift+k focus parent, focus parent, focus parent, focus parent, focus parent, focus parent, focus parent, focus parent, focus parent, focus parent, kill
 
 # lock screen
-bindsym $mod+Control+l exec --no-startup-id dm-tool lock
+#bindsym $mod+Control+l exec --no-startup-id dm-tool lock
+bindsym $mod+Control+l exec --no-startup-id ~/.bin/golock
 
 # lock and susped
-bindsym $mod+Control+h exec --no-startup-id dm-tool lock && sudo systemctl suspend
+bindsym $mod+Control+h exec --no-startup-id ~/.bin/golock && sudo systemctl suspend
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -221,7 +222,7 @@ exec --no-startup-id ibus-daemon
 exec -no-startup-id pasystray
 
 # Set fancy background
-exec --no-startup-id feh --bg-fill /home/vlad/Pictures/wallpaper.jpg
+exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper.jpg
 
 # Start Dropbox
 exec --no-startup-id dropbox start

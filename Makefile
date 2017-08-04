@@ -83,7 +83,8 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		gnome-screenshot \
 		nautilus \
 		arandr \
-		libnotify-bin
+		libnotify-bin \
+		imagemagick
 	# install Paper GTK theme, correspondend icons and cursors
 	# TODO add correspondend .deb packages for paper-icon-theme,paper-gtk-theme,paper-cursor-theme
 	# install tools to change GTK theme
