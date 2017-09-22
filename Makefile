@@ -80,6 +80,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		dunst \
 		rofi \
 		feh \
+		eog \
 		xautolock \
 		xbacklight \
 		xclip \
