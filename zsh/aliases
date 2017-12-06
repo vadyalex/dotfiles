@@ -27,3 +27,8 @@ alias tor-browser="docker run -i -t --rm \
 		-v /dev/shm:/dev/shm \
 		-e DISPLAY=unix$DISPLAY \
 		jess/tor-browser"
+
+mongo () {
+	docker run -i -t --rm --net=host mongo sh -c "exec mongo $*"
+}
+
