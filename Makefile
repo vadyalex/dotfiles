@@ -25,7 +25,7 @@ setup-toolbelt:
 		vim \
 		htop \
 		tmux \
-		ranger
+		ranger caca-utils highlight atool w3m poppler-utils mediainfo
 
 
 setup-server-toolbelt: setup-zsh setup-toolbelt
