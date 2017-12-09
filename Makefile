@@ -70,6 +70,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 	# install desktop tools
 	sudo apt install -y \
 		xfce4-terminal \
+		xserver-xorg-input-synaptics \
 		network-manager \
 		network-manager-pptp network-manager-pptp-gnome \
 		network-manager-openconnect network-manager-openconnect-gnome \
@@ -77,7 +78,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		network-manager-openvpn network-manager-openvpn-gnome \
 		alsa-base alsa-tools \
 		pulseaudio pulseaudio-utils \
-		ttf-ancient-fonts \
+		ttf-dejavu ttf-ancient-fonts \
 		dunst \
 		rofi \
 		feh \
