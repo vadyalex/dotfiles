@@ -162,9 +162,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Volume controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
+bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
 
 # Media player controls
 bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
@@ -209,26 +209,23 @@ bar {
 # Lock screen after 15 minutes idle timeout
 #exec --no-startup-id xautolock -time 15 -locker 'dm-tool lock'
 
-# Network manager
+# Start volume control applet
+exec --no-startup-id volumeicon --startup
+
+# Network manager applet
 exec --no-startup-id nm-applet
 
-# Bluetooth manager
+# Bluetooth manager applet
 exec --no-startup-id blueman-applet
 
-# Input language switcher
+# Input language switcher applet
 exec --no-startup-id ibus-daemon
-
-# PulseAudio system tray
-exec -no-startup-id pasystray
 
 # Set fancy background
 exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper.jpg
 
 # Start Dropbox
 exec --no-startup-id dropbox start
-
-# Start synapse launcher
-exec --no-startup-id synapse --startup
 
 # Make Nautilus stop shoding desktop icons
 exec --no-startup-id gsettings set org.gnome.desktop.background show-desktop-icons false
