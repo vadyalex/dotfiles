@@ -77,6 +77,7 @@ setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
 		network-manager-openvpn network-manager-openvpn-gnome \
 		alsa-base alsa-tools \
 		pulseaudio pulseaudio-utils \
+		ttf-ancient-fonts \
 		dunst \
 		rofi \
 		feh \
