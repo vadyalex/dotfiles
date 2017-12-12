@@ -34,7 +34,8 @@ setup-toolbelt:
 		htop \
 		tmux \
 		ranger caca-utils highlight atool w3m poppler-utils mediainfo \
-		tree
+		tree \
+		speedometer
 
 setup-terminal: setup-zsh setup-toolbelt
 
