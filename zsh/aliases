@@ -1,7 +1,8 @@
 
-alias ll=ls -l
-alias la=ls -la
-alias lt="ls -lt"
+alias ll="ls -l --color=always"
+alias la="ls -la --color=always"
+alias lt="ls -lt --color=always"
+alias lth="lt | head"
 
 alias rngr=ranger
 alias finder=ranger
@@ -28,11 +29,18 @@ alias tor-browser="docker run -i -t --rm \
 		-e DISPLAY=unix$DISPLAY \
 		jess/tor-browser"
 
+
 mongo () {
 	docker run -i -t --rm --net=host mongo sh -c "exec mongo $*"
 }
 
+
 # alias for Maven 3 executable in the container..
 mvn () {
 	docker run -i -t --rm --net=host -v $HOME/.m2:/root/.m2 -v $HOME/.gitconfig:/root/.gitconfig:ro -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro -v $PWD:/data -w /data maven:3 sh -c "exec mvn $*"
+}
+
+
+untar () {
+	tar xfv $*
 }
