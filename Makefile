@@ -1,8 +1,16 @@
 
 
 hello:
-	@printf "MAKE YOUR TERMINAL GREAT AGAIN!"
+	@echo ""
+	@echo "         MAKE YOUR TERMINAL GREAT AGAIN!"
+	@echo ""
+	@echo "   \"make setup-terminal\" to make your terminal greate again"
+	@echo "   \"make setup-i3-desktop-from-scratch\" to install full blown i3 desktop"
+	@echo ""
 
+########
+#	Improve terminal expirience: install zsh, usefull tools and sync correspondent configs
+#
 
 sync-zsh-conf:
 	@if [ ! -d "$$HOME/.bin" ]; then \
@@ -28,14 +36,17 @@ setup-toolbelt:
 		ranger caca-utils highlight atool w3m poppler-utils mediainfo \
 		tree
 
-setup-server-toolbelt: setup-zsh setup-toolbelt
+setup-terminal: setup-zsh setup-toolbelt
 
+
+#######
+#	Setup i3 wm on the fresh machine
+#
 
 sync-i3-conf:
 	@mkdir -p $$HOME/.i3
 	ln -f -s $$PWD/i3/config $$HOME/.i3/config
 	ln -f -s $$PWD/i3/i3status.conf $$HOME/.i3status.conf
-
 
 sync-X-conf:
 	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
@@ -53,11 +64,10 @@ sync-desktop-applications:
 	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 
-sync-conf: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-desktop-applications
+sync-app-confs: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-desktop-applications
 
 
-
-setup-i3-desktop-from-scratch: setup-server-toolbelt sync-conf
+setup-i3-desktop-from-scratch: sync-app-confs
 	# install X server
 	sudo apt install -y \
 		xserver-xorg xserver-xorg-input-all
