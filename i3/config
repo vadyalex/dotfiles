@@ -162,9 +162,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Volume controls
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
+bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+bindsym XF86AudioMute exec amixer set Master toggle
 
 # Media player controls
 bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
@@ -210,7 +210,7 @@ bar {
 #exec --no-startup-id xautolock -time 15 -locker 'dm-tool lock'
 
 # Start volume control applet
-exec --no-startup-id volumeicon --startup
+exec --no-startup-id volumeicon
 
 # Network manager applet
 exec --no-startup-id nm-applet
