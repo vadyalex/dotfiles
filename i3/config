@@ -145,7 +145,7 @@ bindsym $mod+Control+Shift+k focus parent, focus parent, focus parent, focus par
 bindsym $mod+Control+l exec --no-startup-id ~/.bin/golock
 
 # lock and susped
-bindsym $mod+Control+h exec --no-startup-id ~/.bin/golock && sudo systemctl suspend
+bindsym $mod+Control+h exec --no-startup-id ~/.bin/golock && ~/.bin/gosleep
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
