@@ -88,7 +88,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		network-manager-openvpn network-manager-openvpn-gnome \
 		alsa-base alsa-tools \
 		volumeicon-alsa \
-		ttf-dejavu ttf-ancient-fonts \
+		ttf-dejavu ttf-ancient-fonts fonts-font-awesome \
 		dunst \
 		rofi \
 		feh \
