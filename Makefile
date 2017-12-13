@@ -37,7 +37,11 @@ setup-toolbelt:
 		tree \
 		speedometer
 
-setup-terminal: setup-zsh setup-toolbelt
+
+sync-git-conf:
+	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
+
+setup-terminal: setup-zsh setup-toolbelt sync-git-conf
 
 
 #######

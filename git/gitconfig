@@ -1,0 +1,10 @@
+[user]
+	email = vadyalex@gmail.com
+	name = Vladyslav Aleksakhin
+
+[push]
+	default = current
+
+[alias]
+	graph = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+	sl = shortlog origin/master..origin/develop
