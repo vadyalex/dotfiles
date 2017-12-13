@@ -44,3 +44,14 @@ mvn () {
 untar () {
 	tar xfv $*
 }
+
+# alias for Leiningen 2.8.1 executable in the container..
+lein () {
+        docker run -i -t --rm --net=host -v $HOME/.m2:/root/.m2 -v $HOME/.gitconfig:/root/.gitconfig:ro -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro -v $PWD:/data -w /data clojure:lein-2.8.1 sh -c "exec lein $*"
+}
+
+# alias for Clojure Boot 2.7.2 executable in the container..
+boot () {
+        docker run -i -t --rm --net=host -v $HOME/.m2:/root/.m2 -v $HOME/.gitconfig:/root/.gitconfig:ro -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro -v $PWD:/data -w /data clojure:boot-2.7.2 sh -c "exec boot $*"
+}
+
