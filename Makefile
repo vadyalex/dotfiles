@@ -91,8 +91,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		network-manager-openconnect network-manager-openconnect-gnome \
 		network-manager-strongswan \
 		network-manager-openvpn network-manager-openvpn-gnome \
-		alsa-base alsa-tools \
-		volumeicon-alsa \
+		pulseaudio \
 		ttf-dejavu ttf-ancient-fonts fonts-font-awesome \
 		ffmpeg \
 		dunst \
