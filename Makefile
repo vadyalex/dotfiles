@@ -94,6 +94,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		alsa-base alsa-tools \
 		volumeicon-alsa \
 		ttf-dejavu ttf-ancient-fonts fonts-font-awesome \
+		ffmpeg \
 		dunst \
 		rofi \
 		feh \
