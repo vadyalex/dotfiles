@@ -142,3 +142,6 @@ setup-desktop-apps:
 	flatpak install -y flathub io.github.GnomeMpv
 	# Visual Studio Code
 	flatpak install -y flathub com.visualstudio.code
+	# Firefox Nightly
+	sudo flatpak remote-add --if-not-exists FirefoxRepo https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxRepo.flatpakrepo
+	flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
