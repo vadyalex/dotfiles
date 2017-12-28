@@ -35,7 +35,8 @@ setup-toolbelt:
 		tmux \
 		ranger caca-utils highlight atool w3m poppler-utils mediainfo \
 		tree \
-		speedometer
+		speedometer \
+		neofetch
 
 
 sync-git-conf:
