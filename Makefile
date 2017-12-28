@@ -131,7 +131,7 @@ setup-desktop-apps:
 	# Skype
 	flatpak install -y flathub com.skype.Client
 	# Telegram
-	flatpak install -y flathub org.telegram.desktop.flatpakref
+	flatpak install -y flathub org.telegram.desktop
 	# Corebird Twitter client
 	flatpak install -y flathub org.baedert.corebird
 	# Spotify
