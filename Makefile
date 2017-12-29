@@ -46,7 +46,8 @@ setup-terminal: setup-zsh setup-toolbelt sync-git-conf
 
 
 #######
-#	Setup i3 wm on the fresh machine
+#
+#	Setup i3 wm + polybar on the fresh machine
 #
 
 sync-i3-conf:
@@ -118,4 +119,9 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		lxappearance \
 		gtk-chtheme \
 		qt4-qtconfig
+	# install polybar
+	wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+	sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu zesty-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+	sudo apt update && sudo apt install -y polybar
+
 
