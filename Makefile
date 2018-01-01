@@ -42,7 +42,8 @@ setup-toolbelt:
 sync-git-conf:
 	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
 
-setup-terminal: setup-zsh setup-toolbelt sync-git-conf
+
+terminal-great-again: setup-zsh setup-toolbelt sync-git-conf
 
 
 #######
@@ -74,6 +75,7 @@ sync-app-confs: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-con
 
 
 setup-i3-desktop-from-scratch: sync-app-confs
+	sudo apt update
 	# install X server
 	sudo apt install -y \
 		xserver-xorg xserver-xorg-input-all
@@ -119,3 +121,31 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		gtk-chtheme \
 		qt4-qtconfig
 
+
+setup-desktop-apps:
+	# install flatpak
+	sudo add-apt-repository -y ppa:alexlarsson/flatpak
+	sudo apt update && sudo apt install -y flatpak
+	# add flathub
+	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	# install apps..
+	# Skype
+	flatpak install -y flathub com.skype.Client
+	# Telegram
+	flatpak install -y flathub org.telegram.desktop
+	# Corebird Twitter client
+	flatpak install -y flathub org.baedert.corebird
+	# Spotify
+	flatpak install -y flathub com.spotify.Client
+	# Slack
+	flatpak install -y flathub com.slack.Slack
+	# Gnome Media Player
+	flatpak install -y flathub io.github.GnomeMpv
+	# Visual Studio Code
+	flatpak install -y flathub com.visualstudio.code
+	# add unofficial Firefox repo
+	sudo flatpak remote-add --if-not-exists FirefoxRepo https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxRepo.flatpakrepo
+	# install Firefox Nightly
+	flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
+	# install Firefox Developer Edition
+	flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
