@@ -4,11 +4,16 @@ hello:
 	@echo ""
 	@echo "         MAKE YOUR TERMINAL GREAT AGAIN!"
 	@echo ""
-	@echo "   \"make setup-terminal\" to make your terminal greate again"
+	@echo "   \"make terminal-great-again\"          install zsh, oh-my-zsh, system tools and sync configs"
+	@echo ""
+	@echo "   \"make setup-toolbelt\"                install system tool"
+	@echo "   \"make setup-dev-toolbelt\"    install development tools"
+	@echo ""
 	@echo "   \"make setup-i3-desktop-from-scratch\" to install full blown i3 desktop"
 	@echo ""
 
 ########
+#
 #	Improve terminal expirience: install zsh, usefull tools and sync correspondent configs
 #
 
@@ -20,7 +25,7 @@ sync-zsh-conf:
 	ln -f -s $$PWD/zsh/zshrc $$HOME/.zshrc
 
 
-setup-zsh: 	sync-zsh-conf
+setup-zsh: sync-zsh-conf
 	sudo apt update && sudo apt install zsh -y
 	chsh -s /bin/zsh
 	@if [ ! -d "$$HOME/.oh-my-zsh" ]; then \
@@ -42,9 +47,25 @@ setup-toolbelt:
 sync-git-conf:
 	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
 
+setup-git: sync-git-conf
+	sudo apt update && sudo apt install -y git
 
-terminal-great-again: setup-zsh setup-toolbelt sync-git-conf
 
+terminal-great-again: setup-git setup-zsh setup-toolbelt
+
+
+########
+#
+#      Install development tools
+#
+
+setup-dev-toolbelt:
+	# install OpenJDK 8
+	sudo apt update && sudo apt install -y openjdk-8-jdk
+	# install latest Clojure Boot
+	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
+	# install latest Leiningen
+	sudo bash -c "cd /usr/local/bin && curl -fsSLo lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod 755 lein"
 
 #######
 #	Setup i3 wm on the fresh machine
@@ -149,3 +170,5 @@ setup-desktop-apps:
 	flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
 	# install Firefox Developer Edition
 	flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
+	# LibreOffice
+	flatpak install -y flathub org.libreoffice.LibreOffice
