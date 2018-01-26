@@ -29,13 +29,15 @@ main() {
 	exit 1
   }
 
-  printf "${YELLOW}Installing git and make..${NORMAL}\n"
+  printf "${YELLOW}Installing git and make..\n"
   sudo apt update && sudo apt install -y \
 	  git \
 	  make
+  printf "Complete!${NORMAL}\n"
 
-  printf "${YELLOW}Cloning dotfiles...${NORMAL}\n"
+  printf "${YELLOW}Cloning dotfiles into ~/.dotfiles..\n"
   env git clone --depth=1 https://github.com/vadyalex/dotfiles.git ~/.dotfiles
+  printf "Complete!${NORMAL}\n"
 
   cd ~/.dotfiles
 

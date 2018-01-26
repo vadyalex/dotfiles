@@ -7,9 +7,9 @@ hello:
 	@echo "   \"make terminal-great-again\"          install zsh, oh-my-zsh, system tools and sync configs"
 	@echo ""
 	@echo "   \"make setup-toolbelt\"                install system tool"
-	@echo "   \"make setup-dev-toolbelt\"    install development tools"
+	@echo "   \"make setup-dev-toolbelt\"    	 install development tools"
 	@echo ""
-	@echo "   \"make setup-i3-desktop-from-scratch\" to install full blown i3 desktop"
+	@echo "   \"make setup-i3-desktop-from-scratch\" install full blown i3 desktop"
 	@echo ""
 
 ########
