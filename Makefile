@@ -7,7 +7,7 @@ hello:
 	@echo "   \"make terminal-great-again\"          install zsh, oh-my-zsh, system tools and sync configs"
 	@echo ""
 	@echo "   \"make setup-toolbelt\"                install system tool"
-	@echo "   \"make setup-dev-toolbelt\"    	 install development tools"
+	@echo "   \"make setup-dev-toolbelt\"            install development tools"
 	@echo ""
 	@echo "   \"make setup-i3-desktop-from-scratch\" install full blown i3 desktop"
 	@echo ""
@@ -61,7 +61,9 @@ terminal-great-again: setup-git setup-zsh setup-toolbelt
 
 setup-dev-toolbelt:
 	# install OpenJDK 8
-	sudo apt update && sudo apt install -y openjdk-8-jdk
+	sudo apt update && sudo apt install -y \
+		curl \
+		openjdk-8-jdk
 	# install latest Clojure Boot
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
 	# install latest Leiningen
@@ -110,7 +112,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 	sudo apt install -y \
 		xfce4-terminal \
 		xserver-xorg-input-synaptics \
-		network-manager \
+		network-manager-gnome \
 		network-manager-pptp network-manager-pptp-gnome \
 		network-manager-openconnect network-manager-openconnect-gnome \
 		network-manager-strongswan \
@@ -145,7 +147,6 @@ setup-i3-desktop-from-scratch: sync-app-confs
 
 setup-desktop-apps:
 	# install flatpak
-	sudo add-apt-repository -y ppa:alexlarsson/flatpak
 	sudo apt update && sudo apt install -y flatpak
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
