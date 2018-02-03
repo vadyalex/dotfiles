@@ -39,10 +39,9 @@ main() {
   env git clone --depth=1 https://github.com/vadyalex/dotfiles.git ~/.dotfiles
   printf "Complete!${NORMAL}\n"
 
-  cd ~/.dotfiles
-
-  make
-
+  printf "\n\n"
+  printf "${YELLOW}type 'cd ~/.dotfiles; make' to see the list of setup alternatives"
+  printf "\n"
 }
 
 main
