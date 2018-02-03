@@ -61,7 +61,9 @@ terminal-great-again: setup-git setup-zsh setup-toolbelt
 
 setup-dev-toolbelt:
 	# install OpenJDK 8
-	sudo apt update && sudo apt install -y openjdk-8-jdk
+	sudo apt update && sudo apt install -y \
+		curl \
+		openjdk-8-jdk
 	# install latest Clojure Boot
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
 	# install latest Leiningen
