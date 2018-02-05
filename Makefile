@@ -35,6 +35,7 @@ setup-zsh: sync-zsh-conf
 
 setup-toolbelt:
 	sudo apt update && sudo apt install -y \
+		net-tools \
 		vim \
 		htop \
 		tmux \
