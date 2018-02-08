@@ -232,7 +232,7 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id ibus-daemon
 
 # Set fancy background
-exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper.jpg
+exec --no-startup-id ~/.bin/go-paint-my-desktop
 
 # Start Dropbox
 exec --no-startup-id dropbox start
