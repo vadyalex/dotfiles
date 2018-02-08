@@ -24,6 +24,9 @@ source $HOME/.aliases
 # add extra executable
 export PATH=$HOME/.bin:$PATH
 
+# disable oh-my-zsh auto update
+export DISABLE_AUTO_UPDATE="true"
+
 # start oh-my-zsh routine
 source $ZSH/oh-my-zsh.sh
 
