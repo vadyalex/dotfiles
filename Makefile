@@ -175,3 +175,5 @@ setup-desktop-apps:
 	flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
 	# LibreOffice
 	flatpak install -y flathub org.libreoffice.LibreOffice
+	# VLC
+	flatpak install -y flathub org.videolan.VLC
