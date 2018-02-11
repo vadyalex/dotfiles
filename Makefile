@@ -177,3 +177,5 @@ setup-desktop-apps:
 	flatpak install -y flathub org.libreoffice.LibreOffice
 	# VLC
 	flatpak install -y flathub org.videolan.VLC
+	# PDF viewer
+	flatpak install -y flathub org.gnome.Evince
