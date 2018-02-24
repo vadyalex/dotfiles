@@ -26,9 +26,18 @@ alias tor-browser="docker run -i -t --rm \
 		-e DISPLAY=unix$DISPLAY \
 		jess/tor-browser"
 
+MONGODB_VERSION=3.4
 
 mongo () {
-	docker run -i -t --rm --net=host mongo sh -c "exec mongo $*"
+	docker run -i -t --rm --net=host mongo:$MONGODB_VERSION sh -c "exec mongo $*"
+}
+
+mongodump() {
+	docker run -i -t --rm --net=host -v $PWD:/data -w /data mongo:$MONGODB_VERSION sh -c "exec mongodump $*"
+}
+
+mongorestore() {
+	docker run -i -t --rm --net=host -v $PWD:/data -w /data mongo:$MONGODB_VERSION sh -c "exec mongorestore $*"
 }
 
 
