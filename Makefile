@@ -115,7 +115,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		xserver-xorg-input-synaptics \
 		network-manager-gnome \
 		network-manager-pptp network-manager-pptp-gnome \
-		network-manager-openconnect network-manager-openconnect-gnome \
+		vpnc network-manager-vpnc network-manager-vpnc-gnome \
 		network-manager-strongswan \
 		network-manager-openvpn network-manager-openvpn-gnome \
 		pulseaudio \
