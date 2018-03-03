@@ -92,6 +92,7 @@ sync-XFCE4-terminal-conf:
 
 sync-desktop-applications:
 	@mkdir -p $$HOME/.local/share/applications
+	ln -f -s $$PWD/applications/dock-at-home.desktop $$HOME/.local/share/applications/dock-at-home.desktop
 	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Dock at home
+Comment=Dock laptop to monitor at homw
+Icon=utilities-terminal
+Exec=~/.bin/dock-at-home
+Terminal=false
+Type=Application
+Categories=System;
