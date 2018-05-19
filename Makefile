@@ -90,13 +90,14 @@ sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
 
-sync-desktop-applications:
+sync-application-shortcuts:
 	@mkdir -p $$HOME/.local/share/applications
 	ln -f -s $$PWD/applications/dock-at-home.desktop $$HOME/.local/share/applications/dock-at-home.desktop
 	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
+	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 
-sync-app-confs: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-desktop-applications
+sync-app-confs: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
 
 
 setup-i3-desktop-from-scratch: sync-app-confs
