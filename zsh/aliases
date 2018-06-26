@@ -16,7 +16,7 @@ alias gohome=goh
 
 alias god="cd $HOME/Downloads"
 
-alias goupdate="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && command -v flatpak > /dev/null && { flatpak update }"
+alias goupdate="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && command -v flatpak > /dev/null && { sudo flatpak update -y }"
 
 alias ihaskell="stack ghci"
 
