@@ -159,6 +159,8 @@ setup-desktop-apps:
 	flatpak install -y flathub com.skype.Client
 	# Telegram
 	flatpak install -y flathub org.telegram.desktop
+	# allow access to home directory to upload/download files for Telegram
+	sudo flatpak override --filesystem=home org.telegram.desktop
 	# Corebird Twitter client
 	flatpak install -y flathub org.baedert.corebird
 	# Spotify
