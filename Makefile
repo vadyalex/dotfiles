@@ -64,7 +64,8 @@ setup-dev-toolbelt:
 	# install OpenJDK 8
 	sudo apt update && sudo apt install -y \
 		curl \
-		openjdk-8-jdk
+		openjdk-8-jdk \
+		openjdk-8-source
 	# install latest Clojure Boot
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
 	# install latest Leiningen
