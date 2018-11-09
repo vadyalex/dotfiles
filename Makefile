@@ -86,6 +86,10 @@ sync-dunst-conf:
 	@mkdir -p $$HOME/.config/dunst
 	ln -f -s $$PWD/dunst/dunstrc $$HOME/.config/dunst/dunstrc
 
+sync-xfce4-panel-conf:
+	@mkdir -p $$HOME/.config/xfce4/xfconf/xfce-perchannel-xml
+	@ln -f -s $$PWD/xfce4/xfce4-panel.xml $$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+
 sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
@@ -97,7 +101,7 @@ sync-application-shortcuts:
 	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 
-sync-app-confs: sync-i3-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
+sync-app-confs: sync-i3-conf sync-xfce4-panel-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
 
 
 setup-i3-desktop-from-scratch: sync-app-confs
@@ -113,6 +117,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 	sudo apt install -y i3
 	# install desktop tools
 	sudo apt install -y \
+		xfce4-panel \
 		xfce4-terminal \
 		xserver-xorg-input-synaptics \
 		network-manager-gnome \
