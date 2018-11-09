@@ -210,6 +210,9 @@ bindsym XF86Search exec firefox
 # Launch messanger - Skype
 bindsym $mod+m exec skypeforlinux
 
+# Start composite manager
+exec --no-startup-id compton
+
 # Start xfce4-panel as status bar
 exec --no-startup-id xfce4-panel --disable-wm-check
 

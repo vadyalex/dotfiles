@@ -82,6 +82,10 @@ sync-i3-conf:
 sync-X-conf:
 	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
 
+sync-compton-conf:
+	@mkdir -p $$HOME/.config/compton
+	@ln -f -s $$PWD/compton.conf $$HOME/.config/compton/compton.conf
+
 sync-dunst-conf:
 	@mkdir -p $$HOME/.config/dunst
 	ln -f -s $$PWD/dunst/dunstrc $$HOME/.config/dunst/dunstrc
@@ -101,7 +105,7 @@ sync-application-shortcuts:
 	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 
-sync-app-confs: sync-i3-conf sync-xfce4-panel-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
+sync-app-confs: sync-i3-conf sync-compton-conf sync-xfce4-panel-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
 
 
 setup-i3-desktop-from-scratch: sync-app-confs
@@ -117,6 +121,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 	sudo apt install -y i3
 	# install desktop tools
 	sudo apt install -y \
+		compton \
 		xfce4-panel \
 		xfce4-terminal \
 		xserver-xorg-input-synaptics \
