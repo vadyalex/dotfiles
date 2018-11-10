@@ -21,6 +21,31 @@ Change to nearly cloned dotfiles directory and see the list of available command
 ```shell
 cd ~/.dotfiles; make
 ```
+
+## Theming
+
+Update theme and background of the login screen
+
+```shell
+sudo lightdm-gtk-greeter-settings
+```
+
+Update theme across all graphical interface frameworks via
+
+```shell
+lxappearance
+```
+
+```shell
+gtk-chtheme
+```
+
+and finally make Qt use GTK+ theme in the dropdown menu via
+
+```shell
+qtconfig-qt4
+```
+
 ## Structure
 
 ### Desktop application shortcuts
