@@ -13,8 +13,10 @@
         <value type="int" value="4"/>
         <value type="int" value="3"/>
         <value type="int" value="15"/>
+        <value type="int" value="9"/>
         <value type="int" value="1"/>
         <value type="int" value="5"/>
+        <value type="int" value="10"/>
         <value type="int" value="6"/>
         <value type="int" value="2"/>
       </property>
@@ -26,6 +28,7 @@
         <value type="uint" value="65535"/>
       </property>
       <property name="disable-struts" type="bool" value="true"/>
+      <property name="background-alpha" type="uint" value="100"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -34,7 +37,23 @@
       <property name="show-tooltips" type="bool" value="true"/>
       <property name="show-button-title" type="bool" value="false"/>
     </property>
-    <property name="plugin-2" type="string" value="actions"/>
+    <property name="plugin-2" type="string" value="actions">
+      <property name="items" type="array">
+        <value type="string" value="-lock-screen"/>
+        <value type="string" value="-switch-user"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-suspend"/>
+        <value type="string" value="-hibernate"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-shutdown"/>
+        <value type="string" value="-restart"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="+logout"/>
+        <value type="string" value="-logout-dialog"/>
+      </property>
+      <property name="ask-confirmation" type="bool" value="false"/>
+      <property name="appearance" type="uint" value="1"/>
+    </property>
     <property name="plugin-3" type="string" value="tasklist"/>
     <property name="plugin-15" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
@@ -49,6 +68,21 @@
       <property name="digital-format" type="string" value="%Y/%m/%d %H:%M:%S"/>
       <property name="tooltip-format" type="string" value="%Y/%m/%d %H:%M:%S"/>
     </property>
-    <property name="plugin-6" type="string" value="systray"/>
+    <property name="plugin-6" type="string" value="systray">
+      <property name="names-visible" type="array">
+        <value type="string" value="network"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="blueman-applet"/>
+        <value type="string" value="volumeicon"/>
+        <value type="string" value="ibus panel"/>
+        <value type="string" value="skypeforlinux"/>
+      </property>
+      <property name="size-max" type="uint" value="22"/>
+      <property name="show-frame" type="bool" value="false"/>
+    </property>
+    <property name="plugin-9" type="string" value="netload"/>
+    <property name="plugin-10" type="string" value="pulseaudio">
+      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+    </property>
   </property>
 </channel>

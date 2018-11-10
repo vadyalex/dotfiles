@@ -117,7 +117,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 	sudo apt install -y i3
 	# install desktop tools
 	sudo apt install -y \
-		xfce4-panel \
+		xfce4-panel xfce4-goodies xfce4-pulseaudio-plugin \
 		xfce4-terminal \
 		xserver-xorg-input-synaptics \
 		network-manager-gnome \
