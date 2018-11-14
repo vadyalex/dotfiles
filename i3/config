@@ -219,6 +219,9 @@ bar {
 
 ## Launch at the startup
 
+# Start composite manager
+exec --no-startup-id compton
+
 # Lock screen after 15 minutes idle timeout
 #exec --no-startup-id xautolock -time 15 -locker 'dm-tool lock'
 
