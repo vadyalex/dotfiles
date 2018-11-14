@@ -95,6 +95,10 @@ sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
 
+sync-polybar-conf:
+	@mkdir -p $$HOME/.config/polybar
+	@ln -f -s $$PWD/polybar/config $$HOME/.config/polybar/config
+
 sync-application-shortcuts:
 	@mkdir -p $$HOME/.local/share/applications
 	ln -f -s $$PWD/applications/dock-at-home.desktop $$HOME/.local/share/applications/dock-at-home.desktop
@@ -104,6 +108,15 @@ sync-application-shortcuts:
 
 sync-app-confs: sync-i3-conf sync-compton-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
 
+setup-polybar: sync-polybar-conf
+	# install all required libraries to build polybar from sources
+	sudo apt install -y cmake cmake-data gcc g++ libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev
+	# clone, build polybar and link binary to /usr/bin/polybar
+	sudo bash -c "rm -rf /usr/share/polybar; mkdir -m 777 /usr/share/polybar;"
+	cd /usr/share/polybar; \
+		git clone --depth 1 https://github.com/jaagr/polybar.git . && \
+		./build.sh --i3 --alsa --pulseaudio --network -f -I -A && \
+		sudo bash -c "ln -s /usr/share/polybar/build/bin/polybar /usr/bin/polybar"
 
 setup-i3-desktop-from-scratch: sync-app-confs
 	sudo apt update
@@ -153,7 +166,6 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		lxappearance \
 		gtk-chtheme \
 		qt4-qtconfig
-
 
 setup-desktop-apps:
 	# install flatpak
