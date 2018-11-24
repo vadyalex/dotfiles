@@ -156,8 +156,10 @@ setup-i3-desktop-from-scratch: sync-app-confs
 
 
 setup-desktop-apps:
+	# add flatpak official backport for Debian 'Stretch' 9
+	echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/flatpak.list 
 	# install flatpak
-	sudo apt update && sudo apt install -y flatpak
+	sudo apt update && sudo apt-get -t stretch-backports install -y flatpak 
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	# install apps..
