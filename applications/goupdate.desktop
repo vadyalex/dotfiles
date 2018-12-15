@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Update System
+Comment=Perform system update as well as all installed applications
+Icon=utilities-terminal
+Exec=bash -c "~/.bin/goupdate && printf '\033[33mUpdate complete. \nPress any key to exit..\033[0m\n' && read -n 1"
+Terminal=true
+Type=Application
+Categories=System;

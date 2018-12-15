@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+RED='\033[0;31m'
+YELLOW='\033[33m'
+NC='\033[0m' # No Color
+
+printf "${YELLOW}Performing apt update..${NC}\n"
+
+sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+
+if command -v flatpak > /dev/null; then
+    printf "${YELLOW}Performing flatpak update..${NC}\n"
+    sudo flatpak update -y
+fi
