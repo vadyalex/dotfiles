@@ -133,6 +133,7 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		dunst \
 		rofi \
 		feh \
+		hibernate \
 		eog \
 		xautolock \
 		xbacklight \
