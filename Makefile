@@ -164,32 +164,45 @@ setup-desktop-apps:
 	sudo apt update && sudo apt-get -t stretch-backports install -y flatpak 
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-	# install apps..
+	# install some apps!
+	# communication apps..
 	# Skype
-	flatpak install -y flathub com.skype.Client
+	sudo flatpak install -y flathub com.skype.Client
 	# Telegram
-	flatpak install -y flathub org.telegram.desktop
+	sudo flatpak install -y flathub org.telegram.desktop
 	# allow access to home directory to upload/download files for Telegram
 	sudo flatpak override --filesystem=home org.telegram.desktop
-	# Corebird Twitter client
-	flatpak install -y flathub org.baedert.corebird
-	# Spotify
-	flatpak install -y flathub com.spotify.Client
 	# Slack
-	flatpak install -y flathub com.slack.Slack
+	sudo flatpak install -y flathub com.slack.Slack	
+	# Corebird Twitter client
+	sudo flatpak install -y flathub org.baedert.corebird
+	# media apps..
+	# Spotify
+	sudo flatpak install -y flathub com.spotify.Client
 	# Gnome Media Player
-	flatpak install -y flathub io.github.GnomeMpv
-	# Visual Studio Code
-	flatpak install -y flathub com.visualstudio.code
+	sudo flatpak install -y flathub io.github.GnomeMpv
+	# VLC
+	sudo flatpak install -y flathub org.videolan.VLC
+	# office apps..
+	# PDF viewer
+	sudo flatpak install -y flathub org.gnome.Evince
+	# LibreOffice
+	sudo flatpak install -y flathub org.libreoffice.LibreOffice
 	# add unofficial Firefox repo
 	sudo flatpak remote-add --if-not-exists FirefoxRepo https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxRepo.flatpakrepo
 	# install Firefox Nightly
-	flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
+	sudo flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
 	# install Firefox Developer Edition
-	flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
-	# LibreOffice
-	flatpak install -y flathub org.libreoffice.LibreOffice
-	# VLC
-	flatpak install -y flathub org.videolan.VLC
-	# PDF viewer
-	flatpak install -y flathub org.gnome.Evince
+	sudo flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
+	# developer tools..
+	# Visual Studio Code
+	sudo flatpak install -y flathub com.visualstudio.code
+	# IntelliJ IDEA
+	sudo flatpak install -y flathub com.jetbrains.IntelliJ-IDEA-Ultimate
+	# DataGrip
+	sudo flatpak install -y flathub com.jetbrains.DataGrip
+	# Android Studio
+	sudo flatpak install -y flathub com.google.AndroidStudio
+	# Postman
+	sudo flatpak install -y flathub com.getpostman.Postman
+
