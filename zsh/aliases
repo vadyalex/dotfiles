@@ -24,6 +24,10 @@ alias tor-browser="docker run -i -t --rm \
 		-e DISPLAY=unix$DISPLAY \
 		jess/tor-browser"
 
+vscode () {
+	flatpak run com.visualstudio.code $*
+}
+
 MONGODB_VERSION=3.4
 
 mongo () {
