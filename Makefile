@@ -197,12 +197,6 @@ setup-desktop-apps:
 	# developer tools..
 	# Visual Studio Code
 	sudo flatpak install -y flathub com.visualstudio.code
-	# IntelliJ IDEA
-	sudo flatpak install -y flathub com.jetbrains.IntelliJ-IDEA-Ultimate
-	# DataGrip
-	sudo flatpak install -y flathub com.jetbrains.DataGrip
-	# Android Studio
-	sudo flatpak install -y flathub com.google.AndroidStudio
 	# Postman
 	sudo flatpak install -y flathub com.getpostman.Postman
 
