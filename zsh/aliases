@@ -9,10 +9,12 @@ alias finder=ranger
 
 alias clr=clear
 
+alias gohome=cd
+
 alias gop="cd $HOME/Projects"
 
-alias goh="cd $HOME"
-alias gohome=goh
+alias gohitta="cd $HOME/Projects/__hitta"
+alias goh=gohitta
 
 alias god="cd $HOME/Downloads"
 
