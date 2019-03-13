@@ -4,6 +4,14 @@ RED='\033[0;31m'
 YELLOW='\033[33m'
 NC='\033[0m' # No Color
 
+printf "${YELLOW}Performing oh-my-zsh update..${NC}\n"
+
+cd ~/.oh-my-zsh && git pull --rebase --autostash
+
+printf "${YELLOW}Performing dotfiles update..${NC}\n"
+
+cd ~/.dotfiles && git pull --rebase --autostash
+
 printf "${YELLOW}Performing apt update..${NC}\n"
 
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
