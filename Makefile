@@ -49,7 +49,7 @@ setup-official-backports-repo:
 
 setup-toolbelt:
 	sudo apt update && sudo apt install -y \
-		curl \	
+		curl \
 		net-tools \
 		vim \
 		htop \
@@ -93,11 +93,11 @@ whale:
 #	Install development tools
 #
 
-development-machine: setup-toolbelt
-	# install OpenJDK 8
+development-machine: setup-toolbelt setup-official-backports-repo
+	# install OpenJDK 11
 	sudo apt update && sudo apt install -y \
-		openjdk-8-jdk \
-		openjdk-8-source
+		openjdk-11-jdk \
+		openjdk-11-source
 	# install latest Clojure Boot
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
 	# install latest Leiningen
