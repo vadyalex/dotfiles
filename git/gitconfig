@@ -10,5 +10,6 @@
 	sl = shortlog origin/master..origin/develop
 	st = status
 	c = commit
+	p = pull --rebase --autostash
 [core]
 	autocrlf = input
