@@ -8,6 +8,8 @@ hello:
 	@echo ""
 	@echo "   \"make development-machine\"           install development tools"
 	@echo ""
+	@echo "   \"make whale\"                         install Docker"
+	@echo ""
 	@echo "   \"make fresh-i3-desktop-from-scratch\" install full blown i3 desktop"
 	@echo ""
 	@echo "   \"make all-usefull-flatpak-apps\"      install plenty of desktop applications"
@@ -59,6 +61,31 @@ setup-toolbelt:
 
 
 terminal-great-again: setup-git setup-zsh setup-toolbelt
+
+########
+#
+#	Install Docker
+#
+
+whale:
+	# install packages to allow apt to use a repository over HTTPS
+	sudo apt update && sudo apt install -y \
+		curl \
+		apt-transport-https \
+    	ca-certificates \
+    	gnupg2 \
+    	software-properties-common
+	# add Docker’s official GPG key
+	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+	# add Docker's official repository
+	echo 'deb [arch=amd64] https://download.docker.com/linux/debian stretch stable' | sudo tee /etc/apt/sources.list.d/docker.list
+	# install docker!
+	sudo apt update && sudo apt install -y \
+		docker-ce \
+		docker-ce-cli \
+		containerd.io
+	# add me to docker group to run docker commands without sudo
+	sudo usermod -aG docker $$USER
 
 
 ########
