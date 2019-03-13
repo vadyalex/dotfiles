@@ -4,18 +4,26 @@ hello:
 	@echo ""
 	@echo "         MAKE YOUR TERMINAL GREAT AGAIN!"
 	@echo ""
-	@echo "   \"make terminal-great-again\"          install zsh, oh-my-zsh, system tools and sync configs"
+	@echo "   \"make terminal-great-again\"          install git, oh-my-zsh, zsh, usefull system tools and sync configs"
 	@echo ""
-	@echo "   \"make setup-toolbelt\"                install system tool"
-	@echo "   \"make setup-dev-toolbelt\"            install development tools"
+	@echo "   \"make development-machine\"           install development tools"
 	@echo ""
-	@echo "   \"make setup-i3-desktop-from-scratch\" install full blown i3 desktop"
+	@echo "   \"make fresh-i3-desktop-from-scratch\" install full blown i3 desktop"
+	@echo ""
+	@echo "   \"make all-usefull-flatpak-apps\"      install plenty of desktop applications"
 	@echo ""
 
 ########
 #
 #	Improve terminal expirience: install zsh, usefull tools and sync correspondent configs
 #
+
+sync-git-conf:
+	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
+
+setup-git: sync-git-conf
+	sudo apt update && sudo apt install -y git
+
 
 sync-zsh-conf:
 	@if [ ! -d "$$HOME/.bin" ]; then \
@@ -33,8 +41,13 @@ setup-zsh: sync-zsh-conf
 	fi
 
 
+setup-official-backports-repo:
+	echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch-backports.list
+
+
 setup-toolbelt:
 	sudo apt update && sudo apt install -y \
+		curl \	
 		net-tools \
 		vim \
 		htop \
@@ -45,25 +58,17 @@ setup-toolbelt:
 		neofetch
 
 
-sync-git-conf:
-	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
-
-setup-git: sync-git-conf
-	sudo apt update && sudo apt install -y git
-
-
 terminal-great-again: setup-git setup-zsh setup-toolbelt
 
 
 ########
 #
-#      Install development tools
+#	Install development tools
 #
 
-setup-dev-toolbelt:
+development-machine: setup-toolbelt
 	# install OpenJDK 8
 	sudo apt update && sudo apt install -y \
-		curl \
 		openjdk-8-jdk \
 		openjdk-8-source
 	# install latest Clojure Boot
@@ -72,16 +77,37 @@ setup-dev-toolbelt:
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod 755 lein"
 
 #######
+#
 #	Setup i3 wm on the fresh machine
 #
+
+sync-X-conf:
+	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
+
+setup-X: sync-X-conf
+	sudo apt update && sudo apt install -y \
+		xserver-xorg \
+		xserver-xorg-input-all \
+		xserver-xorg-input-synaptics
+
+
+setup-lightdm:
+	# install LightDM desktop manager
+	sudo apt update && sudo apt install -y \
+		lightdm \
+		lightdm-gtk-greeter \
+		lightdm-gtk-greeter-settings
+
 
 sync-i3-conf:
 	@mkdir -p $$HOME/.i3
 	ln -f -s $$PWD/i3/config $$HOME/.i3/config
 	ln -f -s $$PWD/i3/i3status.conf $$HOME/.i3status.conf
 
-sync-X-conf:
-	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
+setup-i3: sync-i3-conf
+	# install i3 window manager
+	sudo apt update && sudo apt install -y i3
+
 
 sync-compton-conf:
 	@mkdir -p $$HOME/.config/compton
@@ -95,6 +121,9 @@ sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
 
+sync-app-confs: sync-compton-conf sync-XFCE4-terminal-conf sync-dunst-conf
+
+
 sync-application-shortcuts:
 	@mkdir -p $$HOME/.local/share/applications
 	ln -f -s $$PWD/applications/goupdate.desktop $$HOME/.local/share/applications/goupdate.desktop
@@ -103,25 +132,12 @@ sync-application-shortcuts:
 	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
 
-sync-app-confs: sync-i3-conf sync-compton-conf sync-XFCE4-terminal-conf sync-X-conf sync-dunst-conf sync-application-shortcuts
 
-
-setup-i3-desktop-from-scratch: sync-app-confs
-	sudo apt update
-	# install X server
-	sudo apt install -y \
-		xserver-xorg xserver-xorg-input-all
-	# install LightDM desktop manager
-	sudo apt install -y \
-		lightdm lightdm-gtk-greeter \
-		lightdm-gtk-greeter-settings
-	# install i3 window manager
-	sudo apt install -y i3
+fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs sync-application-shortcuts
 	# install desktop tools
-	sudo apt install -y \
+	sudo apt update && sudo apt install -y \
 		compton \
 		xfce4-terminal \
-		xserver-xorg-input-synaptics \
 		network-manager-gnome \
 		network-manager-pptp network-manager-pptp-gnome \
 		vpnc network-manager-vpnc network-manager-vpnc-gnome \
@@ -157,11 +173,15 @@ setup-i3-desktop-from-scratch: sync-app-confs
 		qt4-qtconfig
 
 
-setup-desktop-apps:
-	# add flatpak official backport for Debian 'Stretch' 9
-	echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/flatpak.list 
-	# install flatpak
-	sudo apt update && sudo apt-get -t stretch-backports install -y flatpak 
+#######
+#
+#	Setup flatpak apps
+#
+
+setup-flatpak: setup-official-backports-repo
+	sudo apt update && sudo apt install -y flatpak
+
+all-usefull-flatpak-apps: setup-flatpak
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	# install some apps!
