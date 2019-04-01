@@ -30,7 +30,7 @@ vscode () {
 	flatpak run com.visualstudio.code $*
 }
 
-MONGODB_VERSION=3.4
+MONGODB_VERSION=3.6
 
 mongo () {
 	docker run -i -t --rm --net=host mongo:$MONGODB_VERSION sh -c "exec mongo $*"
