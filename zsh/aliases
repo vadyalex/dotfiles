@@ -1,7 +1,7 @@
 
-alias ll="ls -l --color=always"
-alias la="ls -la --color=always"
-alias lt="ls -lt --color=always"
+alias ll="ls -l  --human-readable --color=always"
+alias la="ls -la --human-readable --color=always"
+alias lt="ls -lt --human-readable --color=always"
 alias lth="lt | head"
 
 alias rngr=ranger
