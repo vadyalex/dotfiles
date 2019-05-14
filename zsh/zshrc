@@ -9,10 +9,12 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="afowler"
 
 plugins=(
-	archlinux sudo 
+	sudo 
 	rsync tmux docker	
 	git 
-	lein mvn 
+	lein
+	mvn
+	rust cargo
 	)
 
 # source common aliases
