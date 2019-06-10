@@ -30,6 +30,10 @@ vscode () {
 	flatpak run com.visualstudio.code $*
 }
 
+go-git-pull-all-sub-directories () {
+	find $PWD -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | xargs -I directory git -C directory pull --rebase --autostash
+}
+
 MONGODB_VERSION=3.6
 
 mongo () {
