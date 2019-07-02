@@ -12,8 +12,7 @@ plugins=(
 	sudo 
 	rsync tmux docker	
 	git git-flow
-	lein
-	mvn
+	lein mvn
 	python virtualenv pip
 	)
 
