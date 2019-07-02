@@ -93,7 +93,16 @@ whale:
 #	Install development tools
 #
 
-development-machine: setup-toolbelt setup-official-backports-repo
+sync-emacs-conf:
+	@if [ ! -d "$$HOME/.emacs.d" ]; then \
+		mkdir "$$HOME/.emacs.d"; \
+	fi
+	ln -f -s $$PWD/emacs/init.el $$HOME/.emacs.d/init.el
+
+setup-emacs: sync-emacs-conf
+	sudo apt update && sudo apt install -y emacs25-nox
+
+development-machine: setup-toolbelt setup-official-backports-repo setup-emacs
 	# install OpenJDK 11
 	sudo apt update && sudo apt install -y \
 		openjdk-11-jdk \
