@@ -31,7 +31,12 @@ vscode () {
 }
 
 go-git-pull-all-sub-directories () {
-	find $PWD -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | xargs -I directory git -C directory pull --rebase --autostash
+	find $PWD -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | xargs -I {directory} sh -c \
+	"if [ -d {directory}/.git ]; then \
+		printf '\033[33mProcessing {directory}..\n\033[0m' && \
+		git -C {directory} fetch --all && \
+		git -C {directory} pull --all --rebase --autostash; \
+	fi"
 }
 
 MONGODB_VERSION=3.6
