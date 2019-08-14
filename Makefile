@@ -24,7 +24,7 @@ sync-git-conf:
 	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
 
 setup-git: sync-git-conf
-	sudo apt update && sudo apt install -y git
+	sudo apt update && sudo apt install -y git git-flow
 
 
 sync-zsh-conf:

@@ -11,7 +11,7 @@ ZSH_THEME="afowler"
 plugins=(
 	sudo 
 	rsync tmux docker	
-	git 
+	git git-flow
 	lein
 	mvn
 	rust cargo
@@ -24,7 +24,7 @@ source $HOME/.aliases
 [ -f $HOME/.environment.aliases ] && source $HOME/.environment.aliases
 
 # add extra executable
-export PATH=$HOME/.bin:$PATH
+export PATH=$HOME/.bin:$HOME/.local/bin:$PATH
 
 # disable oh-my-zsh auto update
 export DISABLE_AUTO_UPDATE="true"
