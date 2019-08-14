@@ -93,15 +93,26 @@ whale:
 #	Install development tools
 #
 
-development-machine: setup-toolbelt setup-official-backports-repo
+setup-java: setup-toolbelt setup-official-backports-repo
 	# install OpenJDK 11
 	sudo apt update && sudo apt install -y \
 		openjdk-11-jdk \
 		openjdk-11-source
+
+setup-clojure: setup-java
 	# install latest Clojure Boot
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo boot https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh && chmod 755 boot"
 	# install latest Leiningen
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod 755 lein"
+
+setup-python: setup-toolbelt
+	sudo apt update && sudo apt install -y \
+		python \
+		python-dev \
+		python-pip
+	pip install virtualenv
+
+development-machine: setup-clojure setup-python
 
 #######
 #

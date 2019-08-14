@@ -14,7 +14,7 @@ plugins=(
 	git git-flow
 	lein
 	mvn
-	rust cargo
+	python virtualenv pip
 	)
 
 # source common aliases
