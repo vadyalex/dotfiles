@@ -13,8 +13,8 @@ alias gohome=cd
 
 alias gop="cd $HOME/Projects"
 
-alias gohitta="cd $HOME/Projects/__hitta"
-alias goh=gohitta
+alias gobudbee="cd $HOME/Projects/__budbee"
+alias gobud=gobudbee
 
 alias god="cd $HOME/Downloads"
 
