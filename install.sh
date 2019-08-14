@@ -24,6 +24,10 @@ main() {
     NORMAL=""
   fi
 
+  su -c "apt update && apt install sudo -y"
+
+  su -c "/usr/sbin/usermod -aG sudo $(whoami)"
+
   hash sudo > /dev/null 2>&1 || {
 	printf "${RED}Install sudo command to be able to run script${NORMAL}\n"
 	exit 1
