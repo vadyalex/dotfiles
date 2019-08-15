@@ -53,6 +53,15 @@ mongorestore() {
 	docker run -i -t --rm --net=host -v $PWD:/data -w /data mongo:$MONGODB_VERSION sh -c "exec mongorestore $*"
 }
 
+MYSQL_VERSION=5.7
+
+mysql () {
+	docker run -i -t --rm --net=host -v $PWD:/data mysql:$MYSQL_VERSION sh -c "exec mysql $*"
+}
+
+mysqldump () {
+	docker run -i -t --rm --net=host -v $PWD:/data mysql:$MYSQL_VERSION sh -c "exec mysqldump $*"
+}
 
 # alias for Maven 3 executable in the container..
 mvn () {
