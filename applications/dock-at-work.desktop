@@ -2,7 +2,7 @@
 Name=Dock at work
 Comment=Dock laptop to monitor at work
 Icon=utilities-terminal
-Exec=~/.bin/dock-at-work
+Exec=bash -c "~/.bin/dock-at-work"
 Terminal=false
 Type=Application
 Categories=System;

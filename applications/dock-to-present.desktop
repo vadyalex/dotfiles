@@ -2,7 +2,7 @@
 Name=Dock to present 
 Comment=Dock laptop to monitor/projector in mirror mode to present
 Icon=utilities-terminal
-Exec=~/.bin/dock-to-present
+Exec=bash -c "~/.bin/dock-to-present"
 Terminal=false
 Type=Application
 Categories=System;
