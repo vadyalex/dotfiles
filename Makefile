@@ -44,7 +44,7 @@ setup-zsh: sync-zsh-conf
 
 
 setup-official-backports-repo:
-	echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch-backports.list
+	echo 'deb http://ftp.debian.org/debian buster-backports main' | sudo tee /etc/apt/sources.list.d/buster-backports.list
 
 
 setup-toolbelt:
@@ -78,7 +78,7 @@ whale:
 	# add Docker’s official GPG key
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 	# add Docker's official repository
-	echo 'deb [arch=amd64] https://download.docker.com/linux/debian stretch stable' | sudo tee /etc/apt/sources.list.d/docker.list
+	echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
 	# install docker!
 	sudo apt update && sudo apt install -y \
 		docker-ce \
