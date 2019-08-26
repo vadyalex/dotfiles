@@ -159,7 +159,11 @@ sync-XFCE4-terminal-conf:
 	@mkdir -p $$HOME/.config/xfce4/terminal
 	ln -f -s $$PWD/xfce4/terminalrc $$HOME/.config/xfce4/terminal/terminalrc
 
-sync-app-confs: sync-compton-conf sync-XFCE4-terminal-conf sync-dunst-conf
+sync-rofi-conf:
+	@mkdir -p $$HOME/.config/rofi
+	ln -f -s $$PWD/rofi/config.rasi $$HOME/.config/rofi/config.rasi
+
+sync-app-confs: sync-compton-conf sync-dunst-conf sync-XFCE4-terminal-conf sync-rofi-conf
 
 
 sync-application-shortcuts:
