@@ -50,6 +50,7 @@ setup-official-backports-repo:
 setup-toolbelt:
 	sudo apt update && sudo apt install -y \
 		curl \
+		rsync \
 		net-tools \
 		vim \
 		htop \
