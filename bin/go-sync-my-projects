@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+printf "${YELLOW}Syncing projects..${NC}\n"
+
+rsync -rzP "$HOME/Projects/" vlad@solaris.domus:/mnt/tank/home/vlad/Projects

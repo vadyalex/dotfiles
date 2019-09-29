@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Sync projects
+Comment=Sync projects directory to Solaris
+Icon=utilities-terminal
+Exec=bash -c "~/.bin/go-sync-my-project && printf '\033[33mSync complete. \nPress any key to exit..\033[0m\n' && read -n 1"
+Terminal=true
+Type=Application
+Categories=System;

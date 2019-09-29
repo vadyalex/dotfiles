@@ -173,6 +173,7 @@ sync-application-shortcuts:
 	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
 	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
 	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
+	ln -f -s $$PWD/applications/go-sync-my-projects.desktop $$HOME/.local/share/applications/go-sync-my-projects.desktop
 
 
 fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs sync-application-shortcuts
