@@ -58,7 +58,8 @@ setup-toolbelt:
 		ranger caca-utils highlight atool w3m poppler-utils mediainfo \
 		tree \
 		speedometer \
-		neofetch
+		neofetch \
+		jq
 
 
 terminal-great-again: setup-git setup-zsh setup-toolbelt
