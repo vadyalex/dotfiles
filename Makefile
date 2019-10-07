@@ -52,6 +52,7 @@ setup-toolbelt:
 		curl \
 		rsync \
 		net-tools \
+		dnsutils \
 		vim \
 		htop \
 		tmux \
