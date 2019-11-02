@@ -221,6 +221,31 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 
 #######
 #
+#	Setup Firefox Web Browser
+#
+
+define FIREFOX_DESKTOP
+[Desktop Entry]
+Name=Firefox
+GenericName=Firefox
+Exec=/usr/local/bin/firefox
+Terminal=false
+Icon=/opt/firefox/browser/chrome/icons/default/default48.png
+Type=Application
+Categories=Application;Network;X-Developer;
+Comment=Firefox Web Browser
+endef
+export FIREFOX_DESKTOP
+
+fox:
+	@curl --silent -f -L -o '/tmp/firefox.tar.bz2' 'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US' \
+		&& sudo tar jxvf /tmp/firefox.tar.bz2 -C /opt/ \
+		&& sudo ln -f -s /opt/firefox/firefox /usr/local/bin/firefox \
+		&& printf "$$FIREFOX_DESKTOP" | sudo tee /usr/share/applications/firefox.desktop
+
+
+#######
+#
 #	Setup flatpak apps
 #
 
