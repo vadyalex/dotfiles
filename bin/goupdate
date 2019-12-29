@@ -20,3 +20,6 @@ if command -v flatpak > /dev/null; then
     printf "${YELLOW}Performing flatpak update..${NC}\n"
     sudo flatpak update -y
 fi
+
+
+cowsay ' Update complete! ' | lolcat

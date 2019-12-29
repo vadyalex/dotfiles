@@ -60,7 +60,10 @@ setup-toolbelt:
 		tree \
 		speedometer \
 		neofetch \
-		jq
+		jq \
+		lolcat \
+		cowsay \
+		fortunes
 
 
 terminal-great-again: setup-git setup-zsh setup-toolbelt
