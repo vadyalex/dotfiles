@@ -1,8 +1,16 @@
 
-alias ll="ls -l  --human-readable --color=always"
-alias la="ls -la --human-readable --color=always"
-alias lt="ls -lt --human-readable --color=always"
-alias lth="lt | head"
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+alias ll='ls -lh'
+alias lth='lt | head'
+
+alias fdir='find . -type d -name'
+alias ffile='find . -type f -name'
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 alias rngr=ranger
 alias finder=ranger
@@ -20,12 +28,6 @@ alias god="cd $HOME/Downloads"
 
 alias ihaskell="stack ghci"
 
-alias tor-browser="docker run -i -t --rm \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v /dev/shm:/dev/shm \
-		-e DISPLAY=unix$DISPLAY \
-		jess/tor-browser"
-
 vscode () {
 	flatpak run com.visualstudio.code $*
 }
@@ -39,62 +41,175 @@ go-git-pull-all-sub-directories () {
 	fi"
 }
 
-MONGODB_VERSION=3.6
-
-mongo () {
-	docker run -i -t --rm --net=host mongo:$MONGODB_VERSION sh -c "exec mongo $*"
-}
-
-mongodump() {
-	docker run -i -t --rm --net=host -v $PWD:/data -w /data mongo:$MONGODB_VERSION sh -c "exec mongodump $*"
-}
-
-mongorestore() {
-	docker run -i -t --rm --net=host -v $PWD:/data -w /data mongo:$MONGODB_VERSION sh -c "exec mongorestore $*"
-}
-
-MYSQL_VERSION=5.7
-
-mysql () {
-	docker run -i -t --rm --net=host -v $PWD:/data mysql:$MYSQL_VERSION sh -c "exec mysql $*"
-}
-
-mysqldump () {
-	docker run -i -t --rm --net=host -v $PWD:/data mysql:$MYSQL_VERSION sh -c "exec mysqldump $*"
-}
-
-# alias for Maven 3 executable in the container..
-mvn () {
-	docker run -i -t --rm --net=host -v $HOME/.m2:/root/.m2 -v $HOME/.gitconfig:/root/.gitconfig:ro -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro -v $PWD:/data -w /data maven:3 sh -c "exec mvn $*"
-}
-
-
 untar () {
 	tar xfv $*
 }
+
+
+###############################################################################
+#
+#		Containerized utilities
+#
+###############################################################################
+
+alias tor-browser="docker run -i -t --rm \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v /dev/shm:/dev/shm \
+		-e DISPLAY=unix$DISPLAY \
+		jess/tor-browser"
+
+
+# AWS CLI
+alias aws='docker run $(tty &>/dev/null && echo "-i") -t --rm -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" -v "$(pwd):/project" --user "$(id -u):$(id -g)" mesosphere/aws-cli'
+
+
+# MongoDB utils: mongo, mongodump, mongorestore, mongoimport, mongoexport
+MONGODB_VERSION=3.6
+
+mongo () {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mongo:$MONGODB_VERSION \
+		sh -c "exec mongo $*"
+}
+
+mongodump() {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mongo:$MONGODB_VERSION \
+		sh -c "exec mongodump $*"
+}
+
+mongorestore() {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mongo:$MONGODB_VERSION \
+		sh -c "exec mongorestore $*"
+}
+
+mongoimport() {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mongo:$MONGODB_VERSION \
+		sh -c "exec mongoimport $*"
+}
+
+mongoexport() {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mongo:$MONGODB_VERSION \
+		sh -c "exec mongoexport $*"
+}
+
+
+# MySQL utils:
+MYSQL_VERSION=5.7
+
+mysql2 () {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mysql:$MYSQL_VERSION \
+		sh -c "exec mysql $*"
+}
+
+mysqldump2 () {
+	docker run $(tty &>/dev/null && echo "-i") -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		mysql:$MYSQL_VERSION \
+		sh -c "exec mysqldump $*"
+}
+
+
+# alias for Maven 3 executable in the container..
+MAVEN_VERSION=3
+
+#mvn () {
+#	docker run -i -t --rm \
+#		--net=host \
+#		--user $(id -u):$(id -g) \
+#		-v "$HOME"/.m2:/root/.m2 \
+#		-v "$HOME"/.gitconfig:/root/.gitconfig:ro \
+#		-v "$HOME"/.ssh/id_rsa:/root/.ssh/id_rsa:ro \
+#		-v "$HOME"/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro \
+#		-v $(pwd):/app \
+#		-w /app \
+#		maven:$MAVEN_VERSION \
+#		sh -c "exec mvn $*"
+#}
+
+
+# YARN
+NODE_VERSION=12
+
+yarn () {
+	docker run -i -t --rm \
+		--net=host \
+		--user $(id -u):$(id -g) \
+		-v $(pwd):/app \
+		-w /app \
+		node:"$NODE_VERSION" \
+		sh -c "exec yarn $*"
+}
+
 
 # alias for Leiningen 2.8.1 executable in the container..
 #lein () {
 #	docker run -i -t --rm \
 #		--net=host \
+#		--user $(id -u):$(id -g) \
 #		-p 7888:7888 \
-#		-v $HOME/.lein:/root/.lein \
-#		-v $HOME/.m2:/root/.m2 \
-#		-v $HOME/.gitconfig:/root/.gitconfig:ro \
-#		-v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro \
-#		-v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro \
-#		-v $PWD:/data \
-#		-w /data \
-#		-u $UID \
-#		clojure:lein-2.8.1 sh -c "exec lein $*"
+#		-v "$HOME"/.lein:/root/.lein \
+#		-v "$HOME"/.m2:/root/.m2 \
+#		-v "$HOME"/.gitconfig:/root/.gitconfig:ro \
+#		-v "$HOME"/.ssh/id_rsa:/root/.ssh/id_rsa:ro \
+#		-v "$HOME"/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro \
+#		-v $(pwd):/app \
+#		-w /app \
+#		clojure:lein-2.8.1 \
+#		sh -c "exec lein $*"
 #}
-
-#alias iclojure="lein repl :headless :host 0.0.0.0 :port 7888"
-#alias repl="lein repl"
 
 # alias for Clojure Boot 2.7.2 executable in the container..
 #boot () {
-#        docker run -i -t --rm --net=host -v $HOME/.m2:/root/.m2 -v $HOME/.gitconfig:/root/.gitconfig:ro -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro -v $PWD:/data -w /data clojure:boot-2.7.2 sh -c "exec boot $*"
+#	docker run -i -t --rm \
+#		--net=host \
+#		--user $(id -u):$(id -g) \
+#		-p 7888:7888 \
+#		-v "$HOME"/.lein:/root/.lein \
+#		-v "$HOME"/.m2:/root/.m2 \
+#		-v "$HOME"/.gitconfig:/root/.gitconfig:ro \
+#		-v "$HOME"/.ssh/id_rsa:/root/.ssh/id_rsa:ro \
+#		-v "$HOME"/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro \
+#		-v $(pwd):/app \
+#		-w /app \
+#		clojure:boot-2.7.2 \
+#		sh -c "exec boot $*"
 #}
 
+alias iclojure="lein repl :headless :host 0.0.0.0 :port 7888"
+alias repl="lein repl"
+
 export BOOT_JVM_OPTIONS="-Xmx4g -client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none -XX:MaxMetaspaceSize=128m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+
+###############################################################################

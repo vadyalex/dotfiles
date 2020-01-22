@@ -11,7 +11,7 @@ ZSH_THEME="afowler"
 plugins=(
 	sudo 
 	rsync tmux docker	
-	git git-flow
+	git
 	lein mvn
 	python virtualenv pip
 	)
