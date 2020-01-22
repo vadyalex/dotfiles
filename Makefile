@@ -10,12 +10,17 @@ hello:
 	@echo ""
 	@echo "   \"make whale\"                         install Docker"
 	@echo ""
+	@echo "   \"make secrets\"                       install gopass password manager"
+	@echo ""
 	@echo "   \"make fresh-i3-desktop-from-scratch\" install full blown i3 desktop"
 	@echo ""
 	@echo "   \"make all-usefull-flatpak-apps\"      install plenty of desktop applications"
 	@echo ""
+	@echo "   \"make fox\"                           install latest Firefox"
+	@echo ""
 
-########
+
+###############################################################################
 #
 #	Improve terminal expirience: install zsh, usefull tools and sync correspondent configs
 #
@@ -68,7 +73,11 @@ setup-toolbelt:
 
 terminal-great-again: setup-git setup-zsh setup-toolbelt
 
-########
+###############################################################################
+
+
+
+###############################################################################
 #
 #	Install Docker
 #
@@ -93,8 +102,11 @@ whale:
 	# add me to docker group to run docker commands without sudo
 	sudo usermod -aG docker $$USER
 
+###############################################################################
 
-########
+
+
+###############################################################################
 #
 #	Install development tools
 #
@@ -120,7 +132,35 @@ setup-python: setup-toolbelt
 
 development-machine: setup-clojure setup-python
 
-#######
+###############################################################################
+
+
+
+###############################################################################
+#
+#	Install gopass password manager
+#
+
+secrets:
+	# install packages to allow apt to use a repository over HTTPS
+	sudo apt update && sudo apt install -y \
+		curl \
+		apt-transport-https \
+    	ca-certificates \
+    	gpg \
+    	software-properties-common
+	# add GPG key
+	curl -fsSL https://api.bintray.com/orgs/gopasspw/keys/gpg/public.key | sudo apt-key add -
+	# add official repository
+	echo 'deb https://dl.bintray.com/gopasspw/gopass buster main' | sudo tee /etc/apt/sources.list.d/gopass.list
+	# install!
+	sudo apt update && sudo apt install -y gopass
+
+###############################################################################
+
+
+
+###############################################################################
 #
 #	Setup i3 wm on the fresh machine
 #
@@ -221,8 +261,11 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 		gtk-chtheme \
 		qt4-qtconfig
 
+###############################################################################
 
-#######
+
+
+###############################################################################
 #
 #	Setup Firefox Web Browser
 #
@@ -246,8 +289,11 @@ fox:
 		&& sudo ln -f -s /opt/firefox/firefox /usr/local/bin/firefox \
 		&& printf "$$FIREFOX_DESKTOP" | sudo tee /usr/share/applications/firefox.desktop
 
+###############################################################################
 
-#######
+
+
+###############################################################################
 #
 #	Setup flatpak apps
 #
@@ -294,3 +340,4 @@ all-usefull-flatpak-apps: setup-flatpak
 	# Postman
 	sudo flatpak install -y flathub com.getpostman.Postman
 
+###############################################################################
