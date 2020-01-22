@@ -5,4 +5,4 @@ NC='\033[0m' # No Color
 
 printf "${YELLOW}Syncing projects..${NC}\n"
 
-rsync -rzP "$HOME/Projects/" vlad@solaris.domus:/mnt/tank/home/vlad/Projects
+rsync -rzP --exclude '__containers' "$HOME/Projects/" vlad@solaris.domus:/mnt/tank/home/vlad/Projects
