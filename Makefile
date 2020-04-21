@@ -16,8 +16,6 @@ hello:
 	@echo ""
 	@echo "   \"make all-usefull-flatpak-apps\"      install plenty of desktop applications"
 	@echo ""
-	@echo "   \"make fox\"                           install latest Firefox"
-	@echo ""
 
 
 ###############################################################################
@@ -267,34 +265,6 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 
 ###############################################################################
 #
-#	Setup Firefox Web Browser
-#
-
-define FIREFOX_DESKTOP
-[Desktop Entry]
-Name=Firefox
-GenericName=Firefox
-Exec=/usr/local/bin/firefox
-Terminal=false
-Icon=/opt/firefox/browser/chrome/icons/default/default48.png
-Type=Application
-Categories=Application;Network;X-Developer;
-Comment=Firefox Web Browser
-endef
-export FIREFOX_DESKTOP
-
-fox:
-	@curl --silent -f -L -o '/tmp/firefox.tar.bz2' 'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US' \
-		&& sudo tar jxvf /tmp/firefox.tar.bz2 -C /opt/ \
-		&& sudo ln -f -s /opt/firefox/firefox /usr/local/bin/firefox \
-		&& printf "$$FIREFOX_DESKTOP" | sudo tee /usr/share/applications/firefox.desktop
-
-###############################################################################
-
-
-
-###############################################################################
-#
 #	Setup flatpak apps
 #
 
@@ -305,6 +275,8 @@ all-usefull-flatpak-apps: setup-flatpak
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	# install some apps!
+	# Firefox!
+	sudo flatpak install -y flathub org.mozilla.firefox
 	# communication apps..
 	# Skype
 	sudo flatpak install -y flathub com.skype.Client
@@ -328,12 +300,6 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak install -y flathub org.gnome.Evince
 	# LibreOffice
 	sudo flatpak install -y flathub org.libreoffice.LibreOffice
-	# add unofficial Firefox repo
-	sudo flatpak remote-add --if-not-exists FirefoxRepo https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxRepo.flatpakrepo
-	# install Firefox Nightly
-	sudo flatpak install -y FirefoxRepo org.mozilla.FirefoxNightly
-	# install Firefox Developer Edition
-	sudo flatpak install -y FirefoxRepo org.mozilla.FirefoxDevEdition
 	# developer tools..
 	# Visual Studio Code
 	sudo flatpak install -y flathub com.visualstudio.code
