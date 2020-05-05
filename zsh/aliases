@@ -1,9 +1,9 @@
 
-alias l='ls -lFh'     #size,show type,human readable
-alias la='ls -lAFh'   #long list,show almost all,show type,human readable
-alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
-alias ll='ls -lh'
-alias lth='lt | head'
+alias l='ls -lFh | lolcat'     #size,show type,human readable
+alias la='ls -lAFh | lolcat'   #long list,show almost all,show type,human readable
+alias lt='ls -ltFh | lolcat'   #long list,sorted by date,show type,human readable
+alias ll='ls -lh | lolcat'
+alias lth='lt | head | lolcat'
 
 alias fdir='find . -type d -name'
 alias ffile='find . -type f -name'
