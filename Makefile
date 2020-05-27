@@ -64,6 +64,7 @@ setup-toolbelt:
 		speedometer \
 		neofetch \
 		jq \
+		miller \
 		lolcat \
 		cowsay \
 		fortunes
