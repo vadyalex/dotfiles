@@ -286,6 +286,8 @@ all-usefull-flatpak-apps: setup-flatpak
 	# install some apps!
 	# Firefox!
 	sudo flatpak install -y flathub org.mozilla.firefox
+	# allow access to home directory to download files for Firefox
+	sudo flatpak override --filesystem=home org.mozilla.firefox
 	# communication apps..
 	# Skype
 	sudo flatpak install -y flathub com.skype.Client
