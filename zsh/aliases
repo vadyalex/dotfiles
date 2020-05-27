@@ -5,8 +5,8 @@ alias lt='ls -ltFh | lolcat'   #long list,sorted by date,show type,human readabl
 alias ll='ls -lh | lolcat'
 alias lth='lt | head | lolcat'
 
-alias fdir='find . -type d -name'
-alias ffile='find . -type f -name'
+alias gofinddir='find . -type d -name'
+alias gofindfile='find . -type f -name'
 
 alias rm='rm -i'
 alias cp='cp -i'
