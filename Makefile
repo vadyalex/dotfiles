@@ -128,6 +128,14 @@ setup-python: setup-toolbelt
 		python-pip
 	pip install virtualenv
 
+setup-js: setup-toolbelt
+	export NVM_DIR="$$HOME/.nvm" && ( \
+		git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" \
+		cd "$NVM_DIR" \
+		git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)` \
+	) && \. "$NVM_DIR/nvm.sh"
+	nvm install node
+
 development-machine: setup-clojure setup-python
 
 ###############################################################################
@@ -245,6 +253,7 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 		ibus \
 		gnome-screenshot \
 		nautilus \
+		gvfs-fuse \
 		arandr \
 		libnotify-bin \
 		notify-osd \
