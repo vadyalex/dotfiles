@@ -55,6 +55,7 @@ setup-toolbelt:
 		curl \
 		rsync \
 		net-tools \
+		iperf3 \
 		dnsutils \
 		vim \
 		htop \
