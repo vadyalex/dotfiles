@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Backup my home
+Comment=Borg backup my home directory to Solaris
+Icon=utilities-terminal
+Exec=bash -c "~/.bin/go-bbackup-my-home && printf '\033[33mBackup complete. \nPress any key to exit..\033[0m\n' && read -n 1"
+Terminal=true
+Type=Application
+Categories=System;

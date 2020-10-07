@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+YELLOW='\033[33m'
+NC='\033[0m' # No Color
+
+printf "${YELLOW}Backing up home..${NC}\n"
+
+REPOSITORY=vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname)
+
+borg create                                         \
+    -v                                              \
+    --stats                                         \
+    --progress                                      \
+    --compression lz4                               \
+    --exclude-caches                                \
+    --exclude "$HOME/.?*"                           \
+    --exclude "$HOME/Projects/__containers"         \
+    $REPOSITORY::'{hostname}-${now}'                \
+    $HOME
+
+printf "${YELLOW}Purgin old backups..${NC}\n"
+
+borg prune                          \
+    --verbose                       \
+    --list $REPOSITORY              \
+    --prefix '{hostname}-'          \
+    --keep-daily    7               \
+    --keep-weekly   4               \
+    --keep-monthly  6               \
+
+cowsay -b ' Backup complete! ' | lolcat
