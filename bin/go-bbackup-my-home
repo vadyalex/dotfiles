@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+######################################################################
+#
+#       TIPS!
+#
+# init repository first time for this machine
+# borg init --encryption=none vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname)
+#
+# list available backups for this machine
+# borg list vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname)
+#
+# mount remote repository to browse files
+# mkdir /tmp/bbm && borg mount vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname) /tmp/bbm
+# borg umount /tmp/bbm
+#
+
 YELLOW='\033[33m'
 NC='\033[0m' # No Color
 
@@ -7,25 +22,25 @@ printf "${YELLOW}Backing up home..${NC}\n"
 
 REPOSITORY=vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname)
 
-borg create                                         \
-    -v                                              \
-    --stats                                         \
-    --progress                                      \
-    --compression lz4                               \
-    --exclude-caches                                \
-    --exclude "$HOME/.?*"                           \
-    --exclude "$HOME/Projects/__containers"         \
-    $REPOSITORY::'{hostname}-${now}'                \
-    $HOME
-
-printf "${YELLOW}Purgin old backups..${NC}\n"
-
-borg prune                          \
-    --verbose                       \
-    --list $REPOSITORY              \
-    --prefix '{hostname}-'          \
-    --keep-daily    7               \
-    --keep-weekly   4               \
-    --keep-monthly  6               \
-
+borg create                                                \
+    -v                                                     \
+    --stats                                                \
+    --progress                                             \
+    --compression lz4                                      \
+    --exclude-caches                                       \
+    --exclude "$HOME/.?*"                                  \
+    --exclude "$HOME/Projects/__containers"                \
+    $REPOSITORY::$(hostname)-$(date +\%Y-\%m-\%d_\%H-\%M)  \
+    $HOME                                                  \
+&&                                                         \
+printf "${YELLOW}Purgin old backups..${NC}\n"              \
+&&                                                         \
+borg prune                                                 \
+    --verbose                                              \
+    --list $REPOSITORY                                     \
+    --prefix "$(hostname)-"                                \
+    --keep-daily    7                                      \
+    --keep-weekly   4                                      \
+    --keep-monthly  6                                      \
+&&                                                         \
 cowsay -b ' Backup complete! ' | lolcat
