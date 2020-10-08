@@ -57,6 +57,7 @@ setup-toolbelt:
 		net-tools \
 		iperf3 \
 		dnsutils \
+		smartmontools \
 		vim \
 		htop \
 		tmux \
