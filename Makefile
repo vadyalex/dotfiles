@@ -301,13 +301,9 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak override --filesystem=home org.telegram.desktop
 	# Slack
 	sudo flatpak install -y flathub com.slack.Slack	
-	# Corebird Twitter client
-	sudo flatpak install -y flathub org.baedert.corebird
 	# media apps..
 	# Spotify
 	sudo flatpak install -y flathub com.spotify.Client
-	# Gnome Media Player
-	sudo flatpak install -y flathub io.github.GnomeMpv
 	# VLC
 	sudo flatpak install -y flathub org.videolan.VLC
 	# office apps..
@@ -315,10 +311,10 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak install -y flathub org.gnome.Evince
 	# LibreOffice
 	sudo flatpak install -y flathub org.libreoffice.LibreOffice
+	# Beautiful markdown editor
+	sudo flatpak install -y flathub org.gnome.gitlab.somas.Apostrophe
 	# developer tools..
 	# Visual Studio Code
 	sudo flatpak install -y flathub com.visualstudio.code
-	# Postman
-	sudo flatpak install -y flathub com.getpostman.Postman
 
 ###############################################################################
