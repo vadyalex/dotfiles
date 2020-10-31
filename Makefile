@@ -316,5 +316,10 @@ all-usefull-flatpak-apps: setup-flatpak
 	# developer tools..
 	# Visual Studio Code
 	sudo flatpak install -y flathub com.visualstudio.code
+	# CAD soft to design for 3D printer
+	# FreeCAD very similar to AutoCAD
+	sudo flatpak install -y flathub org.freecadweb.FreeCAD
+	# OpenSCAD for declarative design
+	sudo flatpak install -y flathub org.openscad.OpenSCAD
 
 ###############################################################################
