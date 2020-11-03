@@ -1,3 +1,9 @@
 #!/bin/sh
 
-feh --bg-fill ~/Pictures/wallpaper
+if [ -f "$HOME/Pictures/wallpaper" ]; then
+	feh --bg-fill "$HOME/Pictures/wallpaper"
+else
+    if [ -f /usr/share/backgrounds/wallpaper ]; then
+        feh --bg-fill /usr/share/backgrounds/wallpaper
+    fi
+fi
