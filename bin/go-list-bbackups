@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+YELLOW='\033[33m'
+NC='\033[0m' # No Color
+
+REPOSITORY=vlad@pegasus.domus:/mnt/mirror/bbackups/$(hostname)
+
+printf "\n\t${YELLOW}Listing home backups at '${REPOSITORY}':${NC}\n\n"
+
+borg list $REPOSITORY | cowsay -f moose -b -n | lolcat
