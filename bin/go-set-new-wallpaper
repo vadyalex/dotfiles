@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then 
+    echo "No wallpaper file provided!";
+else 
+    sudo mkdir -p /usr/share/backgrounds \
+    && \
+    sudo cp "$1" /usr/share/backgrounds/wallpaper \
+    && \
+    sudo chmod 777 /usr/share/backgrounds/wallpaper \
+    && \
+    ~/.bin/go-paint-my-desktop \
+    && \
+    cowsay ' All set! ' | lolcat
+fi
+
