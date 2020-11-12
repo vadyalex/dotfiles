@@ -305,6 +305,8 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak install -y flathub com.spotify.Client
 	# VLC
 	sudo flatpak install -y flathub org.videolan.VLC
+	# Transmission
+	sudo flatpak install -y flathub com.transmissionbt.Transmission
 	# office apps..
 	# PDF viewer
 	sudo flatpak install -y flathub org.gnome.Evince
