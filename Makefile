@@ -248,7 +248,6 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 		dunst \
 		rofi \
 		feh \
-		hibernate \
 		eog \
 		xautolock \
 		xbacklight \

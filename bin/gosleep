@@ -2,6 +2,4 @@
 
 ~/.bin/golock
 
-#sudo systemctl suspend
-
-sudo hibernate-disk
+sudo systemctl hibernate
