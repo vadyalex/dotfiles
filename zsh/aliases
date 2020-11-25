@@ -53,10 +53,10 @@ untar () {
 ###############################################################################
 
 dkr () {
-	if type "$podman" > /dev/null; then
+	if ! type "$podman" > /dev/null; then
 		podman $*
 	else
-		if type "$docker" > /dev/null; then
+		if ! type "$docker" > /dev/null; then
 			docker $*
 		else
 			echo 'Neither podman nor docker installed in the system!'
