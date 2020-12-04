@@ -322,5 +322,6 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak install -y flathub org.freecadweb.FreeCAD
 	# OpenSCAD for declarative design
 	sudo flatpak install -y flathub org.openscad.OpenSCAD
-
+	# PrusaSlicer!
+	sudo flatpak install -y flathub com.prusa3d.PrusaSlicer
 ###############################################################################
