@@ -191,6 +191,13 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 #	FREQUINTLY USED PROGMRAM SHORTCUTS
 #
 
+# Undock from monitors
+bindsym  $mod+Control+u exec --no-startup-id ~/.bin/undock
+
+# Dock at home
+bindsym  $mod+Control+d exec --no-startup-id ~/.bin/dock-at-home
+
+
 # Bind Gnome Screenshot program to Print key
 bindsym Print exec gnome-screenshot -i
 
