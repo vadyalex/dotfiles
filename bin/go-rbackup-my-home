@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+######################################################################
+#
+#       TIPS!
+#
+# init repository first time for this machine
+# restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) init
+#
+# list available snapshots for this machine
+# restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) snapshots
+#
+# mount remote repository to browse files
+# mkdir /tmp/backup && restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) mount /tmp/backup
+#
+
+YELLOW='\033[33m'
+NC='\033[0m' # No Color
+
+REPOSITORY=sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname)
+
+printf "\n\t${YELLOW}Backing up home to '${REPOSITORY}'..${NC}\n\n"
+
+restic                                                     \
+    --repo $REPOSITORY                                     \
+    --one-file-system                                      \
+    --exclude-caches                                       \
+    --exclude "$HOME/.?*"                                  \
+    --exclude "$HOME/Projects/__containers"                \
+    backup     $HOME                                       \
+&&                                                         \
+printf "${YELLOW}Checking..${NC}\n"                        \
+&&                                                         \
+restic                                                     \
+    --repo $REPOSITORY                                     \
+    check                                                  \
+&&                                                         \
+printf "${YELLOW}Purgin old shapshots..${NC}\n"            \
+&&                                                         \
+restic                                                     \
+    --repo $REPOSITORY                                     \
+    --keep-last 4                                          \
+    --keep-daily 7                                         \
+    --keep-weekly 5                                        \
+    --keep-monthly 12                                      \
+    --keep-yearly 3                                        \
+    forget                                                 \
+&&                                                         \
+printf "${YELLOW}Repository stats..${NC}\n"                \
+&&                                                         \
+restic                                                     \
+    --repo $REPOSITORY                                     \
+    stats                                                  \
+&&                                                         \
+cowsay -f moose -b ' Backup complete! ' | lolcat

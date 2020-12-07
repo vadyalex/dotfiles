@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Restic backup my home
+Comment=Backup my home directory using Restic
+Icon=utilities-terminal
+Exec=bash -c "[ -f $HOME/.environment.aliases ] && source $HOME/.environment.aliases; ~/.bin/go-rbackup-my-home && printf '\033[33mBackup complete. \nPress any key to exit..\033[0m\n' && read -n 1"
+Terminal=true
+Type=Application
+Categories=System;
