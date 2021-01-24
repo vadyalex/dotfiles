@@ -294,6 +294,8 @@ all-usefull-flatpak-apps: setup-flatpak
 	# communication apps..
 	# Skype
 	sudo flatpak install -y flathub com.skype.Client
+	# allow access to home directory to upload/download files for Telegram
+	sudo flatpak override --filesystem=home com.skype.Client
 	# Telegram
 	sudo flatpak install -y flathub org.telegram.desktop
 	# allow access to home directory to upload/download files for Telegram
