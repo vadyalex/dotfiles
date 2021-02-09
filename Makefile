@@ -8,6 +8,8 @@ hello:
 	@echo ""
 	@echo "   \"make development-machine\"           install development tools"
 	@echo ""
+	@echo "   \"make babushka\"           		 	 install Babashka"
+	@echo ""
 	@echo "   \"make whale\"                         install Docker"
 	@echo ""
 	@echo "   \"make secrets\"                       install gopass password manager"
@@ -104,6 +106,21 @@ whale:
 	# add me to docker group to run docker commands without sudo
 	sudo usermod -aG docker $$USER
 
+###############################################################################
+
+
+
+###############################################################################
+#
+#	Install Babashka
+#
+
+babushka: setup-toolbelt
+		curl -fsSLo /tmp/babashka.zip https://github.com/babashka/babashka/releases/download/v0.2.10/babashka-0.2.10-linux-amd64.zip 	&& \
+		unzip -f -d $$HOME/.bin /tmp/babashka.zip																											&& \
+		rm -f /tmp/babashka.zip 																										&& \
+		chmod 755 $$HOME/.bin/bb
+		
 ###############################################################################
 
 
