@@ -10,6 +10,8 @@ hello:
 	@echo ""
 	@echo "   \"make whale\"                         install Docker"
 	@echo ""
+	@echo "   \"make pod-dude\"                      install Podman"
+	@echo ""	
 	@echo "   \"make secrets\"                       install gopass password manager"
 	@echo ""
 	@echo "   \"make fresh-i3-desktop-from-scratch\" install full blown i3 desktop"
@@ -103,6 +105,33 @@ whale:
 		containerd.io
 	# add me to docker group to run docker commands without sudo
 	sudo usermod -aG docker $$USER
+
+###############################################################################
+
+
+
+###############################################################################
+#
+#	Install Podman
+#
+
+pod-dude:
+	# install packages to allow apt to use a repository over HTTPS
+	sudo apt update && sudo apt install -y \
+		curl \
+		apt-transport-https \
+    	ca-certificates \
+    	gnupg2 \
+    	software-properties-common
+	# add Podman’s official GPG key for Debian 10
+	curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_10/Release.key | sudo apt-key add -
+	# add Podman's official repository for Debian 10
+	echo 'deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/podman.list
+	# install Podman!
+	sudo apt update && sudo apt install -y podman
+	# enable user namespace support (more info available here https://github.com/containers/libpod/issues/3207)
+	sudo sysctl -w kernel.unprivileged_userns_clone=1
+	echo 'kernel.unprivileged_userns_clone=1' | sudo tee /etc/sysctl.d/userns.conf
 
 ###############################################################################
 
