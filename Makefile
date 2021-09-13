@@ -18,6 +18,8 @@ hello:
 	@echo ""
 	@echo "   \"make all-usefull-flatpak-apps\"      install plenty of desktop applications"
 	@echo ""
+	@echo "   \"make this-mac-usable-again\"         install development tools for macOS"
+	@echo ""
 
 
 ###############################################################################
@@ -357,4 +359,49 @@ all-usefull-flatpak-apps: setup-flatpak
 	sudo flatpak install -y flathub org.openscad.OpenSCAD
 	# PrusaSlicer!
 	sudo flatpak install -y flathub com.prusa3d.PrusaSlicer
+###############################################################################
+
+
+
+###############################################################################
+#
+#	All things Mac
+#
+
+setup-brew:
+	brew || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh 	\
+			 &&																				\
+			 sudo chown -R $(whoami) /usr/local/share/zsh)
+
+
+define brew-install
+	brew list $(1) 2>/dev/null || brew install $(1)
+endef
+
+
+define brew-install-many
+	$(foreach formula, $(1), $(call brew-install, $(formula)))
+endef
+
+
+MAC_TOOLBELT_FORMULAS = htop tmux ranger tree neofetch jq miller lolcat cowsay restic tree
+
+setup-mac-toolbelt:
+	$(call brew-install-many, $(MAC_TOOLBELT_FORMULAS))
+
+
+setup-mac-openjdk:
+	$(call brew-install, openjdk)
+	echo "Creating systemwide symlink pointing to OpenJDK.."
+	sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+
+
+CICD_FORMULAS = openshift-cli ansible helm
+
+setup-cicd-tools:
+	$(call brew-install-many, $(CICD_FORMULAS))
+
+
+this-mac-usable-again: setup-mac-toolbelt setup-mac-openjdk setup-cicd-tools
+
 ###############################################################################
