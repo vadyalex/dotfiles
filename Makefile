@@ -234,6 +234,14 @@ setup-i3: sync-i3-conf
 	sudo apt update && sudo apt install -y i3
 
 
+setup-fonts:
+	# download and install Nerd Fonts system wide
+	sudo apt update && sudo apt install -y fontconfig && \
+	bash -c "cd /tmp && curl -fsSLo nerd_fonts_archive.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" && \
+	sudo bash -c "cd /tmp && unzip nerd_fonts_archive.zip -d /usr/share/fonts" && \
+	sudo fc-cache -f -v
+
+
 sync-compton-conf:
 	@mkdir -p $$HOME/.config/compton
 	@ln -f -s $$PWD/compton/compton.conf $$HOME/.config/compton.conf
@@ -265,7 +273,7 @@ sync-application-shortcuts:
 	ln -f -s $$PWD/applications/go-rbackup-my-home.desktop $$HOME/.local/share/applications/go-rbackup-my-home.desktop
 
 
-fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs sync-application-shortcuts
+fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-app-confs sync-application-shortcuts
 	# install desktop tools
 	sudo apt update && sudo apt install -y \
 		compton \
@@ -276,7 +284,6 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 sync-app-confs syn
 		network-manager-strongswan \
 		network-manager-openvpn network-manager-openvpn-gnome \
 		pulseaudio \
-		ttf-dejavu ttf-ancient-fonts fonts-font-awesome \
 		ffmpeg \
 		dunst \
 		rofi \
