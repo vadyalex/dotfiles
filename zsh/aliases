@@ -21,12 +21,7 @@ alias gohome=cd
 
 alias gop="cd $HOME/Projects"
 
-alias gobudbee="cd $HOME/Projects/__budbee"
-alias gobud=gobudbee
-
 alias god="cd $HOME/Downloads"
-
-alias ihaskell="stack ghci"
 
 vscode () {
 	flatpak run com.visualstudio.code $*
@@ -179,15 +174,15 @@ MAVEN_VERSION=3
 # YARN
 NODE_VERSION=12
 
-yarn () {
-	dkr run -i -t --rm \
-		--net=host \
-		--user $(id -u):$(id -g) \
-		-v $(pwd):/app \
-		-w /app \
-		node:"$NODE_VERSION" \
-		sh -c "exec yarn $*"
-}
+#yarn () {
+#	dkr run -i -t --rm \
+#		--net=host \
+#		--user $(id -u):$(id -g) \
+#		-v $(pwd):/app \
+#		-w /app \
+#		node:"$NODE_VERSION" \
+#		sh -c "exec yarn $*"
+#}
 
 
 # alias for Leiningen 2.8.1 executable in the container..
