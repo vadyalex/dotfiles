@@ -58,6 +58,7 @@ setup-toolbelt:
 	sudo apt update && sudo apt install -y \
 		curl \
 		rsync \
+		bosh \
 		net-tools \
 		iperf3 \
 		dnsutils \
