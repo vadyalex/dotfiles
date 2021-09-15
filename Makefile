@@ -236,7 +236,7 @@ setup-fonts:
 	# download and install Nerd Fonts system wide
 	$(call apt-install, fontconfig) && \
 	bash -c "cd /tmp && curl -fsSLo nerd_fonts_archive.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" && \
-	sudo bash -c "cd /tmp && unzip nerd_fonts_archive.zip -d /usr/share/fonts" && \
+	sudo bash -c "cd /tmp && unzip -o nerd_fonts_archive.zip -d /usr/share/fonts" && \
 	sudo fc-cache -f -v
 
 
