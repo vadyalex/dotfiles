@@ -22,6 +22,26 @@ hello:
 	@echo ""
 
 
+define apt-install
+	sudo apt update && sudo apt install -y $(1) && sudo apt autoremove -y
+endef
+
+
+setup-official-backports-repo:
+	echo 'deb http://ftp.debian.org/debian buster-backports main' | sudo tee /etc/apt/sources.list.d/buster-backports.list
+
+
+setup-apt-https:
+	# install packages to allow apt to use a repository over HTTPS
+	$(call apt-install, \
+		curl \
+		apt-transport-https \
+		ca-certificates \
+		gnupg2 \
+		software-properties-common \
+	)
+
+
 ###############################################################################
 #
 #	Improve terminal expirience: install zsh, usefull tools and sync correspondent configs
@@ -31,7 +51,7 @@ sync-git-conf:
 	        ln -f -s $$PWD/git/gitconfig $$HOME/.gitconfig
 
 setup-git: sync-git-conf
-	sudo apt update && sudo apt install -y git git-flow
+	$(call apt-install, git)
 
 
 sync-zsh-conf:
@@ -43,39 +63,32 @@ sync-zsh-conf:
 
 
 setup-zsh: sync-zsh-conf
-	sudo apt update && sudo apt install zsh -y
+	$(call apt-install, zsh)
 	chsh -s /bin/zsh
 	@if [ ! -d "$$HOME/.oh-my-zsh" ]; then \
 		git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $$HOME/.oh-my-zsh; \
 	fi
 
 
-setup-official-backports-repo:
-	echo 'deb http://ftp.debian.org/debian buster-backports main' | sudo tee /etc/apt/sources.list.d/buster-backports.list
-
-
 setup-toolbelt:
-	sudo apt update && sudo apt install -y \
-		curl \
+	$(call apt-install, \
+		curl wget \
 		rsync \
 		mosh \
-		net-tools \
-		iperf3 \
-		dnsutils \
+		net-tools iperf3 dnsutils \
 		smartmontools \
-		vim \
+		neovim \
 		htop \
 		tmux \
 		ranger caca-utils highlight atool w3m poppler-utils mediainfo \
+		chafa \
 		tree \
 		speedometer \
 		neofetch \
-		jq \
-		miller \
-		lolcat \
-		cowsay \
-		borgbackup \
-		restic
+		jq miller \
+		lolcat cowsay sl figlet cmatrix \
+		borgbackup restic \
+	)
 
 
 terminal-great-again: setup-git setup-zsh setup-toolbelt
@@ -89,23 +102,13 @@ terminal-great-again: setup-git setup-zsh setup-toolbelt
 #	Install Docker
 #
 
-whale:
-	# install packages to allow apt to use a repository over HTTPS
-	sudo apt update && sudo apt install -y \
-		curl \
-		apt-transport-https \
-    	ca-certificates \
-    	gnupg2 \
-    	software-properties-common
+whale: setup-apt-https
 	# add Docker’s official GPG key
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 	# add Docker's official repository
 	echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
 	# install docker!
-	sudo apt update && sudo apt install -y \
-		docker-ce \
-		docker-ce-cli \
-		containerd.io
+	$(call apt-install, docker-ce docker-ce-cli containerd.io)
 	# add me to docker group to run docker commands without sudo
 	sudo usermod -aG docker $$USER
 
@@ -118,20 +121,13 @@ whale:
 #	Install Podman
 #
 
-pod-dude:
-	# install packages to allow apt to use a repository over HTTPS
-	sudo apt update && sudo apt install -y \
-		curl \
-		apt-transport-https \
-    	ca-certificates \
-    	gnupg2 \
-    	software-properties-common
+pod-dude: setup-apt-https
 	# add Podman’s official GPG key for Debian 10
 	curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_10/Release.key | sudo apt-key add -
 	# add Podman's official repository for Debian 10
 	echo 'deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/podman.list
 	# install Podman!
-	sudo apt update && sudo apt install -y podman
+	$(call apt-install, podman)
 	# enable user namespace support (more info available here https://github.com/containers/libpod/issues/3207)
 	sudo sysctl -w kernel.unprivileged_userns_clone=1
 	echo 'kernel.unprivileged_userns_clone=1' | sudo tee /etc/sysctl.d/userns.conf
@@ -147,9 +143,11 @@ pod-dude:
 
 setup-java: setup-toolbelt setup-official-backports-repo
 	# install OpenJDK 11
-	sudo apt update && sudo apt install -y \
+	$(call apt-install, \
 		openjdk-11-jdk \
-		openjdk-11-source
+		openjdk-11-source \
+	)
+
 
 setup-clojure: setup-java
 	# install latest Clojure Boot
@@ -157,12 +155,15 @@ setup-clojure: setup-java
 	# install latest Leiningen
 	sudo bash -c "cd /usr/local/bin && curl -fsSLo lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod 755 lein"
 
+
 setup-python: setup-toolbelt
-	sudo apt update && sudo apt install -y \
+	$(call apt-install, \
 		python \
 		python-dev \
-		python-pip
+		python-pip \
+	)
 	pip install virtualenv
+
 
 setup-js: setup-toolbelt
 	export NVM_DIR="$$HOME/.nvm" && ( \
@@ -171,6 +172,7 @@ setup-js: setup-toolbelt
 		git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)` \
 	) && \. "$NVM_DIR/nvm.sh"
 	nvm install node
+
 
 development-machine: setup-clojure setup-python
 
@@ -183,20 +185,13 @@ development-machine: setup-clojure setup-python
 #	Install gopass password manager
 #
 
-secrets:
-	# install packages to allow apt to use a repository over HTTPS
-	sudo apt update && sudo apt install -y \
-		curl \
-		apt-transport-https \
-    	ca-certificates \
-    	gpg \
-    	software-properties-common
+secrets: setup-apt-https
 	# add GPG key
 	curl -fsSL https://api.bintray.com/orgs/gopasspw/keys/gpg/public.key | sudo apt-key add -
 	# add official repository
 	echo 'deb https://dl.bintray.com/gopasspw/gopass buster main' | sudo tee /etc/apt/sources.list.d/gopass.list
 	# install!
-	sudo apt update && sudo apt install -y gopass
+	$(call apt-install, gopass)
 
 ###############################################################################
 
@@ -211,18 +206,20 @@ sync-X-conf:
 	ln -f -s $$PWD/X/Xdefaults $$HOME/.Xdefaults
 
 setup-X: sync-X-conf
-	sudo apt update && sudo apt install -y \
+	$(call apt-install, \
 		xserver-xorg \
 		xserver-xorg-input-all \
-		xserver-xorg-input-synaptics
+		xserver-xorg-input-synaptics \
+	)
 
 
 setup-lightdm:
 	# install LightDM desktop manager
-	sudo apt update && sudo apt install -y \
+	$(call apt-install, \
 		lightdm \
 		lightdm-gtk-greeter \
-		lightdm-gtk-greeter-settings
+		lightdm-gtk-greeter-settings \
+	)
 
 
 sync-i3-conf:
@@ -232,12 +229,12 @@ sync-i3-conf:
 
 setup-i3: sync-i3-conf
 	# install i3 window manager
-	sudo apt update && sudo apt install -y i3
+	$(call apt-install, i3)
 
 
 setup-fonts:
 	# download and install Nerd Fonts system wide
-	sudo apt update && sudo apt install -y fontconfig && \
+	$(call apt-install, fontconfig) && \
 	bash -c "cd /tmp && curl -fsSLo nerd_fonts_archive.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" && \
 	sudo bash -c "cd /tmp && unzip nerd_fonts_archive.zip -d /usr/share/fonts" && \
 	sudo fc-cache -f -v
@@ -264,19 +261,12 @@ sync-app-confs: sync-compton-conf sync-dunst-conf sync-XFCE4-terminal-conf sync-
 
 sync-application-shortcuts:
 	@mkdir -p $$HOME/.local/share/applications
-	ln -f -s $$PWD/applications/goupdate.desktop $$HOME/.local/share/applications/goupdate.desktop
-	ln -f -s $$PWD/applications/dock-at-home.desktop $$HOME/.local/share/applications/dock-at-home.desktop
-	ln -f -s $$PWD/applications/dock-at-work.desktop $$HOME/.local/share/applications/dock-at-work.desktop
-	ln -f -s $$PWD/applications/dock-to-present.desktop $$HOME/.local/share/applications/dock-to-present.desktop
-	ln -f -s $$PWD/applications/undock.desktop $$HOME/.local/share/applications/undock.desktop
-	ln -f -s $$PWD/applications/go-sync-my-projects.desktop $$HOME/.local/share/applications/go-sync-my-projects.desktop
-	ln -f -s $$PWD/applications/go-bbackup-my-home.desktop $$HOME/.local/share/applications/go-bbackup-my-home.desktop
-	ln -f -s $$PWD/applications/go-rbackup-my-home.desktop $$HOME/.local/share/applications/go-rbackup-my-home.desktop
+	$(foreach file, $(wildcard $(PWD)/applications/*.desktop), ln -f -s $(file) $$HOME/.local/share/applications/$(notdir $(file));)
 
 
 fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-app-confs sync-application-shortcuts
 	# install desktop tools
-	sudo apt update && sudo apt install -y \
+	$(call apt-install, \
 		compton \
 		xfce4-terminal \
 		network-manager-gnome \
@@ -302,15 +292,18 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-a
 		libnotify-bin \
 		notify-osd \
 		imagemagick \
-		gnome-disk-utility
+		gnome-disk-utility \
+	)
 	# install Paper GTK theme, correspondend icons and cursors
 	# TODO add correspondend .deb packages for paper-icon-theme,paper-gtk-theme,paper-cursor-theme
 	# install tools to change GTK theme
-	sudo apt install -y \
+	$(call apt-install, \
 		arc-theme \
 		lxappearance \
 		gtk-chtheme \
-		qt4-qtconfig
+		qt4-qtconfig \
+	)
+
 
 ###############################################################################
 
@@ -321,52 +314,63 @@ fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-a
 #	Setup flatpak apps
 #
 
-setup-flatpak: setup-official-backports-repo
-	sudo apt update && sudo apt install -y flatpak
-
-all-usefull-flatpak-apps: setup-flatpak
+setup-flatpak:
+	$(call apt-install, flatpak)
 	# add flathub
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+
+define flathub-install
+	sudo flatpak install -y flathub $(1);
+endef
+
+
+define flathub-install-many
+	$(foreach app, $(1), $(call flathub-install, $(app)))
+endef
+
+
+all-usefull-flatpak-apps: setup-flatpak
 	# install some apps!
 	# Firefox!
-	sudo flatpak install -y flathub org.mozilla.firefox
+	$(call flathub-install, org.mozilla.firefox)
 	# allow access to home directory to download files for Firefox
 	sudo flatpak override --filesystem=home org.mozilla.firefox
 	# communication apps..
 	# Skype
-	sudo flatpak install -y flathub com.skype.Client
+	$(call flathub-install, com.skype.Client)
 	# allow access to home directory to upload/download files for Telegram
 	sudo flatpak override --filesystem=home com.skype.Client
 	# Telegram
-	sudo flatpak install -y flathub org.telegram.desktop
+	$(call flathub-install, org.telegram.desktop)
 	# allow access to home directory to upload/download files for Telegram
 	sudo flatpak override --filesystem=home org.telegram.desktop
 	# Slack
-	sudo flatpak install -y flathub com.slack.Slack	
+	$(call flathub-install, com.slack.Slack)
 	# media apps..
 	# Spotify
-	sudo flatpak install -y flathub com.spotify.Client
+	$(call flathub-install, com.spotify.Client)
 	# VLC
-	sudo flatpak install -y flathub org.videolan.VLC
+	$(call flathub-install, org.videolan.VLC)
 	# Transmission
-	sudo flatpak install -y flathub com.transmissionbt.Transmission
+	$(call flathub-install, com.transmissionbt.Transmission)
 	# office apps..
 	# PDF viewer
-	sudo flatpak install -y flathub org.gnome.Evince
+	$(call flathub-install, org.gnome.Evince)
 	# LibreOffice
-	sudo flatpak install -y flathub org.libreoffice.LibreOffice
+	$(call flathub-install, org.libreoffice.LibreOffice)
 	# Beautiful markdown editor
-	sudo flatpak install -y flathub org.gnome.gitlab.somas.Apostrophe
+	$(call flathub-install, org.gnome.gitlab.somas.Apostrophe)
 	# developer tools..
 	# Visual Studio Code
-	sudo flatpak install -y flathub com.visualstudio.code
+	$(call flathub-install, com.visualstudio.code)
 	# CAD soft to design for 3D printer
 	# FreeCAD very similar to AutoCAD
-	sudo flatpak install -y flathub org.freecadweb.FreeCAD
+	$(call flathub-install, org.freecadweb.FreeCAD)
 	# OpenSCAD for declarative design
-	sudo flatpak install -y flathub org.openscad.OpenSCAD
+	$(call flathub-install, org.openscad.OpenSCAD)
 	# PrusaSlicer!
-	sudo flatpak install -y flathub com.prusa3d.PrusaSlicer
+	$(call flathub-install, com.prusa3d.PrusaSlicer)
 ###############################################################################
 
 
@@ -383,7 +387,7 @@ setup-brew:
 
 
 define brew-install
-	brew list $(1) 2>/dev/null || brew install $(1)
+	brew list $(1) 2>/dev/null || brew install $(1);
 endef
 
 
@@ -392,10 +396,19 @@ define brew-install-many
 endef
 
 
-MAC_TOOLBELT_FORMULAS = htop tmux ranger tree neofetch jq miller lolcat cowsay restic tree
-
 setup-mac-toolbelt:
-	$(call brew-install-many, $(MAC_TOOLBELT_FORMULAS))
+	$(call brew-install-many, \
+		htop \
+		tmux \
+		ranger \
+		tree \
+		neofetch \
+		jq miller \
+		lolcat \
+		cowsay \
+		restic \
+		tree \
+	)
 
 
 setup-mac-openjdk:
@@ -404,12 +417,13 @@ setup-mac-openjdk:
 	sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 
 
-CICD_FORMULAS = openshift-cli ansible helm
+setup-mac-devops-toolbelt:
+	$(call brew-install-many, \
+		openshift-cli \
+		ansible helm \
+	)
 
-setup-cicd-tools:
-	$(call brew-install-many, $(CICD_FORMULAS))
 
-
-this-mac-usable-again: setup-mac-toolbelt setup-mac-openjdk setup-cicd-tools
+this-mac-usable-again: setup-mac-toolbelt setup-mac-openjdk setup-mac-devops-toolbelt
 
 ###############################################################################
