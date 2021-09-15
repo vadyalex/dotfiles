@@ -11,5 +11,6 @@
 	st = status
 	c = commit
 	p = pull --rebase --autostash
+	d = diff
 [core]
 	autocrlf = input
