@@ -240,6 +240,19 @@ setup-fonts:
 	sudo fc-cache -f -v
 
 
+sync-alacritty-conf:
+	@mkdir -p $$HOME/.config/alacritty
+	ln -f -s $$PWD/alacritty/alacritty.yml $$HOME/.config/alacritty/alacritty.yml
+
+setup-alacritty: sync-alacritty-conf
+	# install runtime dependency
+	$(call apt-install, cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3)
+	# copy binary
+	sudo cp $$PWD/alacritty/alacritty /usr/bin/alacritty
+	# copy desktop shortcut to launch via rofi
+	sudo cp $$PWD/alacritty/alacritty.desktop /usr/share/applications/alacritty.desktop
+
+
 sync-compton-conf:
 	@mkdir -p $$HOME/.config/compton
 	@ln -f -s $$PWD/compton/compton.conf $$HOME/.config/compton.conf
@@ -256,6 +269,7 @@ sync-rofi-conf:
 	@mkdir -p $$HOME/.config/rofi
 	ln -f -s $$PWD/rofi/config.rasi $$HOME/.config/rofi/config.rasi
 
+
 sync-app-confs: sync-compton-conf sync-dunst-conf sync-XFCE4-terminal-conf sync-rofi-conf
 
 
@@ -264,7 +278,7 @@ sync-application-shortcuts:
 	$(foreach file, $(wildcard $(PWD)/applications/*.desktop), ln -f -s $(file) $$HOME/.local/share/applications/$(notdir $(file));)
 
 
-fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-app-confs sync-application-shortcuts
+fresh-i3-desktop-from-scratch: setup-X setup-lightdm setup-i3 setup-fonts sync-app-confs sync-application-shortcuts setup-alacritty
 	# install desktop tools
 	$(call apt-install, \
 		compton \
@@ -382,7 +396,7 @@ all-usefull-flatpak-apps: setup-flatpak
 
 setup-brew:
 	brew || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh 	\
-			 &&																				\
+			 &&									\
 			 sudo chown -R $(whoami) /usr/local/share/zsh)
 
 
@@ -423,7 +437,10 @@ setup-mac-devops-toolbelt:
 		ansible helm \
 	)
 
+setup-mac-alacritty: sync-alacritty-conf
+	$(call brew-install, alacritty)
+	
 
-this-mac-usable-again: setup-mac-toolbelt setup-mac-openjdk setup-mac-devops-toolbelt
+this-mac-usable-again: setup-mac-toolbelt setup-mac-openjdk setup-mac-devops-toolbelt setup-mac-alacritty
 
 ###############################################################################
