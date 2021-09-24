@@ -1,16 +1,17 @@
 [user]
 	email = vadyalex@gmail.com
 	name = Vlad
-
 [push]
 	default = current
-
+[pull]
+	ff = only
 [alias]
 	graph = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
 	sl = shortlog origin/master..origin/develop
 	st = status
-	c = commit
-	p = pull --rebase --autostash
-	d = diff
+	c  = commit
+	p  = pull --autostash
+	pr = pull --rebase --autostash
+	d  = diff
 [core]
 	autocrlf = input
