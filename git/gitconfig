@@ -12,10 +12,10 @@
 	a   = add
 	c   = commit
 	co  = checkout
-	p   = pull --autostash
+	p   = pull
 	pr  = pull --rebase --autostash
-	r   = rebase
-	ri  = rebase --interactive HEAD~11
+	r   = rebase --autostash
+	ri  = rebase --autostash --interactive HEAD~11
 	pu  = push
 	puf = push --force
 	d   = diff

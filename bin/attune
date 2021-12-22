@@ -1,0 +1,151 @@
+#!/usr/bin/env bb
+
+(def toolbelt #{[:zsh
+                 #{["bin" :-> "~/.bin"]
+                   ["zsh/aliases" :-> "~/.aliases"]
+                   ["zsh/zshrc"   :-> "~/.zshrc"]}]
+                ["git"
+                 #{["git/gitconfig" :-> "~/.gitconfig"]}]
+                ["curl"] ["wget"]
+                ["rsync"]
+                ["mosh"]
+                ["net-tools"] ["iperf3"] ["dnsutils"]
+                ["smartmontools"]
+                ["neovim"]
+                ["htop"]
+                ["tmux"]
+                ;; ranger
+                ["ranger"] ["caca-utils"] ["highlight"] ["atool"] ["w3m"] ["poppler-utils"] ["mediainfo"]
+                ["chafa"]
+                ["tree"]
+                ["speedometer"]
+                ["neofetch"]
+                ["jq"] ["miller"]
+                ["lolcat"]
+                ["cowsay"]
+                ["sl"] ["figlet"] ["cmatrix"]
+                ["borgbackup"] ["restic"]})
+
+(def systems [{:key         "rocket"
+               :description "My Debian based linux env"
+               :env         {:os    :debian}
+               :tools       toolbelt}
+              {:key         "rpi"
+               :description "Raspbian"
+               :env         {:os    :debian}
+               :tools       toolbelt}])
+
+
+(require '[clojure.string :as str])
+(require '[clojure.data :refer [diff]])
+(require '[clojure.java.shell :refer [sh]])
+(require '[clojure.java.io :as io])
+(require '[clojure.pprint :refer [pprint]])
+(require '[babashka.fs :as fs])
+
+
+(defn log [& args]
+    (let [yellow "\u001B[33m"
+          cyan	 "\u001B[36m"
+          reset  "\u001B[0m"]
+        (apply println (concat [cyan] args [reset]))))
+
+(defn eshell [& args]
+    (let [{:keys [exit out err]} (apply sh args)]
+        (if (zero? exit)
+            out
+            (println out))))
+
+(defn apt-install [package]
+    (when-some [out (eshell "sudo" "apt" "update")]
+        (print out)
+        (when-some [out (eshell "sudo" "apt" "install" "-y" package)]
+            (print out)
+            (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
+                (print out)))))
+
+(defn sym-link [origin target]
+    (when-some [expanded-target (->> target
+                                    (fs/expand-home)
+                                    (.toString))]
+        (io/make-parents expanded-target)
+        (fs/create-sym-link expanded-target origin)))
+
+(defn sync-configs [configs]
+    (doseq [[origin _ target] configs]
+        (sym-link origin target)
+        (log "\t" origin "->" target)))
+
+(defn install-zsh []
+    (apt-install "zsh")
+    (log "\tChange default shell to zsh")
+    (eshell "chsh" "-s" "/bin/zsh")
+    (when-not (fs/exists? "~/.oh-my-zsh")
+        (eshell "git" "clone" "--depth=1" "https://github.com/robbyrussell/oh-my-zsh.git" "~/.oh-my-zsh")))
+
+(defn install [[tool configs] & context]
+    (let [{:keys [os]} context    
+          install-tool (case tool
+                        :zsh install-zsh
+                        (partial apt-install tool))]
+        (log "[" tool "]")
+        (log "\tInstalling..")
+        (when (install-tool)
+            (log "\tDone.")
+            (log "\tSync configs..")
+            (sync-configs configs)
+            (log "\tDone."))))
+
+(defn attune [snapshot state]
+    (log "Attune system to state" (str "'" (:key state) "'") "..")
+    (let [[remove add _] (diff snapshot state)
+          uninstall-tools (:tools remove)
+          install-tools   (:tools add)]
+        ;; (when uninstall-tools
+            ;; (log "UNINSTALL:")
+            ;; (pprint remove)
+            ;; (->> uninstall-tools
+            ;;      (map uninstall)))
+        (when install-tools
+            (log "INSTALL:")
+            (pprint add)
+            (->> install-tools
+                (map install)
+                (dorun))))
+        (log "All good!")
+        state)
+
+(def snapshot-file (-> "~/.dotfiles.snapshot.edn"
+                       (fs/expand-home)
+                       (.toString)))
+
+(defn load-snapshot
+    ([] (load-snapshot snapshot-file))
+    ([f] (if (fs/exists? f)
+            (some-> f
+                (slurp)
+                (edn/read-string)))))
+
+(defn save-snapshot!
+    ([snapshot] (save-snapshot! snapshot-file snapshot))
+    ([f snapshot] (if snapshot
+                    (some-> f
+                            (spit snapshot)))))
+
+(defn match-system [key]
+    (when-some [system (when key
+                            (->> systems
+                                (filter (fn [system] (= key (:key system))))
+                                (first)))]
+        system))
+
+(let [snapshot (load-snapshot)
+      key (or (:key snapshot)
+              (first *command-line-args*))]
+    (if key
+        (-> snapshot
+            (attune (match-system key))
+            (save-snapshot!))
+        (do
+            (log "What system state to attune to? Available keys are:" (->> systems (map :key) (str/join ", ")))
+            (System/exit 1))))

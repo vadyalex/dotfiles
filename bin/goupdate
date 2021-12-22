@@ -12,6 +12,11 @@ printf "${YELLOW}Performing dotfiles update..${NC}\n"
 
 cd ~/.dotfiles && git pull --rebase --autostash
 
+if command -v bb > /dev/null; then
+    printf "${YELLOW}Performing attune..${NC}\n"
+    ~/.dotfiles/bin/attune
+fi
+
 printf "${YELLOW}Performing apt update..${NC}\n"
 
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
