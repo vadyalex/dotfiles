@@ -7,19 +7,19 @@
 Install using curl
 
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/vadyalex/dotfiles/master/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/vadyalex/dotfiles/master/bootstrap.sh)"
 ```
 
 or using wget
 
 ```shell
-sh -c "$(wget https://raw.githubusercontent.com/vadyalex/dotfiles/master/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/vadyalex/dotfiles/master/bootstrap.sh -O -)"
 ```
 
 Change to nearly cloned dotfiles directory and see the list of available commands
 
 ```shell
-cd ~/.dotfiles; make
+cd ~/.dotfiles/bin; ./attune
 ```
 
 ## Theming
