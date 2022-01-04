@@ -57,7 +57,7 @@ main() {
     printf "Complete!${NORMAL}\n"
   fi
 
-  if [ ! -d "~/.dotfiles" ]; then
+  if [ ! -d ~/.dotfiles ]; then
     printf "${YELLOW}Cloning dotfiles into ~/.dotfiles..\n"
     env git clone git@github.com:vadyalex/dotfiles.git ~/.dotfiles
     printf "Complete!${NORMAL}\n"
@@ -69,7 +69,7 @@ main() {
     printf "${YELLOW}bb is already in place..${NORMAL}\n"
   else
     printf "${YELLOW}Installing bb..\n"
-    sudo bash -c "cd /tmp && curl -fsSLo bb_install https://raw.githubusercontent.com/babashka/babashka/master/install && chmod 755 bb_install"
+    sudo bash -c "cd /tmp && curl -fsSLo bb_install https://raw.githubusercontent.com/babashka/babashka/master/install && chmod 755 bb_install && ./bb_install"
     printf "Complete!${NORMAL}\n"
   fi
 
