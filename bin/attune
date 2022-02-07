@@ -10,7 +10,9 @@
                 ["rsync"]
                 ["mosh"]
                 ["net-tools"] ["iperf3"] ["dnsutils"]
-                ["smartmontools"]
+                ["smartmontools"] 
+                ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
+                ["upower"]
                 ["neovim"]
                 ["htop"]
                 ["tmux"]
@@ -34,6 +36,10 @@
                :description "Raspbian"
                :env         {:os    :debian}
                :tools       toolbelt}])
+
+(def nonaction-state-keys [:key :description :env])
+
+(defn skip-noaction-state-keys [m] (apply dissoc m nonaction-state-keys))
 
 
 (require '[clojure.string :as str])
@@ -66,8 +72,8 @@
 
 (defn sym-link [origin target]
     (when-some [expanded-target (->> target
-                                    (fs/expand-home)
-                                    (.toString))]
+                                     (fs/expand-home)
+                                     (.toString))]
         (io/make-parents expanded-target)
         (fs/create-sym-link expanded-target origin)))
 
@@ -98,20 +104,22 @@
 
 (defn attune [snapshot state]
     (log "Attune system to state" (str "'" (:key state) "'") "..")
-    (let [[remove add _] (diff snapshot state)
-          uninstall-tools (:tools remove)
-          install-tools   (:tools add)]
+    (let [[remove add _]  (diff snapshot state)
+          uninstall-tools (skip-noaction-state-keys remove)
+          install-tools   (skip-noaction-state-keys add)]
         ;; (when uninstall-tools
             ;; (log "UNINSTALL:")
-            ;; (pprint remove)
+            ;; (pprint uninstall-tools)
             ;; (->> uninstall-tools
+            ;;      (mapcat second)
             ;;      (map uninstall)))
         (when install-tools
             (log "INSTALL:")
-            (pprint add)
+            (pprint install-tools)
             (->> install-tools
-                (map install)
-                (dorun))))
+                 (mapcat second)
+                 (map install)
+                 (dorun))))
         (log "All good!")
         state)
 
@@ -135,8 +143,8 @@
 (defn match-system [key]
     (when-some [system (when key
                             (->> systems
-                                (filter (fn [system] (= key (:key system))))
-                                (first)))]
+                                 (filter (fn [system] (= key (:key system))))
+                                 (first)))]
         system))
 
 (let [snapshot (load-snapshot)
