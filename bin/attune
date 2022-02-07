@@ -74,8 +74,9 @@
     (when-some [expanded-target (->> target
                                      (fs/expand-home)
                                      (.toString))]
-        (io/make-parents expanded-target)
-        (fs/create-sym-link expanded-target origin)))
+        (when-not (fs/exists? expanded-target)
+            (io/make-parents expanded-target)
+            (fs/create-sym-link expanded-target origin))))
 
 (defn sync-configs [configs]
     (doseq [[origin _ target] configs]
