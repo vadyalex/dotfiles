@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Dock at home in solo
+Comment=Dock laptop to home monitor only without built in display
+Icon=utilities-terminal
+Exec=bash -c "~/.bin/dock-at-home-solo"
+Terminal=false
+Type=Application
+Categories=System;

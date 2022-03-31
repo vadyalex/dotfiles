@@ -1,16 +1,37 @@
 #!/usr/bin/env bb
 
-(def toolbelt #{[:zsh
-                 #{["bin" :-> "~/.bin"]
-                   ["zsh/aliases" :-> "~/.aliases"]
-                   ["zsh/zshrc"   :-> "~/.zshrc"]}]
-                ["git"
-                 #{["git/gitconfig" :-> "~/.gitconfig"]}]
-                ["curl"] ["wget"]
+
+(def git ["git"
+          #{["git/gitconfig" :-> "~/.gitconfig"]}])
+
+(def zsh [:zsh
+          #{}
+          {:package-info                "zsh"
+           :pre-install-hook-fn         '(fn [] (log "Install zsh"))
+           :post-install-hook-fn        '(fn [] (do 
+                                                    (log "Change default shell to /bin/zsh")
+                                                    (eshell "chsh" "-s" "/bin/zsh")))
+           :post-uninstall-hook-fn      '(fn [] (do 
+                                                    (log "Change default shell to /bin/bash")
+                                                    (eshell "chsh" "-s" "/bin/bash")))}])
+
+(def oh-my-zsh [:oh-my-zsh
+                 #{["bin"            :-> "~/.bin"]
+                   ["zsh/aliases"    :-> "~/.aliases"]
+                   ["zsh/zshrc"      :-> "~/.zshrc"]}
+                 {:package-manager   :git
+                  :package-info      ["https://github.com/robbyrussell/oh-my-zsh.git" "~/.oh-my-zsh"]
+                  :depends-on        ["git"]}])
+
+(def shell [git zsh oh-my-zsh])
+
+(def toolbelt [["curl"] ["wget"]
                 ["rsync"]
                 ["mosh"]
                 ["net-tools"] ["iperf3"] ["dnsutils"]
-                ["smartmontools"] 
+                ["smartmontools"]
+                ["pv"] ;;
+                ["iotop"] ;; > sudo iotop ;; monitor disk IO
                 ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
                 ["upower"]
                 ["neovim"]
@@ -26,20 +47,27 @@
                 ["lolcat"]
                 ["cowsay"]
                 ["sl"] ["figlet"] ["cmatrix"]
-                ["borgbackup"] ["restic"]})
+                ["borgbackup"] ["restic"]])
 
 (def systems [{:key         "rocket"
                :description "My Debian based linux env"
-               :env         {:os    :debian}
-               :tools       toolbelt}
+               :env         {:os              :debian
+                             :package-manager :apt}
+               :shell       shell
+               :toolbelt    toolbelt
+               :extra       []}
+              {:key         "mi"
+               :description "Xiamomi Laptop"
+               :env         {:os              :debian
+                             :package-manager :apt}
+               :shell       shell
+               :toolbelt    toolbelt
+               :extra       []}
               {:key         "rpi"
                :description "Raspbian"
-               :env         {:os    :debian}
-               :tools       toolbelt}])
-
-(def nonaction-state-keys [:key :description :env])
-
-(defn skip-noaction-state-keys [m] (apply dissoc m nonaction-state-keys))
+               :env         {:os              :debian
+                             :package-manager :apt}
+               :toolbelt    toolbelt}])
 
 
 (require '[clojure.string :as str])
@@ -60,71 +88,187 @@
     (let [{:keys [exit out err]} (apply sh args)]
         (if (zero? exit)
             out
-            (println out))))
+            (println out err))))
 
-(defn apt-install [package]
-    (when-some [out (eshell "sudo" "apt" "update")]
-        (print out)
-        (when-some [out (eshell "sudo" "apt" "install" "-y" package)]
-            (print out)
-            (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
-                (print out)))))
+(defn expand-home [target] (some->> target
+                                    (fs/expand-home)
+                                    (.toString)))
 
 (defn sym-link [origin target]
-    (when-some [expanded-target (->> target
-                                     (fs/expand-home)
-                                     (.toString))]
+    (when-some [expanded-target (expand-home target)]
         (when-not (fs/exists? expanded-target)
             (io/make-parents expanded-target)
             (fs/create-sym-link expanded-target origin))))
+
+(defn apt [action package]
+    (case action
+        :update  (when-some [out (eshell "sudo" "apt" "update")]
+                    (print out)
+                    (when-some [out (eshell "sudo" "apt" "upgrade" "-y")]
+                        (print out)
+                        (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
+                            (print out)
+                            out)))
+        :install (when-some [out (eshell "sudo" "apt" "update")]
+                    (print out)
+                    (when-some [out (eshell "sudo" "apt" "install" "-y" package)]
+                        (print out)
+                        (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
+                            (print out)
+                            out)))
+        :uninstall (when-some [out (eshell "sudo" "apt" "purge" "-y" package)]
+                        (print out)
+                        out)
+        nil))
+
+(defn git [action [url target]]
+    (case action
+        :update  (if-let [expanded-target (expand-home target)]
+                    (when (fs/exists? expanded-target)
+                        (when-some [out (eshell "git" "-C" expanded-target "pull" "--rebase" "--autostash")]
+                            (print out)
+                            out)))
+        :install (if-let [expanded-target (expand-home target)]
+                    (when-not (fs/exists? expanded-target)
+                        (when-some [out (eshell "git" "clone" "--depth=1" url expanded-target)]
+                            (print out)
+                            out)))
+        :uninstall true
+        nil))
+
+(defn package-manager! [name action package-info] (case name 
+                                                :apt (apt action package-info)
+                                                :git (git action package-info)
+                                                nil))
 
 (defn sync-configs [configs]
     (doseq [[origin _ target] configs]
         (sym-link origin target)
         (log "\t" origin "->" target)))
 
-(defn install-zsh []
-    (apt-install "zsh")
-    (log "\tChange default shell to zsh")
-    (eshell "chsh" "-s" "/bin/zsh")
-    (when-not (fs/exists? "~/.oh-my-zsh")
-        (eshell "git" "clone" "--depth=1" "https://github.com/robbyrussell/oh-my-zsh.git" "~/.oh-my-zsh")))
 
-(defn install [[tool configs] & context]
-    (let [{:keys [os]} context    
-          install-tool (case tool
-                        :zsh install-zsh
-                        (partial apt-install tool))]
-        (log "[" tool "]")
-        (log "\tInstalling..")
-        (when (install-tool)
-            (log "\tDone.")
-            (log "\tSync configs..")
-            (sync-configs configs)
-            (log "\tDone."))))
+(defn install [[name configs context]]
+    (let [{:keys [package-manager package-info]} context
+          install-tool (partial package-manager! package-manager :install (or package-info name))]
+        (log "\t[" name "]")
+        (log "Installing..")
+        (when-some [pre-install-hook-fn (:pre-install-hook-fn context)]
+            (log ":pre-install-hook-fn")
+            ((eval pre-install-hook-fn)))
+        (when (install-tool)   
+            (when-not (empty? configs)
+                (log "Sync configs..")
+                (sync-configs configs))            
+            (when-some [post-install-hook-fn (:post-install-hook-fn context)]
+                (log ":post-install-hook-fn")
+                ((eval post-install-hook-fn)))
+        (log "Done."))))
+
+(defn tools-list [state]
+    (let [keys-to-ignore [:key :description :env]]
+        (->> (apply dissoc state keys-to-ignore)
+             (mapcat second))))
+
+(defn dependencies-graph [state]
+    (->> state
+         (tools-list)
+         (mapcat (fn [[name configs context]] 
+            (if-let [depends-on (:depends-on context)] 
+                (map (fn [parent] [parent name]) depends-on)
+                [[:root name]])))
+         (group-by first)
+         (map (fn [[v coll]]
+                  [v (->> coll
+                          (map second)
+                          (into []))]))
+         (into (hash-map))))
+
+(defn bfs
+    ([graph]
+     (bfs graph :root))
+    ([graph root]
+     (let [visited? (fn [v coll] (some #(= % v) coll))]
+        (loop [queue   (conj clojure.lang.PersistentQueue/EMPTY root) ;; Use a queue to store the nodes we need to explore
+               visited []]                                            ;; A vector to store the sequence of visited nodes
+            (if (empty? queue) 
+                visited                                               ;; Base case - return visited nodes if the queue is empty
+                (let [v           (peek queue)
+                      neighbors     (get graph v)
+                      not-visited   (filter (complement #(visited? % visited)) neighbors)
+                      new-queue     (apply conj (pop queue) not-visited)]
+                    (if (visited? v visited)
+                        (recur new-queue visited)
+                        (recur new-queue (conj visited v)))))))))
+
+(defn dependencies-list [state]
+    (->> state
+         (dependencies-graph)
+         (bfs)
+         (rest)))
+
+(defn index-dependencies
+    [deps]
+    (->> deps
+         (map-indexed (fn [i name] [name i]))
+         (into (hash-map))))
+
+(defn apply-context-defaults
+    "Merge context defaults into tool's context"
+    [context-defaults [name configs context]]
+    [name configs (merge context-defaults
+                         context)])
 
 (defn attune [snapshot state]
-    (log "Attune system to state" (str "'" (:key state) "'") "..")
-    (let [[remove add _]  (diff snapshot state)
-          uninstall-tools (skip-noaction-state-keys remove)
-          install-tools   (skip-noaction-state-keys add)]
-        ;; (when uninstall-tools
-            ;; (log "UNINSTALL:")
-            ;; (pprint uninstall-tools)
-            ;; (->> uninstall-tools
-            ;;      (mapcat second)
-            ;;      (map uninstall)))
-        (when install-tools
-            (log "INSTALL:")
-            (pprint install-tools)
-            (->> install-tools
-                 (mapcat second)
-                 (map install)
-                 (dorun))))
-        (log "All good!")
-        state)
+    (log "ATTUNE SYSTEM TO STATE" (str "'" (:key state) "'") "..")
+    (let [[remove add _]               (diff (tools-list snapshot) 
+                                             (tools-list state))
+          dependencies-index-map       (-> state (dependencies-list) (index-dependencies))
+          sort-by-dependency-index     (partial sort-by (fn [[name _ _]] (get dependencies-index-map name)))
+          sort-by-installation-order   (partial sort-by-dependency-index <)
+          sort-by-uninstallation-order (partial sort-by-dependency-index >)
+          context-defaults             {:package-manager (get-in state [:env :package-manager])}
+          apply-defaults               (partial apply-context-defaults context-defaults)]
+        ;; (log "UNINSTALL:")
+        ;; (->> remove
+        ;;      (map apply-defaults)
+        ;;      (sort-by-uninstallation-order)
+        ;;      (map println)
+        ;;     ;;  (map uninstall)
+        ;;      (dorun))
+        (log "INSTALL TOOLS:")
+        (->> add
+             (map apply-defaults)
+             (sort-by-installation-order)
+             (map install)
+             (dorun))
+        (log "COMPLETE!")
+        (log "UPDATE ALL TOOLS:")
+        (->> state
+             (tools-list)
+             (map apply-defaults)
+             (map (fn [tool]
+                    (let [[name _ {:keys [package-manager package-info]}] tool]
+                        (if (= :git package-manager)
+                            (do (log "\t[" name "]")
+                                (log "Updating..")
+                                (package-manager! package-manager :update package-info)
+                                (log "Done.")
+                                nil)
+                            tool))))
+             (map (fn [[_ _ context]] (:package-manager context)))
+             (filter some?)
+             (distinct)
+             (map (fn [name]
+                    (log "\t[" name "]")
+                    (log "Updating..")
+                    (package-manager! name :update nil)
+                    (log "Done.")))
+             (dorun))
+        (log "COMPLETE!")        
+        (log "SYSTEM IS ATTUNED! 🎵")
+        state))
 
-(def snapshot-file (-> "~/.dotfiles.snapshot.edn"
+(def snapshot-file (-> "~/.attune.snapshot.edn"
                        (fs/expand-home)
                        (.toString)))
 
@@ -132,8 +276,8 @@
     ([] (load-snapshot snapshot-file))
     ([f] (if (fs/exists? f)
             (some-> f
-                (slurp)
-                (edn/read-string)))))
+                    (slurp)
+                    (edn/read-string)))))
 
 (defn save-snapshot!
     ([snapshot] (save-snapshot! snapshot-file snapshot))
