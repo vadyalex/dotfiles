@@ -37,7 +37,9 @@ go-git-pull-all-sub-directories () {
 }
 
 untar () {
-	tar xfv $*
+	readonly archive=${1:?"Archive must be specified."}
+
+	pv "$archive" | tar --warning no-unknown-keyword -z --extract --file -
 }
 
 random-string() {

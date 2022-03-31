@@ -185,13 +185,9 @@ development-machine: setup-clojure setup-python
 #	Install gopass password manager
 #
 
-secrets: setup-apt-https
-	# add GPG key
-	curl -fsSL https://api.bintray.com/orgs/gopasspw/keys/gpg/public.key | sudo apt-key add -
-	# add official repository
-	echo 'deb https://dl.bintray.com/gopasspw/gopass buster main' | sudo tee /etc/apt/sources.list.d/gopass.list
-	# install!
-	$(call apt-install, gopass)
+secrets:
+	bash -c "cd /tmp && curl -fsSLo gopass.deb https://github.com/gopasspw/gopass/releases/download/v1.12.8/gopass_1.12.8_linux_amd64.deb" && \
+	$(call apt-install, "/tmp/gopass.deb")
 
 ###############################################################################
 
