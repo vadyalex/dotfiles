@@ -1,6 +1,13 @@
 #!/usr/bin/env bb
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;                          All the different tools
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (def git ["git"
           #{["git/gitconfig" :-> "~/.gitconfig"]}])
 
@@ -49,26 +56,131 @@
                 ["sl"] ["figlet"] ["cmatrix"]
                 ["borgbackup"] ["restic"]])
 
-(def systems [{:key         "rocket"
-               :description "My Debian based linux env"
-               :env         {:os              :debian
-                             :package-manager :apt}
-               :shell       shell
-               :toolbelt    toolbelt
-               :extra       []}
-              {:key         "mi"
-               :description "Xiamomi Laptop"
-               :env         {:os              :debian
-                             :package-manager :apt}
-               :shell       shell
-               :toolbelt    toolbelt
-               :extra       []}
-              {:key         "rpi"
-               :description "Raspbian"
-               :env         {:os              :debian
-                             :package-manager :apt}
-               :toolbelt    toolbelt}])
+(def apps [[:flatpak
+            #{}
+            {:package-manager       :apt
+             :package-info          "flatpak"
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Adding flathub repository")
+                                        (eshell "sudo" "flatpak" "remote-add" "--if-not-exists" "flathub" "https://flathub.org/repo/flathub.flatpakrepo")))}]
+           [:firefox
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.mozilla.firefox"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory to download files for Firefox")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "org.mozilla.firefox")))
+             :depends-on            [:flatpak]}]
+           [:skype
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.skype.Client"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory to download files for Skype")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.skype.Client")))
+             :depends-on            [:flatpak]}]
+           [:telegram
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.telegram.desktop"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory to download files for Telegram")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "org.telegram.desktop")))
+             :depends-on            [:flatpak]}]
+           [:slack
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.slack.Slack"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory to download files for Slack")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.slack.Slack")))
+             :depends-on            [:flatpak]}]
+           [:spotify
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.spotify.Client"]
+             :depends-on            [:flatpak]}]
+           [:vlc
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.videolan.VLC"]
+             :depends-on            [:flatpak]}]
+           [:transmission
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.transmissionbt.Transmission"]
+             :depends-on            [:flatpak]}]
+           [:evince
+            #{}
+            {:description           "PDF viewer"
+             :package-manager       :flatpak
+             :package-info          ["flathub" "org.gnome.Evince"]
+             :depends-on            [:flatpak]}]
+           [:LibreOffice
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.libreoffice.LibreOffice"]
+             :depends-on            [:flatpak]}]                                
+           [:apostrophe
+            #{}
+            {:description           "Beautiful markdown editor"
+             :package-manager       :flatpak
+             :package-info          ["flathub" "org.gnome.gitlab.somas.Apostrophe"]
+             :depends-on            [:flatpak]}]                                
+           [:vscode
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.visualstudio.code"]
+             :depends-on            [:flatpak]}]                                
+           [:FreeCAD
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.freecadweb.FreeCAD"]
+             :depends-on            [:flatpak]}]                                
+           [:OpenSCAD
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.openscad.OpenSCAD"]
+             :depends-on            [:flatpak]}]                                
+           [:PrusaSlicer
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.prusa3d.PrusaSlicer"]
+             :depends-on            [:flatpak]}]])
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;                          All the system states to attune
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def systems [{:key             "rocket"
+               :description     "My Debian based linux env"
+               :env             {:os              :debian
+                                 :package-manager :apt}
+               :shell           shell
+               :toolbelt        toolbelt
+               :apps            apps}
+              {:key             "mi"
+               :description     "Xiamomi Laptop"
+               :env             {:os              :debian
+                                 :package-manager :apt}
+               :shell           shell
+               :toolbelt        toolbelt
+               :extra           []
+               :desktop-apps    apps}
+              {:key             "rpi"
+               :description     "Raspbian"
+               :env             {:os              :debian
+                                 :package-manager :apt}
+               :shell           shell
+               :toolbelt        toolbelt}])
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require '[clojure.string :as str])
 (require '[clojure.data :refer [diff]])
@@ -133,13 +245,30 @@
                         (when-some [out (eshell "git" "clone" "--depth=1" url expanded-target)]
                             (print out)
                             out)))
-        :uninstall true
+        :uninstall (if-let [expanded-target (expand-home target)]
+                    (when (fs/exists? expanded-target)
+                        (log "Remove manually" expanded-target)
+                        true))
+        nil))
+
+(defn flatpak [action [hub app]]
+    (case action
+        :update  (when-some [out (eshell "sudo" "flatpak" "update" "-y")]
+                            (print out)
+                            out)
+        :install (when-some [out (eshell "sudo" "flatpak" "install" "-y" hub app)]
+                    (print out)
+                    out)
+        :uninstall (when-some [out (eshell "sudo" "flatpak" "uninstall" "-y" app)]
+                    (print out)
+                    out)
         nil))
 
 (defn package-manager! [name action package-info] (case name 
-                                                :apt (apt action package-info)
-                                                :git (git action package-info)
-                                                nil))
+                                                    :apt        (apt action package-info)
+                                                    :git        (git action package-info)
+                                                    :flatpak    (flatpak action package-info)
+                                                    nil))
 
 (defn sync-configs [configs]
     (doseq [[origin _ target] configs]
@@ -167,7 +296,8 @@
 (defn tools-list [state]
     (let [keys-to-ignore [:key :description :env]]
         (->> (apply dissoc state keys-to-ignore)
-             (mapcat second))))
+             (mapcat second)
+             (into (hash-set)))))
 
 (defn dependencies-graph [state]
     (->> state
@@ -212,12 +342,6 @@
          (map-indexed (fn [i name] [name i]))
          (into (hash-map))))
 
-(defn apply-context-defaults
-    "Merge context defaults into tool's context"
-    [context-defaults [name configs context]]
-    [name configs (merge context-defaults
-                         context)])
-
 (defn attune [snapshot state]
     (log "ATTUNE SYSTEM TO STATE" (str "'" (:key state) "'") "..")
     (let [[remove add _]               (diff (tools-list snapshot) 
@@ -226,14 +350,13 @@
           sort-by-dependency-index     (partial sort-by (fn [[name _ _]] (get dependencies-index-map name)))
           sort-by-installation-order   (partial sort-by-dependency-index <)
           sort-by-uninstallation-order (partial sort-by-dependency-index >)
-          context-defaults             {:package-manager (get-in state [:env :package-manager])}
-          apply-defaults               (partial apply-context-defaults context-defaults)]
+          default-context              {:package-manager (get-in state [:env :package-manager])}
+          apply-defaults               (fn [[name configs context]] [name configs (merge default-context context)])]
         ;; (log "UNINSTALL:")
         ;; (->> remove
         ;;      (map apply-defaults)
         ;;      (sort-by-uninstallation-order)
-        ;;      (map println)
-        ;;     ;;  (map uninstall)
+        ;;      (map uninstall)
         ;;      (dorun))
         (log "INSTALL TOOLS:")
         (->> add
