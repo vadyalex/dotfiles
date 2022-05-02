@@ -188,6 +188,7 @@
 (require '[clojure.java.io :as io])
 (require '[clojure.pprint :refer [pprint]])
 (require '[babashka.fs :as fs])
+(require '[babashka.process :refer [process]])
 
 
 (defn log [& args]
@@ -197,10 +198,8 @@
         (apply println (concat [cyan] args [reset]))))
 
 (defn eshell [& args]
-    (let [{:keys [exit out err]} (apply sh args)]
-        (if (zero? exit)
-            out
-            (println out err))))
+    (let [{:keys [exit]} @(process args {:inherit true })]
+        (if (zero? exit) 0)))
 
 (defn expand-home [target] (some->> target
                                     (fs/expand-home)
@@ -214,54 +213,43 @@
 
 (defn apt [action package]
     (case action
-        :update  (when-some [out (eshell "sudo" "apt" "update")]
-                    (print out)
-                    (when-some [out (eshell "sudo" "apt" "upgrade" "-y")]
-                        (print out)
-                        (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
-                            (print out)
-                            out)))
-        :install (when-some [out (eshell "sudo" "apt" "update")]
-                    (print out)
-                    (when-some [out (eshell "sudo" "apt" "install" "-y" package)]
-                        (print out)
-                        (when-some [out (eshell "sudo" "apt" "autoremove" "-y")]
-                            (print out)
-                            out)))
-        :uninstall (when-some [out (eshell "sudo" "apt" "purge" "-y" package)]
-                        (print out)
-                        out)
+        :update  (and (eshell "sudo" "apt" "update")
+                      (eshell "sudo" "apt" "upgrade" "-y")
+                      (eshell "sudo" "apt" "autoremove" "-y"))
+
+        :install (and (eshell "sudo" "apt" "update")
+                      (eshell "sudo" "apt" "install" "-y" package)
+                      (eshell "sudo" "apt" "autoremove" "-y"))
+
+        :uninstall (eshell "sudo" "apt" "purge" "-y" package)
+
         nil))
 
 (defn git [action [url target]]
     (case action
-        :update  (if-let [expanded-target (expand-home target)]
+        :update  (if-some [expanded-target (expand-home target)]
+                    (if (fs/exists? expanded-target)
+                        (eshell "git" "-C" expanded-target "pull" "--rebase" "--autostash")))
+
+        :install (if-some [expanded-target (expand-home target)]
+                    (if (fs/exists? expanded-target)
+                        (eshell "git" "clone" "--depth=1" url expanded-target)))
+
+        :uninstall (if-some [expanded-target (expand-home target)]
                     (when (fs/exists? expanded-target)
-                        (when-some [out (eshell "git" "-C" expanded-target "pull" "--rebase" "--autostash")]
-                            (print out)
-                            out)))
-        :install (if-let [expanded-target (expand-home target)]
-                    (when-not (fs/exists? expanded-target)
-                        (when-some [out (eshell "git" "clone" "--depth=1" url expanded-target)]
-                            (print out)
-                            out)))
-        :uninstall (if-let [expanded-target (expand-home target)]
-                    (when (fs/exists? expanded-target)
-                        (log "Remove manually" expanded-target)
-                        true))
+                          (log "Remove manually" expanded-target)
+                          true))
+
         nil))
 
 (defn flatpak [action [hub app]]
     (case action
-        :update  (when-some [out (eshell "sudo" "flatpak" "update" "-y")]
-                            (print out)
-                            out)
-        :install (when-some [out (eshell "sudo" "flatpak" "install" "-y" hub app)]
-                    (print out)
-                    out)
-        :uninstall (when-some [out (eshell "sudo" "flatpak" "uninstall" "-y" app)]
-                    (print out)
-                    out)
+        :update  (eshell "sudo" "flatpak" "update" "-y")
+
+        :install (eshell "sudo" "flatpak" "install" "-y" hub app)
+
+        :uninstall (eshell "sudo" "flatpak" "uninstall" "-y" app)
+
         nil))
 
 (defn package-manager! [name action package-info] (case name 
