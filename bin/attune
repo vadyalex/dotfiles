@@ -263,7 +263,6 @@
         (sym-link origin target)
         (log "\t" origin "->" target)))
 
-
 (defn install [[name configs context]]
     (let [{:keys [package-manager package-info]} context
           install-tool (partial package-manager! package-manager :install (or package-info name))]
@@ -279,6 +278,22 @@
             (when-some [post-install-hook-fn (:post-install-hook-fn context)]
                 (log ":post-install-hook-fn")
                 ((eval post-install-hook-fn)))
+        (log "Done."))))
+
+(defn uninstall [[name configs context]]
+    (let [{:keys [package-manager package-info]} context
+          install-tool (partial package-manager! package-manager :install (or package-info name))]
+        (log "\t[" name "]")
+        (log "Uninstalling..")
+        (when-some [pre-uninstall-hook-fn (:pre-uninstall-hook-fn context)]
+            (log ":pre-uninstall-hook-fn")
+            ((eval pre-uninstall-hook-fn)))
+        (when (install-tool)   
+            (when-not (empty? configs)
+                (log "Remove sym-linked configs manually.."))         
+            (when-some [post-uninstall-hook-fn (:post-uninstall-hook-fn context)]
+                (log ":post-uninstall-hook-fn")
+                ((eval post-uninstall-hook-fn)))
         (log "Done."))))
 
 (defn tools-list [state]
@@ -340,12 +355,12 @@
           sort-by-uninstallation-order (partial sort-by-dependency-index >)
           default-context              {:package-manager (get-in state [:env :package-manager])}
           apply-defaults               (fn [[name configs context]] [name configs (merge default-context context)])]
-        ;; (log "UNINSTALL:")
-        ;; (->> remove
-        ;;      (map apply-defaults)
-        ;;      (sort-by-uninstallation-order)
-        ;;      (map uninstall)
-        ;;      (dorun))
+        (log "UNINSTALL TOOLS:")
+        (->> remove
+             (map apply-defaults)
+             (sort-by-uninstallation-order)
+             (map uninstall)
+             (dorun))
         (log "INSTALL TOOLS:")
         (->> add
              (map apply-defaults)
