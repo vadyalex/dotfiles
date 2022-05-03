@@ -48,7 +48,7 @@
                 ["ranger"] ["caca-utils"] ["highlight"] ["atool"] ["w3m"] ["poppler-utils"] ["mediainfo"]
                 ["chafa"]
                 ["tree"]
-                ["speedometer"]
+                ["speedometer"] ["bmon"]
                 ["neofetch"]
                 ["jq"] ["miller"]
                 ["lolcat"]
