@@ -207,9 +207,9 @@
     (let [{:keys [exit]} @(process args {:inherit true })]
         (if (zero? exit) 0)))
 
-(defn expand-home [target] (some->> target
-                                    (fs/expand-home)
-                                    (.toString)))
+(defn expand-home [target] (some-> target
+                                   (fs/expand-home)
+                                   (.toString)))
 
 (defn sym-link [origin target]
     (when-some [expanded-target (expand-home target)]
@@ -234,17 +234,17 @@
 (defn git [action [url target]]
     (case action
         :update  (if-some [expanded-target (expand-home target)]
-                    (if (fs/exists? expanded-target)
+                    (when (fs/exists? expanded-target)
                         (eshell "git" "-C" expanded-target "pull" "--rebase" "--autostash")))
 
         :install (if-some [expanded-target (expand-home target)]
-                    (if (fs/exists? expanded-target)
+                    (when-not (fs/exists? expanded-target)
                         (eshell "git" "clone" "--depth=1" url expanded-target)))
 
         :uninstall (if-some [expanded-target (expand-home target)]
                     (when (fs/exists? expanded-target)
-                          (log "Remove manually" expanded-target)
-                          true))
+                        (log "Remove manually" expanded-target)
+                        true))
 
         nil))
 
@@ -258,11 +258,15 @@
 
         nil))
 
-(defn package-manager! [name action package-info] (case name 
-                                                    :apt        (apt action package-info)
-                                                    :git        (git action package-info)
-                                                    :flatpak    (flatpak action package-info)
-                                                    nil))
+(defn package-manager! [name action package-info] 
+    (case name
+        :apt        (apt action package-info)
+
+        :git        (git action package-info)
+
+        :flatpak    (flatpak action package-info)
+        
+        nil))
 
 (defn sync-configs [configs]
     (doseq [[origin _ target] configs]
