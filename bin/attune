@@ -9,7 +9,7 @@
 
 
 (def git ["git"
-          #{["git/gitconfig" :-> "~/.gitconfig"]}])
+          #{["~/.dotfiles/git/gitconfig" :-> "~/.gitconfig"]}])
 
 (def zsh [:zsh
           #{}
@@ -23,9 +23,9 @@
                                                     (eshell "chsh" "-s" "/bin/bash")))}])
 
 (def oh-my-zsh [:oh-my-zsh
-                 #{["bin"            :-> "~/.bin"]
-                   ["zsh/aliases"    :-> "~/.aliases"]
-                   ["zsh/zshrc"      :-> "~/.zshrc"]}
+                 #{["~/.dotfiles/bin"            :-> "~/.bin"]
+                   ["~/.dotfiles/zsh/aliases"    :-> "~/.aliases"]
+                   ["~/.dotfiles/zsh/zshrc"      :-> "~/.zshrc"]}
                  {:package-manager   :git
                   :package-info      ["https://github.com/robbyrussell/oh-my-zsh.git" "~/.oh-my-zsh"]
                   :depends-on        ["git"]}])
@@ -212,10 +212,12 @@
                                    (.toString)))
 
 (defn sym-link [origin target]
-    (when-some [expanded-target (expand-home target)]
-        (when-not (fs/exists? expanded-target)
-            (io/make-parents expanded-target)
-            (fs/create-sym-link expanded-target origin))))
+    (let [expanded-origin (expand-home origin)
+          expanded-target (expand-home target)]
+        (if (and expanded-origin expanded-target)
+            (when-not (fs/exists? expanded-target)
+                (io/make-parents expanded-target)
+                (fs/create-sym-link expanded-target expanded-origin)))))
 
 (defn apt [action package]
     (case action
