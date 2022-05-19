@@ -178,6 +178,12 @@
                :env             {:os              :debian
                                  :package-manager :apt}
                :shell           shell
+               :toolbelt        toolbelt}
+              {:key             "orion"
+               :description     "Orion giant server!"
+               :env             {:os              :debian
+                                 :package-manager :apt}
+               :shell           shell
                :toolbelt        toolbelt}])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
