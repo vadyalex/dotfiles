@@ -56,6 +56,26 @@
                 ["sl"] ["figlet"] ["cmatrix"]
                 ["borgbackup"] ["restic"]])
 
+(def zfs [[:debian-contrib-repository
+           #{}
+           {:package-info                "software-properties-common"
+            :post-install-hook-fn        '(fn [] (and (eshell "sudo" "apt-add-repository" "contrib")
+                                                      (eshell "sudo" "apt" "update")))}]
+          [:linux-headers
+           #{}
+           {:package-info                "linux-headers-amd64"
+            :depends-on                  [:debian-contrib-repository]}]
+          ["zfs-zed"
+           #{}
+           {:depends-on                  [:linux-headers]}]
+          ["zfs-dkms"
+           #{}
+           {:post-uninstall-hook-fn      '(fn [] (eshell "sudo" "modprobe" "zfs"))
+            :depends-on                  [:linux-headers]}]
+          ["zfsutils-linux"
+           #{}
+           {:depends-on                  ["zfs-dkms"]}]])
+
 (def apps [[:flatpak
             #{}
             {:package-manager       :apt
@@ -182,9 +202,11 @@
               {:key             "orion"
                :description     "Orion giant server!"
                :env             {:os              :debian
+                                 :arch            :amd64
                                  :package-manager :apt}
                :shell           shell
-               :toolbelt        toolbelt}])
+               :toolbelt        toolbelt
+               :zfs             zfs}])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
