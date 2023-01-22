@@ -25,6 +25,7 @@ REPOSITORY=sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname)
 printf "\n\t${YELLOW}Backing up home to '${REPOSITORY}'..${NC}\n\n"
 
 restic                                                     \
+    --cleanup-cache                                        \
     --repo $REPOSITORY                                     \
     --one-file-system                                      \
     --exclude-caches                                       \
