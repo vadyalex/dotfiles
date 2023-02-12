@@ -32,6 +32,12 @@
 
 (def shell [git zsh oh-my-zsh])
 
+(def restic ["restic"
+             #{["~/.dotfiles/restic/go-backup-my-home"         :-> "~/.local/bin/go-backup-my-home"]
+               ["~/.dotfiles/restic/go-backup-my-home.desktop" :-> "~/.local/share/applications/go-backup-my-home.desktop"]
+               ["~/.dotfiles/restic/go-backup-list-snapshots"  :-> "~/.local/bin/go-backup-list-snapshots"]
+               ["~/.dotfiles/restic/go-backup-mount-snapshots" :-> "~/.local/bin/go-backup-mount-snapshots"]}])
+
 (def toolbelt [["curl"] ["wget"]
                 ["rsync"]
                 ["mosh"]
@@ -54,7 +60,7 @@
                 ["lolcat"]
                 ["cowsay"]
                 ["sl"] ["figlet"] ["cmatrix"]
-                ["borgbackup"] ["restic"]])
+                restic])
 
 (def apps [[:flatpak
             #{}
@@ -71,6 +77,7 @@
                                         (log "Allow access to home directory to download files for Firefox")
                                         (eshell "sudo" "flatpak" "override" "--filesystem=home" "org.mozilla.firefox")))
              :depends-on            [:flatpak]}]
+
            [:skype
             #{}
             {:package-manager       :flatpak
@@ -164,7 +171,9 @@
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt
+	           :desktop		    [["pavucontrol"]]
                :apps            apps}
+
               {:key             "mi"
                :description     "Xiamomi Laptop"
                :env             {:os              :debian
@@ -173,12 +182,14 @@
                :toolbelt        toolbelt
                :extra           []
                :desktop-apps    apps}
+
               {:key             "rpi"
                :description     "Raspbian"
                :env             {:os              :debian
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt}
+
               {:key             "orion"
                :description     "Orion giant server!"
                :env             {:os              :debian
@@ -362,20 +373,20 @@
     (let [[remove add _]               (diff (tools-list snapshot) 
                                              (tools-list state))
           dependencies-index-map       (-> state (dependencies-list) (index-dependencies))
-          sort-by-dependency-index     (partial sort-by (fn [[name _ _]] (get dependencies-index-map name)))
+          sort-by-dependency-index     (partial sort-by (fn [[name _ _]] (get dependencies-index-map name 0)))
           sort-by-installation-order   (partial sort-by-dependency-index <)
           sort-by-uninstallation-order (partial sort-by-dependency-index >)
           default-context              {:package-manager (get-in state [:env :package-manager])}
-          apply-defaults               (fn [[name configs context]] [name configs (merge default-context context)])]
+          apply-default-context        (fn [[name cfgs ctx]] [name cfgs (merge {} default-context ctx)])]
         (log "UNINSTALL TOOLS:")
         (->> remove
-             (map apply-defaults)
+             (map apply-default-context)
              (sort-by-uninstallation-order)
              (map uninstall)
              (dorun))
         (log "INSTALL TOOLS:")
         (->> add
-             (map apply-defaults)
+             (map apply-default-context)
              (sort-by-installation-order)
              (map install)
              (dorun))
@@ -383,7 +394,7 @@
         (log "UPDATE ALL TOOLS:")
         (->> state
              (tools-list)
-             (map apply-defaults)
+             (map apply-default-context)
              (map (fn [tool]
                     (let [[name _ {:keys [package-manager package-info]}] tool]
                         (if (= :git package-manager)

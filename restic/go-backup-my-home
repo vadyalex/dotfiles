@@ -8,19 +8,25 @@ IFS=$'\n\t'
 #       TIPS!
 #
 # init repository first time for this machine
-# restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) init
+# restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) init
 #
 # list available snapshots for this machine
-# restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) snapshots
+# restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) snapshots
 #
 # mount remote repository to browse files
-# mkdir /tmp/backup && restic --repo sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname) mount /tmp/backup
+# mkdir /tmp/backup && restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) mount /tmp/backup
 #
 
 YELLOW='\033[33m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-REPOSITORY=sftp:vlad@pegasus.domus:/mnt/mirror/rbackups/$(hostname)
+if [[ -z "${RESTIC_PASSWORD}" ]]; then
+    printf "\n\t${RED}RESTIC_PASSWORD env var is not set!${NC}\n\n"
+    exit 1
+fi
+
+REPOSITORY=sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname)
 
 printf "\n\t${YELLOW}Backing up home to '${REPOSITORY}'..${NC}\n\n"
 
@@ -48,6 +54,7 @@ restic                                                     \
     --keep-weekly 5                                        \
     --keep-monthly 12                                      \
     --keep-yearly 3                                        \
+    --prune                                                \
     forget                                                 \
 &&                                                         \
 printf "${YELLOW}Repository stats..${NC}\n"                \

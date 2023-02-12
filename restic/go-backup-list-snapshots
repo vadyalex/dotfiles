@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+######################################################################
+#
+#       TIPS!
+#
+# init repository first time for this machine
+# restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) init
+#
+# list available snapshots for this machine
+# restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) snapshots
+#
+# mount remote repository to browse files
+# mkdir /tmp/backup && restic --repo sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname) mount /tmp/backup
+#
+
+YELLOW='\033[33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+if [[ -z "${RESTIC_PASSWORD}" ]]; then
+    printf "\n\t${RED}RESTIC_PASSWORD env var is not set!${NC}\n\n"
+    exit 1
+fi
+
+REPOSITORY=sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname)
+
+printf "\n\t${YELLOW}Listing snapshots in '${REPOSITORY}'..${NC}\n\n"
+
+restic --repo $REPOSITORY snapshots | cowsay -f moose -n | lolcat
