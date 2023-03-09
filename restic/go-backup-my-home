@@ -28,39 +28,39 @@ fi
 
 REPOSITORY=sftp:vlad@solaris.domus:/mnt/bank/backups/rbackups/$(hostname)
 
-printf "\n\t${YELLOW}Backing up home to '${REPOSITORY}'..${NC}\n\n"
-
-restic                                                     \
-    --cleanup-cache                                        \
-    --repo $REPOSITORY                                     \
-    --one-file-system                                      \
-    --exclude-caches                                       \
-    --exclude "$HOME/.?*"                                  \
-    --exclude "$HOME/Projects/__containers"                \
-    backup     $HOME                                       \
-&&                                                         \
-printf "${YELLOW}Checking..${NC}\n"                        \
-&&                                                         \
-restic                                                     \
-    --repo $REPOSITORY                                     \
-    check                                                  \
-&&                                                         \
-printf "${YELLOW}Purgin old shapshots..${NC}\n"            \
-&&                                                         \
-restic                                                     \
-    --repo $REPOSITORY                                     \
-    --keep-last 4                                          \
-    --keep-daily 7                                         \
-    --keep-weekly 5                                        \
-    --keep-monthly 12                                      \
-    --keep-yearly 3                                        \
-    --prune                                                \
-    forget                                                 \
-&&                                                         \
-printf "${YELLOW}Repository stats..${NC}\n"                \
-&&                                                         \
-restic                                                     \
-    --repo $REPOSITORY                                     \
-    stats                                                  \
-&&                                                         \
+printf "\n\t${YELLOW}Backing up home to '${REPOSITORY}'..${NC}\n\n" \
+&&                                                                  \
+restic backup $HOME                                                 \                                                    \
+    --cleanup-cache                                                 \
+    --repo $REPOSITORY                                              \
+    --one-file-system                                               \
+    --exclude-caches                                                \
+    --exclude "$HOME/.?*"                                           \
+    --exclude "$HOME/Projects/__containers"                         \
+&&                                                                  \
+printf "${YELLOW}Checking '${REPOSITORY}'..${NC}\n"                 \
+&&                                                                  \
+restic check                                                        \
+    --repo $REPOSITORY                                              \
+&&                                                                  \
+printf "${YELLOW}Forget old shapshots in '${REPOSITORY}'..${NC}\n"  \
+&&                                                                  \
+restic forget                                                       \
+    --repo $REPOSITORY                                              \
+    --keep-last 4                                                   \
+    --keep-daily 7                                                  \
+    --keep-weekly 5                                                 \
+    --keep-monthly 12                                               \
+    --keep-yearly 10                                                \
+&&                                                                  \
+printf "${YELLOW}Prune unused data in '${REPOSITORY}'..${NC}\n"     \
+&&                                                                  \
+restic prune                                                        \
+    --repo $REPOSITORY                                              \
+&&                                                                  \
+printf "${YELLOW}Repository '${REPOSITORY}' stats:${NC}\n"          \
+&&                                                                  \
+restic stats                                                        \
+    --repo $REPOSITORY                                              \
+&&                                                                  \
 cowsay -f moose -b ' Backup complete! ' | lolcat
