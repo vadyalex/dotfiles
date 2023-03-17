@@ -165,6 +165,7 @@
                :shell           shell
                :toolbelt        toolbelt
                :apps            apps}
+
               {:key             "mi"
                :description     "Xiamomi Laptop"
                :env             {:os              :debian
@@ -173,18 +174,41 @@
                :toolbelt        toolbelt
                :extra           []
                :desktop-apps    apps}
+
               {:key             "rpi"
                :description     "Raspbian"
                :env             {:os              :debian
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt}
-              {:key             "orion"
-               :description     "Orion giant server!"
-               :env             {:os              :debian
-                                 :package-manager :apt}
+
+              {:key             "pine"
+               :description     "PineBook Pro running Manjaro!"
+               :env             {:os              :arch
+                                 :package-manager :pacman}
                :shell           shell
-               :toolbelt        toolbelt}])
+               :toolbelt        toolbelt
+               :desktop	        [["i3-wm"
+                                  #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
+                                  {}]
+                                 ["i3status"
+                                  #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}
+                                  {}]
+                                 ["i3lock"]
+                                 ["rofi"
+                                  #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
+                                  {}]
+                                 ["network-manager-applet"]
+                                 ["blueman"]
+                                 ["ibus"]
+                                 ["volumeicon"]
+                                 ["nautilus"] ["gvfs-smb"]
+                                 ["xorg-xev"]
+                                 ["feh"]
+                                 ["vim"]
+                                ]
+              }
+              ])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -260,13 +284,26 @@
 
         nil))
 
+(defn pacman [action package]
+    (case action
+        :update    (and (eshell "sudo" "pacman" "-Syyu" "--noconfirm")
+                        (eshell "sudo" "pacman" "-Sy" "--noconfirm" package))
+
+        :install   (eshell "sudo" "pacman" "-Sy" "--noconfirm" package)
+	
+	:uninstall (eshell "sudo" "pacman" "-Rsy" "--noconfirm" package)
+
+	nil))
+
 (defn package-manager! [name action package-info] 
     (case name
-        :apt        (apt action package-info)
+        :apt        (apt     action package-info)
 
-        :git        (git action package-info)
+        :git        (git     action package-info)
 
         :flatpak    (flatpak action package-info)
+	
+	:pacman     (pacman  action package-info)
         
         nil))
 
@@ -366,7 +403,7 @@
           sort-by-installation-order   (partial sort-by-dependency-index <)
           sort-by-uninstallation-order (partial sort-by-dependency-index >)
           default-context              {:package-manager (get-in state [:env :package-manager])}
-          apply-defaults               (fn [[name configs context]] [name configs (merge default-context context)])]
+          apply-defaults               (fn [[name configs context]] [name configs (merge default-context (or context {}))])]
         (log "UNINSTALL TOOLS:")
         (->> remove
              (map apply-defaults)
