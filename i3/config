@@ -238,5 +238,8 @@ exec --no-startup-id ibus-daemon
 # Set fancy background
 exec --no-startup-id ~/.bin/go-paint-my-desktop
 
+# Start volume control
+exec --no-startup-id volumeicon
+
 # Make Nautilus stop shoding desktop icons
 #exec --no-startup-id gsettings set org.gnome.desktop.background show-desktop-icons false
