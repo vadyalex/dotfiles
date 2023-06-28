@@ -2,8 +2,8 @@
 # vadyalex i3wm config
 #
 
-# Use ALT key as mod key
-set $mod Mod1
+# Use SUPER key as mod key
+set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -236,8 +236,8 @@ exec --no-startup-id ibus-daemon
 # Set fancy background
 exec --no-startup-id ~/.bin/go-paint-my-desktop
 
-# Start Dropbox
-exec --no-startup-id dropbox start
+# Start volume control
+exec --no-startup-id volumeicon
 
 # Make Nautilus stop shoding desktop icons
 exec --no-startup-id gsettings set org.gnome.desktop.background show-desktop-icons false
