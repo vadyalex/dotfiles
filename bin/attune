@@ -58,8 +58,7 @@
 
 (def apps [[:flatpak
             #{}
-            {:package-manager       :apt
-             :package-info          "flatpak"
+            {:package-info          "flatpak"
              :post-install-hook-fn  '(fn [] (do 
                                         (log "Adding flathub repository")
                                         (eshell "sudo" "flatpak" "remote-add" "--if-not-exists" "flathub" "https://flathub.org/repo/flathub.flatpakrepo")))}]
@@ -70,6 +69,16 @@
              :post-install-hook-fn  '(fn [] (do 
                                         (log "Allow access to home directory to download files for Firefox")
                                         (eshell "sudo" "flatpak" "override" "--filesystem=home" "org.mozilla.firefox")))
+             :depends-on            [:flatpak]}]
+           [:Brave
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.brave.Browser"]
+             :depends-on            [:flatpak]}]
+           [:Chrome
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.google.Chrome"]
              :depends-on            [:flatpak]}]
            [:skype
             #{}
@@ -185,7 +194,8 @@
               {:key             "pine"
                :description     "PineBook Pro running Manjaro!"
                :env             {:os              :arch
-                                 :package-manager :pacman}
+                                 :package-manager :pacman
+                                 :architecture    :aarch64}
                :shell           shell
                :toolbelt        toolbelt
                :desktop	        [["i3-wm"
@@ -207,6 +217,7 @@
                                  ["feh"]
                                  ["vim"]
                                 ]
+               :apps            apps
               }
               ])
 
@@ -286,14 +297,14 @@
 
 (defn pacman [action package]
     (case action
-        :update    (and (eshell "sudo" "pacman" "-Syyu" "--noconfirm")
+        :update    (and (eshell "sudo" "pacman" "-Syu" "--noconfirm")
                         (eshell "sudo" "pacman" "-Sy" "--noconfirm" package))
 
         :install   (eshell "sudo" "pacman" "-Sy" "--noconfirm" package)
 	
-	:uninstall (eshell "sudo" "pacman" "-Rsy" "--noconfirm" package)
+        :uninstall (eshell "sudo" "pacman" "-Rsy" "--noconfirm" package)
 
-	nil))
+        nil))
 
 (defn package-manager! [name action package-info] 
     (case name
