@@ -56,6 +56,34 @@
                 ["sl"] ["figlet"] ["cmatrix"]
                 ["borgbackup"] ["restic"]])
 
+(def i3wm [; X server
+           ["xserver-xorg"]
+	   ["xserver-xorg-input-all"]
+           ["xserver-xorg-input-synaptics"]
+           ; login manager
+	   ["lightdm"]
+	   ["lightdm-gtk-greeter"]
+	   ["lightdm-gtk-greeter-settings"]
+	   ["i3-wm"
+            #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
+            {}]
+           ["i3status"
+            #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}
+            {}]
+           ["i3lock"]
+           ["rofi"
+            #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
+            {}]
+           ["network-manager-applet"]
+           ["blueman"]
+           ["ibus"]
+           ["volumeicon"]
+           ["nautilus"] ["gvfs-smb"]
+           ["xorg-xev"]
+           ["feh"]
+          ])
+
+
 (def apps [[:flatpak
             #{}
             {:package-info          "flatpak"
@@ -198,27 +226,18 @@
                                  :architecture    :aarch64}
                :shell           shell
                :toolbelt        toolbelt
-               :desktop	        [["i3-wm"
-                                  #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
-                                  {}]
-                                 ["i3status"
-                                  #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}
-                                  {}]
-                                 ["i3lock"]
-                                 ["rofi"
-                                  #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
-                                  {}]
-                                 ["network-manager-applet"]
-                                 ["blueman"]
-                                 ["ibus"]
-                                 ["volumeicon"]
-                                 ["nautilus"] ["gvfs-smb"]
-                                 ["xorg-xev"]
-                                 ["feh"]
-                                 ["vim"]
-                                ]
+	       :desktop		i3wm
                :apps            apps
               }
+
+             {:key             "titan"
+               :description     "My Debian based workstation"
+               :env             {:os              :debian
+                                 :package-manager :apt}
+               :shell           shell
+               :toolbelt        toolbelt
+               :desktop         i3wm	
+               :apps            apps}
               ])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
