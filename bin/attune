@@ -245,7 +245,9 @@
                :description     "MacBook Pro work laptop"
                :env             {:os              :macOS
                                  :package-manager :brew}
-               :mac-dev-tools   [["tmux"]
+               :mac-dev-tools   [["lolcat"]
+                                 ["cowsay"]
+                                 ["tmux"]
                                  ["neovim"]]}])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

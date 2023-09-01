@@ -28,5 +28,12 @@ else
 fi
 
 
-
-cowsay ' Update complete! ' | lolcat
+if command -v cowsay > /dev/null; then
+  if command -v lolcat > /dev/null; then
+    cowsay ' Update complete! ' | lolcat
+  else
+    cowsay ' Update complete! '
+  fi
+else
+  echo ' Update complete! '
+fi
