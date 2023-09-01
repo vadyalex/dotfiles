@@ -307,12 +307,19 @@
 
 (defn flatpak [action [hub app]]
     (case action
-        :update  (eshell "sudo" "flatpak" "update" "-y")
-
-        :install (eshell "sudo" "flatpak" "install" "-y" hub app)
-
+        :update    (eshell "sudo" "flatpak" "update" "-y")
+        :install   (eshell "sudo" "flatpak" "install" "-y" hub app)
         :uninstall (eshell "sudo" "flatpak" "uninstall" "-y" app)
+        nil))
 
+(defn brew [action package]
+    (case action
+        :update    (and (eshell "brew" "update")
+                        (eshell "brew" "upgrade")
+                        (eshell "brew" "cleanup" "--prune=all"))
+        :install   (eshell "brew" "install" package)
+        :uninstall (and (eshell "brew" "uninstall" package)
+                        (eshell "brew" "cleanup" "--prune=all"))
         nil))
 
 (defn pacman [action package]
@@ -335,7 +342,9 @@
         :flatpak    (flatpak action package-info)
 
         :pacman     (pacman  action package-info)
-        
+
+        :brew       (brew action package-info)
+
         nil))
 
 (defn sync-configs [configs]
