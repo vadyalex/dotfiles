@@ -276,6 +276,11 @@
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ]
+               :nerd-fonts      [["font-jetbrains-mono-nerd-font"
+                                  []
+                                    {:pre-install-hook-fn  '(fn [] (do
+                                                                    (log "Add cask-fonts..")
+                                                                    (eshell "brew" "tap" "homebrew/cask-fonts")))}]]
                :mac-dev-tools   [["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
