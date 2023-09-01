@@ -415,13 +415,13 @@
 
 (defn uninstall [[name configs context]]
     (let [{:keys [package-manager package-info]} context
-          install-tool (partial package-manager! package-manager :install (or package-info name))]
+          uninstall-tool (partial package-manager! package-manager :uninstall (or package-info name))]
         (log "\t[" name "]")
         (log "Uninstalling..")
         (when-some [pre-uninstall-hook-fn (:pre-uninstall-hook-fn context)]
             (log ":pre-uninstall-hook-fn")
             ((eval pre-uninstall-hook-fn)))
-        (when (install-tool)   
+        (when (uninstall-tool)
             (when-not (empty? configs)
                 (log "Remove sym-linked configs manually.."))         
             (when-some [post-uninstall-hook-fn (:post-uninstall-hook-fn context)]
