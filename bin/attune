@@ -184,7 +184,13 @@
                :env             {:os              :debian
                                  :package-manager :apt}
                :shell           shell
-               :toolbelt        toolbelt}])
+               :toolbelt        toolbelt}
+              {:key             "bankbook"
+               :description     "MacBook Pro work laptop"
+               :env             {:os              :macOS
+                                 :package-manager :brew}
+               :mac-dev-tools   [["tmux"]
+                                 ["neovim"]]}])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
