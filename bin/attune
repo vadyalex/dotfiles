@@ -245,6 +245,37 @@
                :description     "MacBook Pro work laptop"
                :env             {:os              :macOS
                                  :package-manager :brew}
+               :mac-apps        [["alfred"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ; Terminal emulators
+                                 ["iterm2"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["warp"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["alacritty"
+                                  #{["~/.dotfiles/alacritty/alacritty.yml" :-> "~/.config/alacritty/alacritty.yml"]
+                                  {:package-manager        :brew-cask
+                                   :post-install-hook-fn  '(fn [] (do
+                                                                    (log "Whitelist Alacritty..")
+                                                                    (eshell "xattr" "-rd" "com.apple.quarantine" "/Applications/Alacritty.app")))}]
+                                 ; Many different browsers!
+                                 ["firefox"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["google-chrome"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["brave-browser"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ; Dev tool apps
+                                 ["pycharm-ce"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ]
                :mac-dev-tools   [["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
