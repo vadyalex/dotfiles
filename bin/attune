@@ -256,7 +256,7 @@
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ["alacritty"
-                                  #{["~/.dotfiles/alacritty/alacritty.yml" :-> "~/.config/alacritty/alacritty.yml"]
+                                  #{["~/.dotfiles/alacritty/alacritty.yml" :-> "~/.config/alacritty/alacritty.yml"]}
                                   {:package-manager        :brew-cask
                                    :post-install-hook-fn  '(fn [] (do
                                                                     (log "Whitelist Alacritty..")
@@ -274,22 +274,8 @@
                                  ; Dev tool apps
                                  ["pycharm-ce"
                                   #{}
-                                  {:package-manager :brew-casc}]
-                                 ["intellij-idea-ce"
-                                  #{}
-                                  {:package-manager :brew-cask}]
-                                 ["charles"
-                                  #{}
-                                  {:package-manager :brew-cask}]
-                                 ["docker"
-                                  #{}
                                   {:package-manager :brew-cask}]
                                  ]
-               :nerd-fonts      [["font-jetbrains-mono-nerd-font"
-                                  []
-                                    {:pre-install-hook-fn  '(fn [] (do
-                                                                    (log "Add cask-fonts..")
-                                                                    (eshell "brew" "tap" "homebrew/cask-fonts")))}]]
                :mac-dev-tools   [["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
