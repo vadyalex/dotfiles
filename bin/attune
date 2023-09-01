@@ -241,6 +241,13 @@
                :apps            apps}
               ])
 
+              {:key             "bankbook"
+               :description     "MacBook Pro work laptop"
+               :env             {:os              :macOS
+                                 :package-manager :brew}
+               :mac-dev-tools   [["tmux"]
+                                 ["neovim"]]}])
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require '[clojure.string :as str])
