@@ -275,6 +275,9 @@
                                  ["pycharm-ce"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["charles"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ]
                :nerd-fonts      [["font-jetbrains-mono-nerd-font"
                                   []
