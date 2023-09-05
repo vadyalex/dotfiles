@@ -335,25 +335,29 @@
     (case action
         :update    (and (eshell "sudo" "pacman" "-Syu" "--noconfirm")
                         (eshell "sudo" "pacman" "-Sy" "--noconfirm" package))
-
         :install   (eshell "sudo" "pacman" "-Sy" "--noconfirm" package)
-	
         :uninstall (eshell "sudo" "pacman" "-Rsy" "--noconfirm" package)
-
         nil))
+
+(defn brew-cask [action package]
+    (case action
+        :update    (and (eshell "brew" "update")
+                        (eshell "brew" "upgrade")
+                        (eshell "brew" "cleanup" "--prune=all"))
+        :install   (eshell "brew" "install" "--cask" package)
+        :uninstall (and (eshell "brew" "uninstall" package)
+                        (eshell "brew" "cleanup" "--prune=all"))
+        nil))
+
 
 (defn package-manager! [name action package-info] 
     (case name
-        :apt        (apt     action package-info)
-
-        :git        (git     action package-info)
-
+        :apt        (apt action package-info)
+        :git        (git action package-info)
         :flatpak    (flatpak action package-info)
-
         :pacman     (pacman  action package-info)
-
         :brew       (brew action package-info)
-
+        :brew-cask  (brew-cask action package-info)
         nil))
 
 (defn sync-configs [configs]
