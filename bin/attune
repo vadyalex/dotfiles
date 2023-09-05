@@ -222,6 +222,9 @@
                                  ["charles"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["docker"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ]
                :nerd-fonts      [["font-jetbrains-mono-nerd-font"
                                   []
