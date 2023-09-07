@@ -274,6 +274,9 @@
                                  ; Dev tool apps
                                  ["pycharm-ce"
                                   #{}
+                                  {:package-manager :brew-casc}]
+                                 ["intellij-idea-ce"
+                                  #{}
                                   {:package-manager :brew-cask}]
                                  ["charles"
                                   #{}
