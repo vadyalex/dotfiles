@@ -276,7 +276,10 @@
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ]
-               :mac-dev-tools   [["lolcat"]
+               :mac-dev-tools   [["gnupg"]
+                                 ["pass"]
+                                 ["gopass"]
+                                 ["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
                                  ["neovim"]
