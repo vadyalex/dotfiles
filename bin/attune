@@ -276,9 +276,8 @@
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ]
-               :mac-dev-tools   [["gnupg"]
-                                 ["pass"]
-                                 ["gopass"]
+               :mac-dev-tools   [["gnupg"] ["pgpdump"]
+                                 ["pass"]  ["gopass"]
                                  ["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
