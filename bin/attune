@@ -278,6 +278,7 @@
                                  ]
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
                                  ["pass"]  ["gopass"]
+                                 ["asciinema"]
                                  ["lolcat"]
                                  ["cowsay"]
                                  ["tmux"]
