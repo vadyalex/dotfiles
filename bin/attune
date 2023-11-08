@@ -34,6 +34,7 @@
 
 (def toolbelt [["curl"] ["wget"]
                 ["rsync"]
+                ["gnupg"] ["pass"] ["xclip"] ["qrencode"]
                 ["mosh"]
                 ["net-tools"] ["iperf3"] ["dnsutils"]
                 ["smartmontools"]
