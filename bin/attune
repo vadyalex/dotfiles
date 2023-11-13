@@ -261,6 +261,9 @@
                                    :post-install-hook-fn  '(fn [] (do
                                                                     (log "Whitelist Alacritty..")
                                                                     (eshell "xattr" "-rd" "com.apple.quarantine" "/Applications/Alacritty.app")))}]
+                                 ["cyberduck"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ; Many different browsers!
                                  ["firefox"
                                   #{}
