@@ -15,6 +15,7 @@ plugins=(
 	lein mvn
 	python virtualenv pip
 	ansible
+	pass
 	)
 
 # source common aliases
