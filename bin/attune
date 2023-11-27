@@ -32,13 +32,8 @@
 
 (def shell [git zsh oh-my-zsh])
 
-(def pass [["gnupg"]
-	   ["pass"]
-	   ["qrencode"]
-	   ["paperkey"]])
-
-(def toolbelt [["gnupg"] ["pass"]
-	       ["curl"] ["wget"]
+(def toolbelt [["gnupg"] ["pass"] ["qrencode"] ["paperkey"]
+               ["curl"] ["wget"]
                ["rsync"]
                ["mosh"]
                ["net-tools"] ["iperf3"] ["dnsutils"]
@@ -64,13 +59,13 @@
 
 (def i3wm [; X server
            ["xserver-xorg"]
-	   ["xserver-xorg-input-all"]
+           ["xserver-xorg-input-all"]
            ["xserver-xorg-input-synaptics"]
            ; login manager
-	   ["lightdm"]
-	   ["lightdm-gtk-greeter"]
-	   ["lightdm-gtk-greeter-settings"]
-	   ["i3-wm"
+           ["lightdm"]
+           ["lightdm-gtk-greeter"]
+           ["lightdm-gtk-greeter-settings"]
+           ["i3-wm"
             #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
             {}]
            ["i3status"
@@ -232,7 +227,7 @@
                                  :architecture    :aarch64}
                :shell           shell
                :toolbelt        toolbelt
-	       :desktop		i3wm
+	           :desktop         i3wm
                :apps            apps
               }
 
@@ -338,8 +333,8 @@
         :git        (git     action package-info)
 
         :flatpak    (flatpak action package-info)
-	
-	:pacman     (pacman  action package-info)
+
+        :pacman     (pacman  action package-info)
         
         nil))
 
