@@ -32,29 +32,35 @@
 
 (def shell [git zsh oh-my-zsh])
 
-(def toolbelt [["curl"] ["wget"]
-                ["rsync"]
-                ["mosh"]
-                ["net-tools"] ["iperf3"] ["dnsutils"]
-                ["smartmontools"]
-                ["pv"] ;;
-                ["iotop"] ;; > sudo iotop ;; monitor disk IO
-                ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
-                ["upower"]
-                ["neovim"]
-                ["htop"]
-                ["tmux"]
-                ;; ranger
-                ["ranger"] ["caca-utils"] ["highlight"] ["atool"] ["w3m"] ["poppler-utils"] ["mediainfo"]
-                ["chafa"]
-                ["tree"]
-                ["speedometer"] ["bmon"]
-                ["neofetch"]
-                ["jq"] ["miller"]
-                ["lolcat"]
-                ["cowsay"]
-                ["sl"] ["figlet"] ["cmatrix"]
-                ["borgbackup"] ["restic"]])
+(def pass [["gnupg"]
+	   ["pass"]
+	   ["qrencode"]
+	   ["paperkey"]])
+
+(def toolbelt [["gnupg"] ["pass"]
+	       ["curl"] ["wget"]
+               ["rsync"]
+               ["mosh"]
+               ["net-tools"] ["iperf3"] ["dnsutils"]
+               ["smartmontools"]
+               ["pv"] ;;
+               ["iotop"] ;; > sudo iotop ;; monitor disk IO
+               ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
+               ["upower"]
+               ["neovim"]
+               ["htop"]
+               ["tmux"]
+               ;; ranger
+               ["ranger"] ["caca-utils"] ["highlight"] ["atool"] ["w3m"] ["poppler-utils"] ["mediainfo"]
+               ["chafa"]
+               ["tree"]
+               ["speedometer"] ["bmon"]
+               ["neofetch"]
+               ["jq"] ["miller"]
+               ["lolcat"]
+               ["cowsay"]
+               ["sl"] ["figlet"] ["cmatrix"]
+               ["borgbackup"] ["restic"]])
 
 (def i3wm [; X server
            ["xserver-xorg"]
