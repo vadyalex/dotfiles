@@ -239,7 +239,6 @@
                :toolbelt        toolbelt
                :desktop         i3wm	
                :apps            apps}
-              ])
 
               {:key             "bankbook"
                :description     "MacBook Pro work laptop"
@@ -277,8 +276,7 @@
                                  ; Dev tool apps
                                  ["pycharm-ce"
                                   #{}
-                                  {:package-manager :brew-cask}]
-                                 ]
+                                  {:package-manager :brew-cask}]]
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
                                  ["pass"]  ["gopass"]
                                  ["asciinema"]
@@ -288,7 +286,8 @@
                                  ["neovim"]
                                  ["htop"]
                                  ["kubernetes-cli"]
-                                 ["jq"]]}])
+                                 ["jq"]]}
+             ])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
