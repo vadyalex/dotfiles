@@ -65,13 +65,18 @@
            ["lightdm"]
            ["lightdm-gtk-greeter"]
            ["lightdm-gtk-greeter-settings"]
-           ["i3-wm"
+           ; i3wm
+	   ["i3-wm"
             #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
             {}]
            ["i3status"
             #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}
             {}]
            ["i3lock"]
+           ; terminal
+           ["xfce4-terminal"
+            #{["~/.dotfiles/xfce4/termicalrc" :-> "~/.config/xfce4/terminal/terminalrc"]}
+            {}]
            ["rofi"
             #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
             {}]
@@ -80,7 +85,7 @@
            ["ibus"]
            ["volumeicon"]
            ["nautilus"] ["gvfs-smb"]
-           ["xorg-xev"]
+           ["arandr"]
            ["feh"]
           ])
 
