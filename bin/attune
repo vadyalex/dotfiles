@@ -202,6 +202,7 @@
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt
+               :desktop         i3wm
                :apps            apps}
 
               {:key             "mi"
@@ -237,7 +238,7 @@
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt
-               :desktop         i3wm	
+               :desktop         i3wm
                :apps            apps}
 
               {:key             "bankbook"
