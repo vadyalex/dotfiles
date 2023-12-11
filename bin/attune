@@ -66,7 +66,7 @@
            ["lightdm-gtk-greeter"]
            ["lightdm-gtk-greeter-settings"]
            ; i3wm
-	   ["i3-wm"
+           ["i3-wm"
             #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
             {}]
            ["i3status"
@@ -77,6 +77,33 @@
            ["xfce4-terminal"
             #{["~/.dotfiles/xfce4/termicalrc" :-> "~/.config/xfce4/terminal/terminalrc"]}
             {}]
+           ; fonts
+           [
+            "nerd-fonts"
+            #{}
+            {:package-manager             :script
+             :depends-on                  ["curl" "unzip" "fontconfig"]
+             :package-info                [; install-fn
+                                           '(fn [] (do
+                                                      (log "Downloading archive..")
+                                                      (eshell "curl" "-fLo" "/tmp/nerd_fonts_archive.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip")
+                                                      (log "Extracting archive..")
+                                                      (eshell "sudo" "unzip" "-o" "/tmp/nerd_fonts_archive.zip" "-d" "/usr/share/fonts")
+                                                      (log "Refresh fonts..")
+                                                      (eshell "sudo" "fc-cache" "-f" "-v")
+                                                      (log "NerdFonts are in place!")))
+                                           ; update-fn -- basically copy from above
+                                           '(fn [] (do
+                                                      (log "Downloading archive..")
+                                                      (eshell "curl" "-fLo" "/tmp/nerd_fonts_archive.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip")
+                                                      (log "Extracting archive..")
+                                                      (eshell "sudo" "unzip" "-o" "/tmp/nerd_fonts_archive.zip" "-d" "/usr/share/fonts")
+                                                      (log "Refresh fonts..")
+                                                      (eshell "sudo" "fc-cache" "-f" "-v")
+                                                      (log "NerdFonts are in place!")))
+                                          ]
+            }
+           ]
            ["rofi"
             #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
             {}]
@@ -394,15 +421,25 @@
                         (eshell "brew" "cleanup" "--prune=all"))
         nil))
 
+(defn script [action [install-fn update-fn uninstall-fn]]
+    (case action
+        :install   (and (some? install-fn)
+                        ((eval install-fn)))
+        :update    (and (some? update-fn)
+                        ((eval update-fn)))
+        :uninstall (and (some? uninstall-fn)
+                        ((eval uninstall-fn)))
+        nil))
 
 (defn package-manager! [name action package-info] 
     (case name
-        :apt        (apt action package-info)
-        :git        (git action package-info)
-        :flatpak    (flatpak action package-info)
-        :pacman     (pacman  action package-info)
-        :brew       (brew action package-info)
+        :apt        (apt       action package-info)
+        :git        (git       action package-info)
+        :flatpak    (flatpak   action package-info)
+        :pacman     (pacman    action package-info)
+        :brew       (brew      action package-info)
         :brew-cask  (brew-cask action package-info)
+        :script     (script    action package-info)
         nil))
 
 (defn sync-configs [configs]
