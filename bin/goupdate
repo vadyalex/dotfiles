@@ -28,6 +28,12 @@ else
 fi
 
 
+if command -v pass > /dev/null; then
+    printf "${YELLOW}Performing password store update..${NC}\n"
+    pass git pull --rebase --autostash
+fi
+
+
 if command -v cowsay > /dev/null; then
   if command -v lolcat > /dev/null; then
     cowsay ' Update complete! ' | lolcat
