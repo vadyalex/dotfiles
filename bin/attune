@@ -408,7 +408,7 @@
         :update    (and (eshell "sudo" "pacman" "-Syu" "--noconfirm")
                         (eshell "sudo" "pacman" "-Sy" "--noconfirm" package))
         :install   (eshell "sudo" "pacman" "-Sy" "--noconfirm" package)
-        :uninstall (eshell "sudo" "pacman" "-Rsy" "--noconfirm" package)
+        :uninstall (eshell "sudo" "pacman" "-Rs" "--noconfirm" package)
         nil))
 
 (defn brew-cask [action package]
@@ -480,7 +480,7 @@
                 ((eval post-uninstall-hook-fn)))
         (log "Done."))))
 
-(defn tools-list [state]
+(defn list-tools [state]
     (let [keys-to-ignore [:key :description :env]]
         (->> (apply dissoc state keys-to-ignore)
              (mapcat second)
@@ -488,7 +488,7 @@
 
 (defn dependencies-graph [state]
     (->> state
-         (tools-list)
+         (list-tools)
          (mapcat (fn [[name configs context]] 
             (if-let [depends-on (:depends-on context)] 
                 (map (fn [parent] [parent name]) depends-on)
@@ -531,34 +531,34 @@
 
 (defn attune [snapshot state]
     (log "ATTUNE SYSTEM TO STATE" (str "'" (:key state) "'") "..")
-    (let [[remove add _]               (diff (tools-list snapshot) 
-                                             (tools-list state))
-          dependencies-index-map       (-> state (dependencies-list) (index-dependencies))
-          sort-by-dependency-index     (partial sort-by (fn [[name _ _]] (get dependencies-index-map name)))
-          sort-by-installation-order   (partial sort-by-dependency-index <)
-          sort-by-uninstallation-order (partial sort-by-dependency-index >)
-          default-context              {:package-manager (get-in state [:env :package-manager])}
-          apply-defaults               (fn [[name configs context]] [name configs (merge default-context (or context {}))])]
+    (let [[uninstall-tools install-tools _] (diff (list-tools snapshot)
+                                                  (list-tools state))
+          state-dependencies-index-map      (-> state (dependencies-list) (index-dependencies))
+          sort-by-installation-order        (partial sort-by (fn [[name _ _]] (get state-dependencies-index-map name)) <)
+          snapshot-dependencies-index-map   (-> snapshot (dependencies-list) (index-dependencies))
+          sort-by-uninstallation-order      (partial sort-by (fn [[name _ _]] (get snapshot-dependencies-index-map name)) >)
+          default-context                   {:package-manager (get-in state [:env :package-manager])}
+          apply-default-context             (fn [[name configs context]] [name configs (merge default-context (or context {}))])]
         (log "UNINSTALL TOOLS:")
-        (->> remove
-             (map apply-defaults)
+        (->> uninstall-tools
+             (map apply-default-context)
              (sort-by-uninstallation-order)
              (map uninstall)
              (dorun))
         (log "INSTALL TOOLS:")
-        (->> add
-             (map apply-defaults)
+        (->> install-tools
+             (map apply-default-context)
              (sort-by-installation-order)
              (map install)
              (dorun))
         (log "COMPLETE!")
         (log "UPDATE ALL TOOLS:")
         (->> state
-             (tools-list)
-             (map apply-defaults)
+             (list-tools)
+             (map apply-default-context)
              (map (fn [tool]
                     (let [[name _ {:keys [package-manager package-info]}] tool]
-                        (if (= :git package-manager)
+                        (if (contains? #{:git :script} package-manager)
                             (do (log "\t[" name "]")
                                 (log "Updating..")
                                 (package-manager! package-manager :update package-info)
