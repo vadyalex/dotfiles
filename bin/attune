@@ -75,7 +75,7 @@
            ["i3lock"]
            ; terminal
            ["xfce4-terminal"
-            #{["~/.dotfiles/xfce4/termicalrc" :-> "~/.config/xfce4/terminal/terminalrc"]}
+            #{["~/.dotfiles/xfce4/terminalrc" :-> "~/.config/xfce4/terminal/terminalrc"]}
             {}]
            ; fonts
            [
