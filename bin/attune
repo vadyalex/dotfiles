@@ -38,6 +38,7 @@
                ["mosh"]
                ["net-tools"] ["iperf3"] ["dnsutils"]
                ["smartmontools"]
+               ["unzip"]
                ["pv"] ;;
                ["iotop"] ;; > sudo iotop ;; monitor disk IO
                ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
