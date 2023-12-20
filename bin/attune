@@ -112,7 +112,7 @@
            ["blueman"]
            ["ibus"]
            ["volumeicon"]
-           ["nautilus"] ["gvfs-smb"]
+           ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
            ["arandr"]
            ["feh"]
           ])
