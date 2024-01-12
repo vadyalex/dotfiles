@@ -111,7 +111,7 @@
            ["network-manager-applet"]
            ["blueman"]
            ["ibus"]
-           ["volumeicon"]
+           ["pipewire"] ["pavucontrol"]
            ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
            ["arandr"]
            ["feh"]
