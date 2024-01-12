@@ -244,7 +244,7 @@
                                  :package-manager :apt}
                :shell           shell
                :toolbelt        toolbelt
-               :extra           []
+               :desktop         i3wm
                :desktop-apps    apps}
 
               {:key             "rpi"
