@@ -187,6 +187,15 @@
              :package-manager       :flatpak
              :package-info          ["flathub" "org.gnome.Evince"]
              :depends-on            [:flatpak]}]
+           [:qview
+            #{}
+            {:description           "Image viewer supporting many formats including webp"
+             :package-manager       :flatpak
+             :package-info          ["flathub" "com.interversehq.qView"]
+             :post-install-hook-fn  '(fn [] (do
+                                        (log "Allow access to home directory to download files for Telegram")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.interversehq.qView")))
+             :depends-on            [:flatpak]}]
            [:LibreOffice
             #{}
             {:package-manager       :flatpak
