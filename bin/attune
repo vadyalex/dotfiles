@@ -115,6 +115,7 @@
            ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
            ["arandr"]
            ["feh"]
+           ["gnome-screenshot"]
           ])
 
 
