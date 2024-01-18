@@ -143,6 +143,11 @@
             {:package-manager       :flatpak
              :package-info          ["flathub" "com.google.Chrome"]
              :depends-on            [:flatpak]}]
+           [:thunderbird
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.mozilla.Thunderbird"]
+             :depends-on            [:flatpak]}]
            [:skype
             #{}
             {:package-manager       :flatpak
@@ -227,6 +232,11 @@
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "com.prusa3d.PrusaSlicer"]
+             :depends-on            [:flatpak]}]
+           [:wireshark
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.wireshark.Wireshark"]
              :depends-on            [:flatpak]}]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
