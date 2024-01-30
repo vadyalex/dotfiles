@@ -38,9 +38,9 @@ else
 
     snapshots_mount_root="/tmp/mnt/snapshots"
 
-    echo -e "\e[33mCheck existing mounted snapshots under: $snapshots_mount_root\e[0m"
+    echo -e "\e[33mCheck existing mounted snapshots for dataset $dataset under: $snapshots_mount_root\e[0m"
 
-    existing_mounted_snapshots=$(ssh_solaris "mount | grep $snapshots_mount_root | awk '{print \$3}'")
+    existing_mounted_snapshots=$(ssh_solaris "mount | grep $snapshots_mount_root | grep $dataset | awk '{print \$3}'")
 
     if [[ -z "$existing_mounted_snapshots" ]]; then
         echo -e "\e[33mNo existing mounted snapshots found\e[0m"
