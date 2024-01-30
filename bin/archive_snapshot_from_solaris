@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+host="${SOLARIS_HOST:-solaris.domus}"
+user="${SOLARIS_USER:-vlad}"
+
+if [ -z "$1" ]; then
+    echo -e "\e[31mUsage: $0 <dataset>\e[0m"
+    echo ""
+    datasets=$(ssh $user@$host "sudo zfs list -t filesystem" | awk 'NR>1 {print $1}')
+    echo -e "\e[31mAvailable datasets:\n$datasets\e[0m"
+    exit 1
+fi
+
+# TODO list available datasets to pick from?
+dataset="$1"
+
+
+echo -e "\e[33mChecking latest snapshot for dataset: $dataset\e[0m"
+
+snapshot=$(ssh $user@$host "sudo zfs list -t snapshot $dataset" | awk 'END {print $1}')
+
+if [[ -z "$snapshot" ]]; then
+    echo -e "\e[31mNo snapshots found! Nothing to do here..\e[0m"
+else
+    echo -e "\e[33mFound: $snapshot\e[0m"
+
+    snapshots_mount_root="/tmp/mnt/snapshots"
+
+    echo -e "\e[33mCheck existing mounted snapshots under: $snapshots_mount_root\e[0m"
+
+    existing_mounted_snapshots=$(ssh $user@$host "mount | grep $snapshots_mount_root | awk '{print \$3}'")
+
+    if [[ -z "$existing_mounted_snapshots" ]]; then
+        echo -e "\e[33mNo existing mounted snapshots found\e[0m"
+    else
+        echo -e "\e[33mExisting mounted snapshots found: $existing_mounted_snapshots\e[0m"
+        echo -e "\e[33mUnmounting..\e[0m"
+        echo $existing_mounted_snapshots | ssh $user@$host "xargs -r sudo umount"
+        echo -e "\e[33mDone!\e[0m"
+    fi
+
+    snapshot_mount="$snapshots_mount_root/$snapshot"
+
+    echo -e "\e[33mCreating mounting point: $snapshot_mount\e[0m"
+
+    ssh $user@$host "mkdir -p $snapshot_mount"
+
+    echo -e "\e[33mMounting snapshot $snapshot to $snapshot_mount\e[0m"
+
+    ssh $user@$host "sudo mount -t zfs $snapshot $snapshot_mount"
+
+    archive="${snapshot//\//_}".tar.gz
+
+    echo -e "\e[32mArchiving to $archive..\e[0m"
+
+    ssh $user@$host "sudo tar --create --file - $snapshot_mount" | gzip > $archive
+
+    echo -e "\e[33mUnmounting snapshot from $snapshot_mount..\e[0m"
+
+    ssh $user@$host "sudo umount $snapshot_mount"
+
+fi
