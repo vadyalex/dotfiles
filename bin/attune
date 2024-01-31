@@ -108,14 +108,15 @@
            ["rofi"
             #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
             {}]
-           ["network-manager-applet"]
+           ["network-manager-applet"] ["network-manager-gnome"]
            ["blueman"]
            ["ibus"]
-           ["pipewire"] ["pavucontrol"]
+           ["pipewire"] ["pipewire-pulse"] ["pavucontrol"]
            ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
            ["arandr"]
            ["feh"]
            ["gnome-screenshot"]
+           ["gnome-disk-utility"]
           ])
 
 
