@@ -85,7 +85,7 @@ else
 
     echo -e "\e[32mComplete!\e[0m"
 
-    archive_size=$("du -sb $archive | awk '{print \$1}'")
+    archive_size=$(du -sb $archive | awk '{print $1}')
 
     echo -e "\e[32mArchive size is $(bytes_to_human_readable $archive_size)\e[0m"
 
