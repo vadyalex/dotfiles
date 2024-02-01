@@ -15,6 +15,11 @@ ssh_solaris() {
     fi
 }
 
+bytes_to_human_readable() {
+    local bytes="$1"
+    echo "$(numfmt --to=iec-i --format='%.1f' $bytes)"
+}
+
 if [ -z "$1" ]; then
     echo -e "\e[31mUsage: $0 <dataset>\e[0m"
     echo ""
@@ -23,9 +28,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# TODO list available datasets to pick from?
 dataset="$1"
-
 
 echo -e "\e[33mChecking latest snapshot for dataset: $dataset\e[0m"
 
@@ -38,37 +41,60 @@ else
 
     snapshots_mount_root="/tmp/mnt/snapshots"
 
-    echo -e "\e[33mCheck existing mounted snapshots for dataset $dataset under: $snapshots_mount_root\e[0m"
+    # echo -e "\e[33mCheck existing mounted snapshots for dataset $dataset under: $snapshots_mount_root\e[0m"
 
-    existing_mounted_snapshots=$(ssh_solaris "mount | grep $snapshots_mount_root | grep $dataset | awk '{print \$3}'")
+    # existing_mounted_snapshots=$(ssh_solaris "mount | grep $snapshots_mount_root | grep $dataset | awk '{print \$3}'")
 
-    if [[ -z "$existing_mounted_snapshots" ]]; then
-        echo -e "\e[33mNo existing mounted snapshots found\e[0m"
-    else
-        echo -e "\e[33mExisting mounted snapshots found: $existing_mounted_snapshots\e[0m"
-        echo -e "\e[33mUnmounting..\e[0m"
-        echo $existing_mounted_snapshots | ssh_solaris "xargs -r sudo umount"
-        echo -e "\e[33mDone!\e[0m"
-    fi
+    # if [[ -z "$existing_mounted_snapshots" ]]; then
+    #     echo -e "\e[33mNo existing mounted snapshots found\e[0m"
+    # else
+    #     echo -e "\e[33mExisting mounted snapshots found: $existing_mounted_snapshots\e[0m"
+    #     echo -e "\e[33mUnmounting..\e[0m"
+    #     echo $existing_mounted_snapshots | ssh_solaris "xargs -r sudo umount"
+    #     echo -e "\e[33mDone!\e[0m"
+    # fi
 
     snapshot_mount="$snapshots_mount_root/$snapshot"
 
-    echo -e "\e[33mCreating mounting point: $snapshot_mount\e[0m"
+    existing_snapshot_mount=$(ssh_solaris "mount | grep $snapshot_mount | awk '{print \$3}'")
 
-    ssh_solaris "mkdir -p $snapshot_mount"
+    if [[ -z "$existing_snapshot_mount" ]]; then
+        echo -e "\e[33mCreating mounting point: $snapshot_mount\e[0m"
 
-    echo -e "\e[33mMounting snapshot $snapshot to $snapshot_mount\e[0m"
+        ssh_solaris "mkdir -p $snapshot_mount"
 
-    ssh_solaris "sudo mount -t zfs $snapshot $snapshot_mount"
+        echo -e "\e[33mMounting snapshot $snapshot to $snapshot_mount\e[0m"
+
+        ssh_solaris "sudo mount -t zfs $snapshot $snapshot_mount"
+
+    else
+        echo -e "\e[33mExisting snapshot mount found: $existing_snapshot_mount\e[0m"
+    fi
+
+    echo -e "\e[33mCalculating snapshot size..\e[0m"
+
+    snapshot_size=$(ssh_solaris "sudo du -sb $snapshot_mount | awk '{print \$1}'")
+
+    echo -e "\e[32mSnapshot size is $(bytes_to_human_readable $snapshot_size)\e[0m"
 
     archive="${snapshot//\//_}".tar.gz
 
     echo -e "\e[32mArchiving to $archive..\e[0m"
 
-    ssh_solaris "sudo tar --create --file - $snapshot_mount" | gzip > $archive
+    ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip > $archive
 
-    echo -e "\e[33mUnmounting snapshot from $snapshot_mount..\e[0m"
+    echo -e "\e[32mComplete!\e[0m"
 
-    ssh_solaris "sudo umount $snapshot_mount"
+    archive_size=$("du -sb $archive | awk '{print \$1}'")
+
+    echo -e "\e[32mArchive size is $(bytes_to_human_readable $archive_size)\e[0m"
+
+    if [[ -z "$(ssh_solaris "sudo lsof $snapshot_mount")" ]]; then
+        echo -e "\e[33mUnmounting snapshot from $snapshot_mount..\e[0m"
+        ssh_solaris "sudo umount $snapshot_mount"
+        echo -e "\e[32mBye!\e[0m"
+    else
+        echo -e "\e[31mMounted snapshot is still in use! Leaving mounted at $snapshot_mount.. Un-mount it manually later.\e[0m"
+    fi
 
 fi
