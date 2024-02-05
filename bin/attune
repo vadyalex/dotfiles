@@ -238,6 +238,11 @@
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "org.wireshark.Wireshark"]
+             :depends-on            [:flatpak]}]
+           [:Flatseal
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.github.tchx84.Flatseal"]
              :depends-on            [:flatpak]}]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
