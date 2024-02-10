@@ -36,7 +36,7 @@
                ["curl"] ["wget"]
                ["rsync"]
                ["mosh"]
-               ["net-tools"] ["iperf3"] ["dnsutils"] ["bmon"] ["iftop"]
+               ["net-tools"] ["iperf3"] ["dnsutils"]
                ["smartmontools"]
                ["unzip"]
                ["pv"] ;;
@@ -50,7 +50,7 @@
                ["ranger"] ["caca-utils"] ["highlight"] ["atool"] ["w3m"] ["poppler-utils"] ["mediainfo"]
                ["chafa"]
                ["tree"]
-               ["speedometer"] ["bmon"]
+               ["speedometer"] ["bmon"] ["iftop"]
                ["neofetch"]
                ["jq"] ["miller"]
                ["lolcat"]
