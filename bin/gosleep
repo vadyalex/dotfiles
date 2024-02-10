@@ -1,5 +1,3 @@
 #!/bin/bash
 
-~/.bin/golock
-
-sudo systemctl hibernate
+~/.bin/golock && sleep && systemctl suspend
