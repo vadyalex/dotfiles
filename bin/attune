@@ -291,7 +291,7 @@
                :apps            apps
               }
 
-             {:key             "titan"
+              {:key             "titan"
                :description     "My Debian based workstation"
                :env             {:os              :debian
                                  :package-manager :apt}
@@ -346,7 +346,8 @@
                                  ["neovim"]
                                  ["htop"]
                                  ["kubernetes-cli"]
-                                 ["jq"]]}
+                                 ["jq"]
+                                 ["pyenv"]]}
              ])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

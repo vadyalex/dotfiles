@@ -13,7 +13,7 @@ plugins=(
 	rsync tmux docker	
 	git
 	lein mvn
-	python virtualenv pip
+	python virtualenv pip pyenv
 	ansible
 	pass
 	)
