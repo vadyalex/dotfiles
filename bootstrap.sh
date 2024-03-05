@@ -26,20 +26,26 @@ main() {
 
   if command -v sudo > /dev/null; then
     printf "${YELLOW}sudo is already in place..${NORMAL}\n"
+
+    me=$(whoami)
+    printf "${YELLOW}Granting $(me) password less sudo access..\n"
+    su -c "echo \"${me} ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/${me}"
+    printf "Complete!${NORMAL}\n"
   else
     printf "${YELLOW}Installing sudo..\n"
     su -c "apt update && apt install sudo -y"
     printf "Complete!${NORMAL}\n"
 
-    printf "${YELLOW}Adding $(whoami) to sudo group..\n"
-    su -c "/usr/sbin/usermod -aG sudo $(whoami)"
+    me=$(whoami)
+    printf "${YELLOW}Granting $(me) password less sudo access..\n"
+    su -c "echo \"${me} ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/${me}"
     printf "Complete!${NORMAL}\n"
-
-    hash sudo > /dev/null 2>&1 || {
-      printf "${RED}Install sudo command to be able to run script${NORMAL}\n"
-      exit 1
-    }
   fi
+
+  hash sudo > /dev/null 2>&1 || {
+    printf "${RED}Install sudo command to be able to run script${NORMAL}\n"
+    exit 1
+  }
 
   if command -v git > /dev/null; then
     printf "${YELLOW}git is already in place..${NORMAL}\n"
@@ -49,20 +55,20 @@ main() {
     printf "Complete!${NORMAL}\n"
   fi
 
+  if [ ! -d ~/.dotfiles ]; then
+    printf "${YELLOW}Cloning dotfiles into ~/.dotfiles..\n"
+    env git clone https://github.com/vadyalex/dotfiles.git ~/.dotfiles
+    printf "Complete!${NORMAL}\n"
+  else
+    printf "${YELLOW}dotfiles are already in place in ~/.dotfiles..${NORMAL}\n"
+  fi
+
   if command -v curl > /dev/null; then
     printf "${YELLOW}curl is already in place..${NORMAL}\n"
   else
     printf "${YELLOW}Installing curl..\n"
     sudo apt update && sudo apt install -y curl
     printf "Complete!${NORMAL}\n"
-  fi
-
-  if [ ! -d ~/.dotfiles ]; then
-    printf "${YELLOW}Cloning dotfiles into ~/.dotfiles..\n"
-    env git clone git@github.com:vadyalex/dotfiles.git ~/.dotfiles
-    printf "Complete!${NORMAL}\n"
-  else
-    printf "${YELLOW}dotfiles are already in place in ~/.dotfiles..${NORMAL}\n"
   fi
 
   if command -v bb > /dev/null; then
