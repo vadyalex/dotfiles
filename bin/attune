@@ -247,6 +247,9 @@
              :package-info          ["flathub" "com.github.tchx84.Flatseal"]
              :depends-on            [:flatpak]}]])
 
+(def dev-tools [["make"]
+                ["podman"]])
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -264,7 +267,8 @@
                :shell           shell
                :toolbelt        toolbelt
                :desktop         i3wm
-               :apps            apps}
+               :apps            apps
+               :dev-tools       dev-tools}
 
               {:key             "mi"
                :description     "Xiamomi Laptop"
