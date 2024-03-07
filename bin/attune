@@ -39,6 +39,7 @@
                ["net-tools"] ["iperf3"] ["dnsutils"]
                ["smartmontools"]
                ["unzip"]
+               ["imagemagick"]
                ["pv"] ;;
                ["iotop"] ;; > sudo iotop ;; monitor disk IO
                ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
@@ -246,6 +247,7 @@
             {:package-manager       :flatpak
              :package-info          ["flathub" "com.github.tchx84.Flatseal"]
              :depends-on            [:flatpak]}]])
+
 
 (def dev-tools [["make"]
                 ["podman"]])

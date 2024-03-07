@@ -47,6 +47,15 @@ random-string() {
 }
 
 
+# Function: webp2jpg
+# Description: Convert one or multiple webp files in parallel to JPEG file format and delete original file.
+# Parameters:
+#   ... - Multiple files
+# Usage: webp2jpg some_file.webp another_file.webp
+webp2jpg() {
+	echo "$@" | xargs --max-procs=0 --max-args=1 sh -c 'mogrify -format jpg $1 && rm $1' _
+}
+
 ###############################################################################
 #
 #		Containerized utilities
