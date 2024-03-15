@@ -310,8 +310,12 @@
 
               {:key             "bankbook"
                :description     "MacBook Pro work laptop"
+
                :env             {:os              :macOS
                                  :package-manager :brew}
+
+               :zsh             [git oh-my-zsh]
+
                :mac-apps        [["alfred"
                                   #{}
                                   {:package-manager :brew-cask}]
@@ -345,6 +349,7 @@
                                  ["pycharm-ce"
                                   #{}
                                   {:package-manager :brew-cask}]]
+
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
                                  ["pass"]  ["gopass"]
                                  ["asciinema"]
