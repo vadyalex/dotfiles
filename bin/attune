@@ -335,6 +335,10 @@
                                  ["cyberduck"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["adobe-acrobat-reader"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+
                                  ; Many different browsers!
                                  ["firefox"
                                   #{}
@@ -346,6 +350,9 @@
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ; Dev tool apps
+                                 ["intellij-idea-ce"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ["pycharm-ce"
                                   #{}
                                   {:package-manager :brew-cask}]]
