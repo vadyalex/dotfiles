@@ -338,6 +338,9 @@
                                  ["adobe-acrobat-reader"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["evernote"
+                                  #{}
+                                  {:package-manager :brew-cask}]
 
                                  ; Many different browsers!
                                  ["firefox"
