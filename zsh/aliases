@@ -32,7 +32,7 @@ go-git-pull-all-sub-directories () {
       directory="{}"; \
       [ -d "${directory}/.git" ] && { \
         printf "\033[33mProcessing ${directory} ..\n\033[0m"; \
-        git -C "${directory}" pull --all --rebase --autostash; \
+        git -C "${directory}" pull --all --autostash; \
       }'
 }
 
