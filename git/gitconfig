@@ -6,18 +6,18 @@
 [pull]
 	ff = only
 [alias]
-	graph = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
-	l   = log
-	st  = status
-	a   = add
-	c   = commit
-	co  = checkout
-	p   = pull
-	pr  = pull --rebase --autostash
-	r   = rebase --autostash
-	ri  = rebase --autostash --interactive HEAD~11
-	pu  = push
-	puf = push --force
-	d   = diff
+	graph   = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+	l       = log
+	st      = status
+	a       = add
+	c       = commit
+	fixup   = commit --amend --no-edit
+	p       = pull --autostash
+	pr      = pull --rebase --autostash
+	r       = rebase --autostash
+	ri      = rebase --autostash --interactive HEAD~11
+	pu      = push
+	puf     = push --force
+	d       = diff
 [core]
 	autocrlf = input
