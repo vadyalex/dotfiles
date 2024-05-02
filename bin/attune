@@ -386,6 +386,10 @@
                                     ;                                    (log "Installing node.js..")
                                     ;                                    (eshell "nvm" "install" "20")))}
                                  ]
+                                 ;; JAVA!!!11
+                                 [
+                                    "corretto@21"
+                                 ]
                                  ]}
              ])
 
