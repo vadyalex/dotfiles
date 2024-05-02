@@ -359,6 +359,9 @@
                                  ["intellij-idea-ce"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["webstorm"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ["pycharm-ce"
                                   #{}
                                   {:package-manager :brew-cask}]]
@@ -374,7 +377,16 @@
                                  ["kubernetes-cli"]
                                  ["jq"]
                                  ["pyenv"]
-                                 ["dive"]]}
+                                 ["dive"]
+                                 ;; node.js version manager
+                                 [
+                                    "nvm"
+                                    ;#{}
+                                    ;{:post-install-hook-fn  '(fn [] (do
+                                    ;                                    (log "Installing node.js..")
+                                    ;                                    (eshell "nvm" "install" "20")))}
+                                 ]
+                                 ]}
              ])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
