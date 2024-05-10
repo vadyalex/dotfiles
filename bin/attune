@@ -376,7 +376,10 @@
                                  ["htop"]
                                  ["kubernetes-cli"]
                                  ["jq"]
+                                 ["ranger"]
+                                 ;; Python
                                  ["pyenv"]
+                                 ["pipx"]
                                  ["dive"]
                                  ;; node.js version manager
                                  [
