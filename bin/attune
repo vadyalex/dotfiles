@@ -341,6 +341,12 @@
                                  ["evernote"
                                   #{}
                                   {:package-manager :brew-cask}]
+
+                                 ;; Tiling window manager for macOS!
+                                 ["amethyst"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+
                                  ["podman-desktop"
                                   #{}
                                   {:package-manager :brew-cask}]
