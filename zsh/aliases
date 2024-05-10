@@ -42,8 +42,14 @@ untar () {
 	pv "$archive" | tar --warning no-unknown-keyword -z --extract --file -
 }
 
+
+# Function: random-string
+# Description: Generate random string containing printable characters.
+# Parameters:
+#   $1: (Optional) String length. Default is 33 characters long.
+# Returns: None
 random-string() {
-	cat /dev/urandom | tr -dc 'a-z0-9' | head -c ${1:-33}
+	iconv -c -t US-ASCII//TRANSLIT < /dev/urandom | tr -dc '[:alnum:]' | head -c ${1:-33}
 }
 
 
