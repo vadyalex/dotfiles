@@ -370,7 +370,9 @@
                                   {:package-manager :brew-cask}]
                                  ["pycharm-ce"
                                   #{}
-                                  {:package-manager :brew-cask}]]
+                                  {:package-manager :brew-cask}]
+                                  ]
+
 
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
                                  ["pass"]  ["gopass"]
@@ -381,6 +383,7 @@
                                  ["neovim"]
                                  ["htop"]
                                  ["kubernetes-cli"]
+                                 ["kubeseal"]
                                  ["jq"]
                                  ["ranger"]
                                  ;; Python
