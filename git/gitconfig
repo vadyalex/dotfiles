@@ -15,9 +15,10 @@
 	p       = pull --autostash
 	pr      = pull --rebase --autostash
 	r       = rebase --autostash
-	ri      = rebase --autostash --interactive HEAD~11
+	ri      = rebase --autostash --interactive --root
 	pu      = push
 	puf     = push --force
 	d       = diff
+	ffp     = fixup && puf
 [core]
 	autocrlf = input
