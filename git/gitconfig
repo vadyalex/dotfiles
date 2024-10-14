@@ -6,19 +6,22 @@
 [pull]
 	ff = only
 [alias]
-	graph   = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
-	l       = log
-	st      = status
-	a       = add
-	c       = commit
-	fixup   = commit --amend --no-edit
-	p       = pull --autostash
-	pr      = pull --rebase --autostash
-	r       = rebase --autostash
-	ri      = rebase --autostash --interactive --root
-	pu      = push
-	puf     = push --force
-	d       = diff
-	ffp     = fixup && puf
+	graph               = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+	l                   = log
+	st                  = status
+	a                   = add
+	c                   = commit
+	fixup               = commit --amend --no-edit
+	p                   = pull --autostash
+	pr                  = pull --rebase --autostash
+	r                   = rebase --autostash
+	ri                  = !$HOME/.bin/go-git-rebase-interactive.sh
+	pu                  = push
+	puf                 = push --force
+	d                   = diff
+	assume-unchanged    = update-index --assume-unchanged
+	untrack             = assume-unchanged
+	no-assume-unchanged = update-index --no-assume-unchanged
+	track               = no-assume-unchanged
 [core]
 	autocrlf = input
