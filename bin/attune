@@ -342,11 +342,6 @@
                                   #{}
                                   {:package-manager :brew-cask}]
 
-                                 ;; Tiling window manager for macOS!
-                                 ["amethyst"
-                                  #{}
-                                  {:package-manager :brew-cask}]
-
                                  ["podman-desktop"
                                   #{}
                                   {:package-manager :brew-cask}]
@@ -371,7 +366,13 @@
                                  ["pycharm-ce"
                                   #{}
                                   {:package-manager :brew-cask}]
-                                  ]
+                                 ["datagrip"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["azure-data-studio"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                ]
 
 
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
