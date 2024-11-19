@@ -40,4 +40,9 @@ ScrollingBar=TERMINAL_SCROLLBAR_NONE
 CommandLoginShell=TRUE
 TitleMode=TERMINAL_TITLE_REPLACE
 TabActivityTimeout=0
+MiscShowRelaunchDialog=TRUE
+MiscNewTabAdjacent=FALSE
+MiscSearchDialogOpacity=100
+MiscShowUnsafePasteDialog=FALSE
+MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
 
