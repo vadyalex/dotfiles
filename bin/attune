@@ -38,12 +38,14 @@
                ["mosh"]
                ["net-tools"] ["iperf3"] ["dnsutils"]
                ["smartmontools"]
+               ["lm-sensors"]
                ["unzip"]
                ["imagemagick"]
-               ["pv"] ;;
-               ["iotop"] ;; > sudo iotop ;; monitor disk IO
-               ;; upower - tool to check battery status: > upower -i /org/freedesktop/UPower/devices/battery_BAT0
-               ["upower"]
+               ["pv"]                                  ;;
+               ["iotop"]                               ;; > sudo iotop # monitor disk IO
+               ["radeontop"]                           ;; > radeontop  # show usage statistics for Radeon GPUs
+               ["htop"]
+               ["upower"]                              ;; > upower -i /org/freedesktop/UPower/devices/battery_BAT0 # check battery status
                ["neovim"]
                ["htop"]
                ["tmux"]
@@ -73,6 +75,9 @@
             {}]
            ["i3status"
             #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}
+            {}]
+           ["compton"
+            #{["~/.dotfiles/compton/compton.conf" :-> "~/.config/compton.conf"]}
             {}]
            ["i3lock"]
            ; terminal
@@ -116,8 +121,6 @@
            ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
            ["arandr"]
            ["feh"]
-           ["gnome-screenshot"]
-           ["gnome-disk-utility"]
           ])
 
 
@@ -197,41 +200,32 @@
              :package-manager       :flatpak
              :package-info          ["flathub" "org.gnome.Evince"]
              :depends-on            [:flatpak]}]
-           [:qview
-            #{}
-            {:description           "Image viewer supporting many formats including webp"
-             :package-manager       :flatpak
-             :package-info          ["flathub" "com.interversehq.qView"]
-             :post-install-hook-fn  '(fn [] (do
-                                        (log "Allow access to home directory to download files for Telegram")
-                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.interversehq.qView")))
-             :depends-on            [:flatpak]}]
            [:LibreOffice
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "org.libreoffice.LibreOffice"]
-             :depends-on            [:flatpak]}]                                
+             :depends-on            [:flatpak]}]
            [:apostrophe
             #{}
             {:description           "Beautiful markdown editor"
              :package-manager       :flatpak
              :package-info          ["flathub" "org.gnome.gitlab.somas.Apostrophe"]
-             :depends-on            [:flatpak]}]                                
+             :depends-on            [:flatpak]}]
            [:vscode
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "com.visualstudio.code"]
-             :depends-on            [:flatpak]}]                                
+             :depends-on            [:flatpak]}]
            [:FreeCAD
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "org.freecadweb.FreeCAD"]
-             :depends-on            [:flatpak]}]                                
+             :depends-on            [:flatpak]}]
            [:OpenSCAD
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "org.openscad.OpenSCAD"]
-             :depends-on            [:flatpak]}]                                
+             :depends-on            [:flatpak]}]
            [:PrusaSlicer
             #{}
             {:package-manager       :flatpak
