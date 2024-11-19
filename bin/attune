@@ -118,7 +118,7 @@
            ["blueman"]
            ["ibus"]
            ["pipewire"] ["pipewire-pulse"] ["pavucontrol"]
-           ["nautilus"] ["thunar"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-common"] ["gvfs-daemons"]
+           ["nautilus"] ["thunar"] ["gvfs"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-daemons"] ["gvfs-backends"]
            ["arandr"]
            ["feh"]
           ])
