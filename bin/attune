@@ -372,6 +372,9 @@
                                  ["azure-data-studio"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["orbstack"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                 ]
 
 
