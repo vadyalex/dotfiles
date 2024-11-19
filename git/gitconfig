@@ -1,6 +1,6 @@
 [user]
-	email = vadyalex@gmail.com
-	name = Vlad
+	email = vadyalex@users.noreply.github.com
+	name = vadyalex
 [push]
 	default = current
 [pull]
