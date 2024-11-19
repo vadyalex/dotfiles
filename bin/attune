@@ -240,7 +240,34 @@
             #{}
             {:package-manager       :flatpak
              :package-info          ["flathub" "com.github.tchx84.Flatseal"]
-             :depends-on            [:flatpak]}]])
+             :depends-on            [:flatpak]}]
+           [:Loupe
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "org.gnome.Loupe"]
+             :depends-on            [:flatpak]}]
+           ; ----------------------------------------------------------------------------------------------------------------
+           ;
+           ;    JetBrain IDEs
+           ;
+           [:IntelliJ-IDEA-Community
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.jetbrains.IntelliJ-IDEA-Community"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory..")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.IntelliJ-IDEA-Community")))
+             :depends-on            [:flatpak]}]
+           [:PyCharm-Community
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.jetbrains.PyCharm-Community"]
+             :post-install-hook-fn  '(fn [] (do 
+                                        (log "Allow access to home directory..")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.PyCharm-Community")))
+             :depends-on            [:flatpak]}]
+            ; ----------------------------------------------------------------------------------------------------------------
+            ])
 
 
 (def dev-tools [["make"]
