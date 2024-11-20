@@ -121,6 +121,7 @@
            ["nautilus"] ["thunar"] ["gvfs"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-daemons"] ["gvfs-backends"]
            ["arandr"]
            ["feh"]
+           ["gnome-screenshot"]
           ])
 
 
