@@ -327,7 +327,8 @@
                :shell           shell
                :toolbelt        toolbelt
                :desktop         i3wm
-               :apps            apps}
+               :apps            apps
+               :dev-tools       dev-tools}
 
               {:key             "bankbook"
                :description     "MacBook Pro work laptop"
