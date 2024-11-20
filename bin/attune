@@ -248,6 +248,15 @@
              :depends-on            [:flatpak]}]
            ; ----------------------------------------------------------------------------------------------------------------
            ;
+           ;    Steam games!
+           ;
+           [:steam
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.valvesoftware.Steam"]
+             :depends-on            [:flatpak]}]
+           ; ----------------------------------------------------------------------------------------------------------------
+           ;
            ;    JetBrain IDEs
            ;
            [:IntelliJ-IDEA-Community
