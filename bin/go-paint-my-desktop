@@ -6,4 +6,6 @@ if [ -e "$wallpaper_file" ]; then
   feh --bg-fill ${wallpaper_file}
 elif [ -e "${wallpaper_file%.jpg}.jpeg" ]; then
   feh --bg-fill ${wallpaper_file%.jpg}.jpeg
+elif [ -e "${wallpaper_file%.jpg}.png" ]; then
+  feh --bg-fill ${wallpaper_file%.jpg}.png
 fi
