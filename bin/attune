@@ -44,6 +44,7 @@
                ["pv"]                                  ;;
                ["iotop"]                               ;; > sudo iotop # monitor disk IO
                ["radeontop"]                           ;; > radeontop  # show usage statistics for Radeon GPUs
+               ["lshw"]
                ["htop"]
                ["upower"]                              ;; > upower -i /org/freedesktop/UPower/devices/battery_BAT0 # check battery status
                ["neovim"]
@@ -118,7 +119,7 @@
            ["blueman"]
            ["ibus"]
            ["pipewire"] ["pipewire-pulse"] ["pavucontrol"]
-           ["nautilus"] ["thunar"] ["gvfs"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-daemons"] ["gvfs-backends"]
+           ["nautilus"] ["thunar"] ["gvfs"] ["gvfs-smb"] ["gvfs-fuse"] ["gvfs-daemons"] ["gvfs-backends"] ["tumbler"] ["gnome-thumbnail-factory"]
            ["arandr"]
            ["feh"]
            ["gnome-screenshot"]
