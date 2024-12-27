@@ -115,6 +115,15 @@
            ["rofi"
             #{["~/.dotfiles/rofi/config.rasi" :-> "~/.config/rofi/config.rasi"]}
             {}]
+           [
+            :application-shortcuts
+            #{["~/.dotfiles/applications/dock-at-home.desktop" :-> "~/.local/share/applications/dock-at-home.desktop"]
+              ["~/.dotfiles/applications/goupdate.desktop"     :-> "~/.local/share/applications/goupdate.desktop"]
+              ["~/.dotfiles/applications/dock-at-work.desktop" :-> "~/.local/share/applications/dock-at-work.desktop"]}
+            {:package-manager             :script
+             :package-info                ['(fn [] (log "Beep-beep! Installing desktop file symlinks.."))
+                                           '(fn [] (log "Beep-beep! Updating desktop file symlinks.."))]}
+           ]
            ["network-manager-applet"] ["network-manager-gnome"]
            ["blueman"]
            ["ibus"]
@@ -457,7 +466,8 @@
     (let [yellow "\u001B[33m"
           cyan	 "\u001B[36m"
           reset  "\u001B[0m"]
-        (apply println (concat [cyan] args [reset]))))
+        (apply println (concat [cyan] args [reset]))
+        true))
 
 (defn eshell [& args]
     (let [{:keys [exit]} @(process args {:inherit true })]
@@ -569,13 +579,13 @@
 
 (defn install [[name configs context]]
     (let [{:keys [package-manager package-info]} context
-          install-tool (partial package-manager! package-manager :install (or package-info name))]
+          install-tool-fn (partial package-manager! package-manager :install (or package-info name))]
         (log "\t[" name "]")
         (log "Installing..")
         (when-some [pre-install-hook-fn (:pre-install-hook-fn context)]
             (log ":pre-install-hook-fn")
             ((eval pre-install-hook-fn)))
-        (when (install-tool)   
+        (when (install-tool-fn)   
             (when-not (empty? configs)
                 (log "Sync configs..")
                 (sync-configs configs))            
