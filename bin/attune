@@ -85,6 +85,9 @@
            ["xfce4-terminal"
             #{["~/.dotfiles/xfce4/terminalrc" :-> "~/.config/xfce4/terminal/terminalrc"]}
             {}]
+           ["kitty"
+            #{["~/.dotfiles/kitty/kitty.conf" :-> "~/.config/kitty/kitty.conf"]}
+            {}]
            ; fonts
            [
             "nerd-fonts"
