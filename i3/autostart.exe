@@ -1,0 +1,7 @@
+#!/bin/env bash
+
+#
+# autostart environment specific programs when i3 is starting
+#
+
+[ -f $HOME/.autostart.exe ] && ./.autostart.exe

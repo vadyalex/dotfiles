@@ -72,7 +72,8 @@
            ["lightdm-gtk-greeter-settings"]
            ; i3wm
            ["i3-wm"
-            #{["~/.dotfiles/i3/config" :-> "~/.i3/config"]}
+            #{["~/.dotfiles/i3/config"          :-> "~/.i3/config"]
+              ["~/.dotfiles/i3/autostart.exe"   :-> "~/.i3/autostart.exe"]}
             {}]
            ["i3status"
             #{["~/.dotfiles/i3/i3status.conf" :-> "~/.i3status.conf"]}

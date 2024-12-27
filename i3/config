@@ -214,7 +214,7 @@ bindsym $mod+m exec skypeforlinux
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+	status_command i3status
 	position top
 }
 
@@ -222,9 +222,6 @@ bar {
 
 # Start composite manager
 exec --no-startup-id compton
-
-# Lock screen after 15 minutes idle timeout
-#exec --no-startup-id xautolock -time 15 -locker 'dm-tool lock'
 
 # Network manager applet
 exec --no-startup-id nm-applet
@@ -235,11 +232,10 @@ exec --no-startup-id blueman-applet
 # Input language switcher applet
 exec --no-startup-id ibus-daemon
 
-# Set fancy background
-exec --no-startup-id ~/.bin/go-paint-my-desktop
-
 # Start volume control
 exec --no-startup-id volumeicon
 
-# Make Nautilus stop shoding desktop icons
-#exec --no-startup-id gsettings set org.gnome.desktop.background show-desktop-icons false
+# Set fancy background
+exec --no-startup-id ~/.bin/go-paint-my-desktop
+
+exec --no-startup-id ~/.i3/autostart.exe
