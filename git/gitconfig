@@ -11,6 +11,7 @@
 	st                  = status
 	a                   = add
 	c                   = commit
+	amend               = commit --amend
 	fixup               = commit --amend --no-edit
 	p                   = pull --autostash
 	pr                  = pull --rebase --autostash
