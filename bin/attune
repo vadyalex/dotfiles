@@ -261,6 +261,11 @@
             {:package-manager       :flatpak
              :package-info          ["flathub" "org.gnome.Loupe"]
              :depends-on            [:flatpak]}]
+           [:PeaZip
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "io.github.peazip.PeaZip"]
+             :depends-on            [:flatpak]}]
            ; ----------------------------------------------------------------------------------------------------------------
            ;
            ;    Steam games!
