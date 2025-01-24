@@ -553,7 +553,7 @@
 (defn brew-cask [action package]
     (case action
         :update    (and (eshell "brew" "update")
-                        (eshell "brew" "upgrade")
+                        (eshell "brew" "upgrade" "--cask" "--greedy")
                         (eshell "brew" "cleanup" "--prune=all"))
         :install   (eshell "brew" "install" "--cask" package)
         :uninstall (and (eshell "brew" "uninstall" package)
