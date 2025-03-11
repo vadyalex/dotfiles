@@ -10,19 +10,15 @@ ZSH_THEME="afowler"
 
 plugins=(
 	sudo 
-	rsync tmux docker	
+	rsync
+	fzf
+	docker
 	git
 	lein mvn
 	python virtualenv pip pyenv
 	ansible
 	pass
-	)
-
-# source common aliases
-source $HOME/.aliases
-
-# source environment specific aliases
-[ -f $HOME/.environment.aliases ] && source $HOME/.environment.aliases
+)
 
 # add extra executable
 export PATH=$HOME/.bin:$HOME/.local/bin:$PATH
@@ -33,6 +29,15 @@ export DISABLE_AUTO_UPDATE="true"
 
 # start oh-my-zsh routine
 source $ZSH/oh-my-zsh.sh
+
+# source common aliases
+source $HOME/.aliases
+
+# source environment specific aliases
+[ -f $HOME/.environment.aliases ] && source $HOME/.environment.aliases
+
+export SAVEHIST=100000000
+export HISTSIZE=10000
 
 export LANG=en_US.UTF-8
 export EDITOR=vim

@@ -34,6 +34,7 @@
 
 (def toolbelt [["gnupg"] ["pass"] ["qrencode"] ["paperkey"]
                ["curl"] ["wget"]
+               ["fzf"]                                 ;; FuZzy Filter - integrate into zsh reverse search via oh-my-zsh plugin
                ["rsync"]
                ["mosh"]
                ["net-tools"] ["iperf3"] ["dnsutils"]
@@ -441,6 +442,7 @@
                                  ["kubeseal"]
                                  ["jq"]
                                  ["ranger"]
+                                 ["fzf"]
                                  ;; Python
                                  ["pyenv"]
                                  ["pipx"]
