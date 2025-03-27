@@ -366,7 +366,7 @@
                :env             {:os              :macOS
                                  :package-manager :brew}
 
-               :zsh             [git oh-my-zsh]
+               :zsh             [git oh-my-zsh ["fzf"]]
 
                :mac-apps        [["alfred"
                                   #{}
@@ -431,7 +431,7 @@
 
 
                :mac-dev-tools   [["gnupg"] ["pgpdump"]
-                                 ["pass"]  ["gopass"]
+                                 ["pass"]
                                  ["asciinema"]
                                  ["lolcat"]
                                  ["cowsay"]
@@ -442,7 +442,6 @@
                                  ["kubeseal"]
                                  ["jq"]
                                  ["ranger"]
-                                 ["fzf"]
                                  ;; Python
                                  ["pyenv"]
                                  ["pipx"]
