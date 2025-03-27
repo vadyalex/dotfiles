@@ -7,7 +7,7 @@
 	ff = only
 [alias]
 	graph               = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%ad%Creset %C(white)%s%Creset %C(bold yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
-	l                   = log
+	l                   = !git log --oneline --decorate | fzf
 	st                  = status
 	a                   = add
 	c                   = commit
@@ -24,5 +24,6 @@
 	untrack             = assume-unchanged
 	no-assume-unchanged = update-index --no-assume-unchanged
 	track               = no-assume-unchanged
+	s                   = !git branch --list | fzf | xargs git switch
 [core]
 	autocrlf = input
