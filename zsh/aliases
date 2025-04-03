@@ -28,12 +28,14 @@ vscode () {
 }
 
 go-git-pull-all-sub-directories () {
-	find $PWD -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 -I {} sh -c '\
-      directory="{}"; \
-      [ -d "${directory}/.git" ] && { \
-        printf "\033[33mProcessing ${directory} ..\n\033[0m"; \
-        git -C "${directory}" pull --all --autostash; \
-      }'
+    find "$PWD" -mindepth 1 -maxdepth 1 -type d -exec sh -c '
+      for directory do
+        if [ -d "${directory}/.git" ]; then
+          printf "\033[33mProcessing %s [ branch: %s ] ..\n\033[0m" "$directory" "$(git -C "${directory}" branch --show-current)"
+          git -C "${directory}" pull --all --autostash
+        fi
+      done
+    ' run {} +
 }
 
 untar () {
