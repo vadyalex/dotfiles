@@ -7,6 +7,17 @@ host="${SOLARIS_HOST:-solaris.domus}"
 user="${SOLARIS_USER:-vlad}"
 identity="${SOLARIS_USER_IDENTITY}"
 
+encryption_key_id="${ENCRYPT_WITH_KEY}"
+
+if [[ -z "$encryption_key_id" ]]; then
+  if gpg --list-keys --with-colons "recipient_id_or_email" | grep -q "^pub"; then
+      echo "Key is set to $encryption_key_id and does exist in the keyring."
+  else
+      echo "Key $encryption_key_id is not found!" >&2
+      exit 1
+  fi
+fi
+
 ssh_solaris() {
     if [[ -n "$identity" ]]; then
         ssh -i $identity $user@$host "$@"
@@ -21,10 +32,10 @@ bytes_to_human_readable() {
 }
 
 if [ -z "$1" ]; then
-    echo -e "\e[31mUsage: $0 <dataset>\e[0m"
-    echo ""
+    echo -e "\e[31mUsage: $0 <dataset>\e[0m" >&2
+    echo "" >&2
     datasets=$(ssh_solaris "sudo zfs list -t filesystem" | awk 'NR>1 {print $1}')
-    echo -e "\e[31mAvailable datasets:\n$datasets\e[0m"
+    echo -e "\e[31mAvailable datasets:\n$datasets\e[0m" >&2
     exit 1
 fi
 
@@ -35,7 +46,8 @@ echo -e "\e[33mChecking latest snapshot for dataset: $dataset\e[0m"
 snapshot=$(ssh_solaris "sudo zfs list -t snapshot $dataset" | awk 'END {print $1}')
 
 if [[ -z "$snapshot" ]]; then
-    echo -e "\e[31mNo snapshots found! Nothing to do here..\e[0m"
+    echo -e "\e[31mNo snapshots found! Nothing to do here..\e[0m" >&2
+    exit 1
 else
     echo -e "\e[33mFound: $snapshot\e[0m"
 
@@ -77,9 +89,17 @@ else
 
     echo -e "\e[32mSnapshot size is $(bytes_to_human_readable $snapshot_size)\e[0m"
 
-    archive="${snapshot//\//_}".tar.gz
+    if [[ -n "$encryption_key_id" ]]; then
+        archive="${snapshot//\//_}".tar.gz.gpg
+        echo -e "\e[32mArchiving to $archive..\e[0m"
 
-    echo -e "\e[32mArchiving to $archive..\e[0m"
+        ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip | gpg --encrypt --recipient $encryption_key_id > $archive
+    else
+        archive="${snapshot//\//_}".tar.gz
+        echo -e "\e[32mArchiving to $archive..\e[0m"
+
+        ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip > $archive
+    fi
 
     ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip > $archive
 
@@ -94,7 +114,8 @@ else
         ssh_solaris "sudo umount $snapshot_mount"
         echo -e "\e[32mBye!\e[0m"
     else
-        echo -e "\e[31mMounted snapshot is still in use! Leaving mounted at $snapshot_mount.. Un-mount it manually later.\e[0m"
+        echo -e "\e[31mMounted snapshot is still in use! Leaving mounted at $snapshot_mount..\e[0m"
+        echo -e "\e[31m Un-mount it manually later: sudo umount $snapshot_mount\e[0m"
     fi
 
 fi
