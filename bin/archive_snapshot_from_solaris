@@ -73,7 +73,7 @@ else
 
     echo -e "\e[33mCalculating snapshot size..\e[0m"
 
-    snapshot_size=$(ssh_solaris "sudo du -sb $snapshot_mount | awk '{print \$1}'")
+    snapshot_size=$(ssh_solaris "sudo du -sb $snapshot_mount | cut -f1 | tr -d '\r'")
 
     echo -e "\e[32mSnapshot size is $(bytes_to_human_readable $snapshot_size)\e[0m"
 
