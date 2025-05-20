@@ -10,7 +10,7 @@ identity="${SOLARIS_USER_IDENTITY}"
 encryption_key_id="${ENCRYPT_WITH_KEY}"
 
 if [[ -n "$encryption_key_id" ]]; then
-  if gpg --list-keys --with-colons "recipient_id_or_email" | grep -q "^pub"; then
+  if gpg --list-keys --with-colons "$encryption_key_id" | grep -q "^pub"; then
       echo -e "\e[33mEncryption key is set to $encryption_key_id and does exist in the keyring..\e[0m"
   else
       echo -e "\e[31mEncryption key $encryption_key_id is not found in keyring!\e[0m" >&2
