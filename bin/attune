@@ -42,7 +42,8 @@
                ["lm-sensors"]
                ["unzip"]
                ["imagemagick"]
-               ["pv"]                                  ;;
+               ["pv"]
+               ["mbuffer"]
                ["iotop"]                               ;; > sudo iotop # monitor disk IO
                ["radeontop"]                           ;; > radeontop  # show usage statistics for Radeon GPUs
                ["lshw"]

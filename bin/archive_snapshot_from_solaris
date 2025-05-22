@@ -93,15 +93,13 @@ else
         archive="${snapshot//\//_}".tar.gz.gpg
         echo -e "\e[32mArchiving to $archive..\e[0m"
 
-        ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip | gpg --encrypt --recipient $encryption_key_id > $archive
+        ssh_solaris "sudo tar --create --file - $snapshot_mount" | mbuffer -q -m 1G | pv -s $snapshot_size | gzip | gpg --encrypt --recipient $encryption_key_id > $archive
     else
         archive="${snapshot//\//_}".tar.gz
         echo -e "\e[32mArchiving to $archive..\e[0m"
 
-        ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip > $archive
+        ssh_solaris "sudo tar --create --file - $snapshot_mount" | mbuffer -q -m 1G | pv -s $snapshot_size | gzip > $archive
     fi
-
-    ssh_solaris "sudo tar --create --file - $snapshot_mount" | pv -s $snapshot_size | gzip > $archive
 
     echo -e "\e[32mComplete!\e[0m"
 
