@@ -64,6 +64,12 @@ webp2jpg() {
 	echo "$@" | xargs --max-procs=0 --max-args=1 sh -c 'mogrify -format jpg $1 && rm $1' _
 }
 
+# Function: preview
+# Description: Find and preview file with either bat or cat as well as directories structure.
+# Returns: None
+preview() {
+	fzf --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+}
 ###############################################################################
 #
 #		Containerized utilities
