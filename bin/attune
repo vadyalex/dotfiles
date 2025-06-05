@@ -435,6 +435,7 @@
                                  ["pass"]
                                  ["asciinema"]
                                  ["lolcat"]
+                                 ["bat"]
                                  ["cowsay"]
                                  ["tmux"]
                                  ["neovim"]
