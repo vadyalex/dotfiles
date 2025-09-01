@@ -49,6 +49,7 @@
                ["lshw"]
                ["htop"]
                ["upower"]                              ;; > upower -i /org/freedesktop/UPower/devices/battery_BAT0 # check battery status
+               ["fwupd"]                               ;; > sudo fwupdmgr get-updates
                ["neovim"]
                ["htop"]
                ["tmux"]
