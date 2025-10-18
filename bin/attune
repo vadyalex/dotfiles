@@ -291,6 +291,20 @@
                                         (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.PyCharm-Community")))
              :depends-on            [:flatpak]}]
             ; ----------------------------------------------------------------------------------------------------------------
+           ; ----------------------------------------------------------------------------------------------------------------
+           ;
+           ;    Android Studio
+           ;
+           [:com.google.AndroidStudio
+            #{}
+            {:package-manager       :flatpak
+             :package-info          ["flathub" "com.google.AndroidStudio"]
+             :post-install-hook-fn  '(fn [] (do
+                                        (log "Allow access to home directory..")
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.google.AndroidStudio")))
+             :depends-on            [:flatpak]}]
+            ; ----------------------------------------------------------------------------------------------------------------
+
             ])
 
 
