@@ -435,6 +435,9 @@
                                  ["orbstack"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["android-studio"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                 ]
 
 
