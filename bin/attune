@@ -420,10 +420,16 @@
                                  ["intellij-idea-ce"
                                   #{}
                                   {:package-manager :brew-cask}]
+                                 ["intellij-idea"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ["webstorm"
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ["pycharm-ce"
+                                  #{}
+                                  {:package-manager :brew-cask}]
+                                 ["pycharm"
                                   #{}
                                   {:package-manager :brew-cask}]
                                  ["datagrip"
