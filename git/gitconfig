@@ -17,8 +17,8 @@
 	pr                  = pull --rebase --autostash
 	r                   = rebase --autostash
 	ri                  = !$HOME/.bin/go-git-rebase-interactive.sh
-	pu                  = push
-	puf                 = push --force
+	pu                  = push --set-upstream
+	puf                 = push --force-with-lease --set-upstream
 	d                   = diff
 	assume-unchanged    = update-index --assume-unchanged
 	untrack             = assume-unchanged
