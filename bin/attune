@@ -274,23 +274,23 @@
            ;
            ;    JetBrain IDEs
            ;
-           [:IntelliJ-IDEA-Community
+           [:IntelliJ-IDEA-Ultimate
             #{}
             {:package-manager       :flatpak
-             :package-info          ["flathub" "com.jetbrains.IntelliJ-IDEA-Community"]
+             :package-info          ["flathub" "com.jetbrains.IntelliJ-IDEA-Ultimate"]
              :post-install-hook-fn  '(fn [] (do 
                                         (log "Allow access to home directory..")
-                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.IntelliJ-IDEA-Community")))
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.IntelliJ-IDEA-Ultimate")))
              :depends-on            [:flatpak]}]
-           [:PyCharm-Community
+           [:PyCharm-Professional
             #{}
             {:package-manager       :flatpak
-             :package-info          ["flathub" "com.jetbrains.PyCharm-Community"]
-             :post-install-hook-fn  '(fn [] (do 
+             :package-info          ["flathub" "com.jetbrains.PyCharm-Professional"]
+             :post-install-hook-fn  '(fn [] (do
                                         (log "Allow access to home directory..")
-                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.PyCharm-Community")))
+                                        (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.jetbrains.PyCharm-Professional")))
              :depends-on            [:flatpak]}]
-            ; ----------------------------------------------------------------------------------------------------------------
+           ; ----------------------------------------------------------------------------------------------------------------
            ; ----------------------------------------------------------------------------------------------------------------
            ;
            ;    Android Studio
@@ -303,7 +303,7 @@
                                         (log "Allow access to home directory..")
                                         (eshell "sudo" "flatpak" "override" "--filesystem=home" "com.google.AndroidStudio")))
              :depends-on            [:flatpak]}]
-            ; ----------------------------------------------------------------------------------------------------------------
+           ; ----------------------------------------------------------------------------------------------------------------
 
             ])
 
@@ -591,6 +591,13 @@
                         ((eval uninstall-fn)))
         nil))
 
+(defn pipx [action [package]]
+    (case action
+        :update    (eshell "pipx" "upgrade" package)
+        :install   (eshell "pipx" "install" package)
+        :uninstall (eshell "pipx" "uninstall" package)
+        nil))
+
 (defn package-manager! [name action package-info] 
     (case name
         :apt        (apt       action package-info)
@@ -600,6 +607,7 @@
         :brew       (brew      action package-info)
         :brew-cask  (brew-cask action package-info)
         :script     (script    action package-info)
+        :pipx       (pipx       action package-info)
         nil))
 
 (defn sync-configs [configs]
