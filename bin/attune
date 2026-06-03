@@ -171,7 +171,7 @@
            [:thunderbird
             #{}
             {:package-manager       :flatpak
-             :package-info          ["flathub" "org.mozilla.Thunderbird"]
+             :package-info          ["flathub" "org.mozilla.thunderbird_esr"]
              :depends-on            [:flatpak]}]
            [:telegram
             #{}
