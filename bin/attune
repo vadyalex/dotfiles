@@ -309,7 +309,20 @@
 
 
 (def dev-tools [["make"]
-                ["podman"]])
+                ["podman"]
+                ; Python
+                ["python3-dev"]
+                ["build-essential"]
+                ["pipx"
+                 #{}
+                 {:depends-on ["python3-dev" "build-essential"]}]
+                ["uv"
+                 #{}
+                 {:package-manager       :pipx
+                  :package-info          ["uv"]
+                  :post-install-hook-fn  '(fn [] (do
+                                             (log "Hello uv!")))
+                  :depends-on            ["pipx"]}]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
