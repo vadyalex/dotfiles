@@ -464,6 +464,8 @@
                                  ["pyenv"]
                                  ["pipx"]
                                  ["dive"]
+                                 ;; GitHub CLI
+                                 ["gh"]
                                  ;; node.js version manager
                                  [
                                     "nvm"
