@@ -328,7 +328,17 @@
                  #{}
                  {:package-manager :script
                   :package-info    ['(fn [] (eshell "bash" "-c" "curl -s https://get.sdkman.io | bash"))
-                                    '(fn [] (eshell "bash" "-c" "source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk selfupdate"))]}]])
+                                    '(fn [] (eshell "bash" "-c" "source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk selfupdate"))]}]
+                [:java
+                 #{}
+                 {:package-manager :sdkman
+                  :package-info    "java 21.0.7-tem"
+                  :depends-on      [:sdkman]}]
+                [:leiningen
+                 #{}
+                 {:package-manager :sdkman
+                  :package-info    "leiningen"
+                  :depends-on      [:sdkman]}]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
