@@ -322,7 +322,13 @@
                   :package-info          ["uv"]
                   :post-install-hook-fn  '(fn [] (do
                                              (log "Hello uv!")))
-                  :depends-on            ["pipx"]}]])
+                  :depends-on            ["pipx"]}]
+                ; Java
+                [:sdkman
+                 #{}
+                 {:package-manager :script
+                  :package-info    ['(fn [] (eshell "bash" "-c" "curl -s https://get.sdkman.io | bash"))
+                                    '(fn [] (eshell "bash" "-c" "source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk selfupdate"))]}]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -611,16 +617,25 @@
         :uninstall (eshell "pipx" "uninstall" package)
         nil))
 
+(defn sdkman [action package]
+      (let [sdk-init "source \"$HOME/.sdkman/bin/sdkman-init.sh\""]
+           (case action
+                 :install   (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=true && "  sdk-init " && sdk install " package))
+                 :update    (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=false && " sdk-init " && sdk upgrade " package))
+                 :uninstall (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=true && "  sdk-init " && sdk uninstall " package))
+                 nil)))
+
 (defn package-manager! [name action package-info] 
     (case name
-        :apt        (apt       action package-info)
-        :git        (git       action package-info)
-        :flatpak    (flatpak   action package-info)
-        :pacman     (pacman    action package-info)
-        :brew       (brew      action package-info)
-        :brew-cask  (brew-cask action package-info)
-        :script     (script    action package-info)
-        :pipx       (pipx       action package-info)
+          :apt        (apt       action package-info)
+          :git        (git       action package-info)
+          :flatpak    (flatpak   action package-info)
+          :pacman     (pacman    action package-info)
+          :brew       (brew      action package-info)
+          :brew-cask  (brew-cask action package-info)
+          :script     (script    action package-info)
+          :pipx       (pipx      action package-info)
+          :sdkman     (sdkman    action package-info)
         nil))
 
 (defn sync-configs [configs]
