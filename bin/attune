@@ -421,6 +421,9 @@
                                    :post-install-hook-fn  '(fn [] (do
                                                                     (log "Whitelist Alacritty..")
                                                                     (eshell "xattr" "-rd" "com.apple.quarantine" "/Applications/Alacritty.app")))}]
+                                 ["ghostty"
+                                  #{}
+                                  {:package-manager :brew-cask}]
                                  ["cyberduck"
                                   #{}
                                   {:package-manager :brew-cask}]
