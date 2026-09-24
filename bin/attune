@@ -508,7 +508,7 @@
                                  ]
                                  ;; JAVA!!!11
                                  [
-                                    "corretto@21"
+                                    "corretto@25"
                                  ]
                                  ]}
              ])
