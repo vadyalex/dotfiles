@@ -633,8 +633,8 @@
 (defn sdkman [action package]
       (let [sdk-init "source \"$HOME/.sdkman/bin/sdkman-init.sh\""]
            (case action
-                 :install   (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=true && "  sdk-init " && sdk install " package))
-                 :update    (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=false && " sdk-init " && sdk upgrade " package))
+                 :install   (eshell "bash" "-c" (str sdk-init " && echo \"n\" | sdk install " package " || true"))
+                 :update    (eshell "bash" "-c" (str sdk-init " && echo \"n\" | sdk upgrade " package))
                  :uninstall (eshell "bash" "-c" (str "export SDKMAN_AUTO_ANSWER=true && "  sdk-init " && sdk uninstall " package))
                  nil)))
 
