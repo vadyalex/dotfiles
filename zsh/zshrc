@@ -15,7 +15,7 @@ plugins=(
 	docker
 	git
 	lein mvn
-	python virtualenv pip pyenv
+	python virtualenv pip pyenv uv
 	ansible
 	pass
 )
